@@ -25,7 +25,6 @@ export default{
     font-weight: normal;
     font-style: normal;
 }
-
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; padding: 0; } 
 
