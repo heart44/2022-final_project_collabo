@@ -1,10 +1,17 @@
 <?php
     define('_ROOT', $_SERVER['DOCUMENT_ROOT']);
     define('_DBTYPE', 'mysql'); //mysql, mariadb 등
+<<<<<<< HEAD
+    define('_DBHOST', 'localhost:3308'); //DB접속 주소
+    define('_DBNAME', 'lunch'); //DB명
+    define('_DBUSER', 'root'); //아이디
+    define('_DBPASSWORD', '1234'); //비번
+=======
     define('_DBHOST', 'localhost'); //DB접속 주소
     define('_DBNAME', 'lunch'); //DB명
     define('_DBUSER', 'root'); //아이디
     define('_DBPASSWORD', '506greendg@'); //비번
+>>>>>>> 54696a7c83b9502342edba61d33e59208e8bf53a
     define('_CHARSET', 'utf8');
     define("_VIEW", "application/views/");
 
@@ -26,4 +33,10 @@
     define("_GET", "GET");
     define("_PUT", "PUT");
     define("_DELETE", "DELETE");
+<<<<<<< HEAD
+
+    define("_IMG_PATH", "static/img");
+
+=======
     
+>>>>>>> 54696a7c83b9502342edba61d33e59208e8bf53a

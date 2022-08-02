@@ -4,8 +4,10 @@ use PDO;
 
 class ApiModel extends Model {
     public function getCategoryList() {
-        $sql = "SELECT * FROM t_category
-                ORDER BY cate1, cate2, cate3";
+        $sql = "SELECT a.*, b.icate2, b.midcate
+                FROM category1 a, category2 b
+                WHERE a.icate1 = b.icate1
+                ORDER BY a.icate1 asc";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
