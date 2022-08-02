@@ -108,7 +108,25 @@ export default {
         },
         getProfile(authObj){
             console.log(authObj);
-             window.Kakao.API.request({
+            //  window.Kakao.API.request({
+            //     url: '/v2/user/me',
+            //     success: async res => {
+            //         const acc = res.kakao_account;
+            //         console.log(acc);
+            //         const params = {
+            //             social_type: 1,
+            //             email: acc.email,
+            //             nickname: acc.profile.nickname,
+            //             profile_img: acc.profile.profile_image_url,
+            //         }
+            //         console.log(params);
+            //         this.login(params);
+            //     },
+            //     fail: e => {
+            //         console.error(e);
+            //     }
+            // });
+            window.Kakao.API.request({
                 url: '/v2/user/me',
                 success: async res => {
                     const acc = res.kakao_account;
@@ -116,13 +134,14 @@ export default {
                     const params = {
                         social_type: 1,
                         email: acc.email,
-                        nickname: acc.profile.nickname,
-                        profile_img: acc.profile.profile_image_url,
-                        thumb_img: acc.profile.thumbnail_image_url
+                        nick: acc.profile.nickname,
+                        profileimg: acc.profile.profile_image_url
                     }
                     console.log(params);
-                    this.login(params);
-                    
+                    const data = await this.$post('/user/signup', params);                       
+                    console.log(data.result);
+                    this.$store.commit('setIuser', data.result);
+                    // this.login(params);
                 },
                 fail: e => {
                     console.error(e);
@@ -150,6 +169,11 @@ export default {
                     console.error(e);
                 }
             });
+        },
+        async login(params){
+            const data = await this.$post('/user/signup', params);                       
+            params.iuser = data.result;
+            this.$store.commit('user', params);
         },
     },
     created(){
