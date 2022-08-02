@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <Header />
-    <router-view />
+    <router-view/>
     <Footer />
   </div>
 </template>
@@ -18,7 +18,6 @@ export default{
 }
 </script>
 
-
 <style>
 @font-face {
     font-family: 'GmarketSansMedium';
@@ -26,7 +25,6 @@ export default{
     font-weight: normal;
     font-style: normal;
 }
-html, body { height: 100%; margin: 0; }
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
@@ -34,11 +32,18 @@ html, body { height: 100%; margin: 0; }
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height:100%;
 }
-main {
-  min-height: 100%;
+html, body{
+  margin: 0;
+  padding: 0;
+  height:100%;
 }
-main > div {  }
+#wrap{
+  display:flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 nav {
   padding: 30px;
 }
@@ -50,10 +55,5 @@ nav a.router-link-exact-active {
   color: white;
   text-decoration: none;
   pointer-events: none; 
-}
-footer {
-  height: 80px;
-  /* position: relative;
-  transform: translateY(-100%); */
 }
 </style>

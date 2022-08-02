@@ -30,9 +30,8 @@ export default {
                     const params = {
                         social_type: 1,
                         email: acc.email,
-                        nickname: acc.profile.nickname,
-                        profile_img: acc.profile.profile_image_url,
-                        thumb_img: acc.profile.thumbnail_image_url
+                        nick: acc.profile.nickname,
+                        profileimg: acc.profile.profile_image_url
                     }
                     console.log(params);
                     const data = await this.$post('/user/signup', params);                       
