@@ -3,7 +3,7 @@ namespace application\models;
 use PDO;
 
 class ApiModel extends Model {
-    public function getCategoryList() {
+    public function getSearchCategoryList() {
         $sql = "SELECT a.*, b.icate2, b.midcate, c.imenu, c.menu
                 FROM category1 a, category2 b, menu_cd c
                 WHERE a.icate1 = b.icate1 and b.icate2 = c.icate2
