@@ -47,4 +47,8 @@
             return [_RESULT => $this->model->insBobF($json)];
         }
         
+        //검색 카테고리
+        public function searchCategoryList() {
+            return $this->model->getSearchCategoryList();
+        }
     }

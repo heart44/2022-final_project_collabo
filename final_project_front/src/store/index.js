@@ -1,14 +1,24 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
-  state: {
-  },
-  getters: {
+  state() {
+    return {
+      user: {},
+      sallerSelectedProduct: {},
+    }
   },
   mutations: {
+    user: (state, data) => {
+      state.user = data;
+    },
+    sallerSelectedProduct: (state, data) => {
+      state.sallerSelectedProduct = data;
+    }
   },
-  actions: {
-  },
-  modules: {
-  }
-})
+  plugins: [
+    createPersistedState({
+      paths: ['user']
+    })
+  ],
+});

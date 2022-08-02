@@ -3,9 +3,8 @@
 <template>
   <div id="wrap">
     <Header />
-    <router-link to="/"></router-link>
-    <router-link to="/BobfList">BobfList</router-link>
     <router-view/>
+    <router-link to="/BobfList">BobfList</router-link>
     <Footer />
   </div>
 </template>
@@ -15,13 +14,12 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 
 export default{
-  components: {Header, Footer},
+  components: { Header, Footer },
   computed: {
 
   }
 }
 </script>
-
 
 <style>
 @font-face {
@@ -31,6 +29,7 @@ export default{
     font-style: normal;
 }
 * { box-sizing: border-box; }
+
 html, body {
   margin: 0;
   padding: 0;
