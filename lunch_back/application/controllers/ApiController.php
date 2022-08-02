@@ -68,4 +68,6 @@ class ApiController extends Controller {
         ];
         return $this->model->cate3List($param);
     }
+
+
 }
