@@ -4,7 +4,7 @@
     define('_DBHOST', 'localhost'); //DB접속 주소
     define('_DBNAME', 'lunch'); //DB명
     define('_DBUSER', 'root'); //아이디
-    define('_DBPASSWORD', '1234'); //비번
+    define('_DBPASSWORD', '506greendg@'); //비번
     define('_CHARSET', 'utf8');
     define("_VIEW", "application/views/");
 
@@ -26,6 +26,4 @@
     define("_GET", "GET");
     define("_PUT", "PUT");
     define("_DELETE", "DELETE");
-
-    define("_IMG_PATH", "static/img");
     
