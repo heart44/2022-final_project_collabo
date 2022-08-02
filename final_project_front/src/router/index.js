@@ -3,7 +3,7 @@ import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
 import KakaoLogin from '../views/KakaoLogin';
 import NaverLogin from '../views/NaverLogin';
-import Home from '../views/Home';
+import Main from '../views/Main'
 import store from '@/store';
 import MyPage from '../views/MyPage';
 
@@ -20,8 +20,8 @@ const requireAuth = () => (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Main',
+    component: Main
   },
   {
     path: '/LoginJoin',
