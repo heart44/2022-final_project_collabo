@@ -70,8 +70,8 @@ export default {
             }
         },
         async getCategoryList() {
-            console.log('ddd')
-            const categoryList = await this.$get('/api/categoryList');
+            // console.log('ddd')
+            const categoryList = await this.$get('/api/searchCategoryList');
             console.log(categoryList);
             let maincate = '';
             let midcate = '';      
@@ -89,9 +89,9 @@ export default {
                     id: item.imenu,
                     value: item.menu
                 };
-                console.log(obj)
+                // console.log(obj)
                 this.categoryObj[maincate][midcate].push(obj);
-                console.log(this.categoryObj)
+                // console.log(this.categoryObj)
             });      
         },
         changeCate1() {

@@ -4,8 +4,8 @@ namespace application\controllers;
 use Exception;
 
 class ApiController extends Controller {
-    public function categoryList() {
-        return $this->model->getCategoryList();
+    public function searchCategoryList() {
+        return $this->model->getSearchCategoryList();
     }
 
     public function productInsert() {
@@ -44,7 +44,6 @@ class ApiController extends Controller {
         ];
         return $this->model->productDetail($param);
     }
-   
 
     public function cate1List(){
         return $this->model->cate1List();
@@ -68,6 +67,4 @@ class ApiController extends Controller {
         ];
         return $this->model->cate3List($param);
     }
-
-
 }
