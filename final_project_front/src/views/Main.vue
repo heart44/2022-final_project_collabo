@@ -1,19 +1,6 @@
 <template>
   <main>
-    <div class="container">
-      <!-- <div class=" d-flex justify-content-center" v-if="weatherOk === true">
-        <div class="card w-25 text-center border-carrot mb-3" style="min-width: 10rem;">
-          <div class="card-header border-carrot bg-transparent bold">{{ today }} 기준</div>
-          <div class="w-100"><img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'"></div>
-          <div class="card-body">
-            <div class="card-text">
-              <p>{{ temp }}도</p>
-              <p>{{ weather }}</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      
+    <div class="container">    
         <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
           <div id="weatherIcon">
             <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">

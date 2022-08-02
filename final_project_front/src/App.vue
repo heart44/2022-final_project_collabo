@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <Header />
-    <router-view />
+    <router-view/>
     <Footer />
   </div>
 </template>
@@ -11,13 +11,12 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 
 export default{
-  components: {Header, Footer},
+  components: { Header, Footer },
   computed: {
 
   }
 }
 </script>
-
 
 <style>
 @font-face {
@@ -28,6 +27,7 @@ export default{
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; padding: 0; } 
+
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
@@ -58,9 +58,4 @@ nav a.router-link-exact-active {
   text-decoration: none;
   pointer-events: none; 
 }
-/* footer {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  width: 100%;
-} */
 </style>
