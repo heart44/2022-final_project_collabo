@@ -1,5 +1,5 @@
 <template>
-  <footer class="mt-5 py-5 text-white foot-bg ">
+  <footer class="mt-auto mt-5 py-5 text-white foot-bg ">
     &copy; copyright 2022 이응과 시옷들 ( ͡• ͜ʖ ͡• )
   </footer>
 </template>
