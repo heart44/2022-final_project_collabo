@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div>{{ iuser }}</div>
-    <a id="custom-login-btn" @click="NaverLogin"></a>
-  </div>
+    <div>
+        <div>{{ iuser }}</div>
+        <a id="custom-login-btn" @click="NaverLogin"></a>
+    </div>
 </template>
 <script>
 export default {

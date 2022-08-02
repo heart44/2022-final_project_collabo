@@ -14,5 +14,4 @@ export default {
 .foot-bg{
     background-color:#F26C38;
 }
-
 </style>

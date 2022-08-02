@@ -14,7 +14,7 @@
             </button>
             </form>
         </div>
-  </main>
+    </main>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ export default {
         place-content: center;
     }
     .vue-tempalte{
-       position: relative;
+        position: relative;
         width:850px;
         height:500px;
         background: #fff;
@@ -68,7 +68,6 @@ export default {
         margin: 0 auto;
         border:2px solid #333333;
     }
-   
     .btn:focus{
         box-shadow: none;
     }
@@ -88,5 +87,4 @@ export default {
         background-color: white;
         color:#2B3F6B;
     }
-
 </style>

@@ -11,7 +11,7 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 
 export default{
-  components: {Header, Footer},
+  components: { Header, Footer },
   computed: {
 
   }
@@ -25,6 +25,10 @@ export default{
     font-weight: normal;
     font-style: normal;
 }
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; } 
+
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
@@ -32,18 +36,17 @@ export default{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height:100%;
+  height: 100%;
 }
-html, body{
-  margin: 0;
-  padding: 0;
-  height:100%;
-}
-#wrap{
-  display:flex;
+#wrap {
+  /* min-height: 100%;
+  position: relative;
+  padding-bottom: 100px; */
+  display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100Vh;
 }
+/* main { padding-bottom: 50px; } */
 nav {
   padding: 30px;
 }

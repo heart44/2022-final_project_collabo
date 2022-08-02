@@ -1,24 +1,6 @@
 <template>
     <main>
         <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-        <div>d</div>
-
     </main>
 </template>
 
