@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+  </nav>
 </template>
 
 <script>
@@ -107,7 +107,7 @@ export default {
 
 <style scoped>
 .main-bg{
-    border-bottom: 1px solid #F26C38; 
+   border-bottom: 1px solid #F26C38; 
 }
 .logo img{
     width: 200px;
@@ -138,7 +138,7 @@ input:focus {
     border-radius: 30px !important;
 }
 .shadows{
-    box-shadow: 5px 1px 5px #F26C38;
+   box-shadow: 5px 1px 5px #F26C38;
 }
 .btn-secondary{
     background-color:#F26C38;

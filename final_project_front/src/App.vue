@@ -1,7 +1,10 @@
+
+
 <template>
   <div id="wrap">
     <Header />
     <router-view/>
+    <router-link to="/BobfList">BobfList</router-link>
     <Footer />
   </div>
 </template>
@@ -26,8 +29,12 @@ export default{
     font-style: normal;
 }
 * { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; padding: 0; } 
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
@@ -38,14 +45,10 @@ html, body { height: 100%; margin: 0; padding: 0; }
   height: 100%;
 }
 #wrap {
-  /* min-height: 100%;
-  position: relative;
-  padding-bottom: 100px; */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100Vh;
 }
-/* main { padding-bottom: 50px; } */
 nav {
   padding: 30px;
 }
