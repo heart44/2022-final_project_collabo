@@ -8,6 +8,23 @@
                 <span class="navbar-toggler-icon">
                 </span>
             </button> -->
+            <div class="row">
+                <div class="col-auto">
+                    <select class="form-select" v-model="maincate" @change="changeCate1">
+                        <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
+                    </select>
+                </div>
+                <div class="col-auto" v-if="maincate !== ''">
+                    <select class="form-select" v-model="midcate" @change="changeCate2">
+                        <option :key="name" v-for="(value, name) of categoryObj[maincate]">{{ name }}</option>
+                    </select>                         <!-- of: 객체, in으로 해도 동작은 함-->
+                </div>
+                <div class="col-auto" v-if="midcate !== ''">
+                    <select class="form-select" v-model="product.category_id">   <!-- in: 배열-->
+                        <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[maincate][midcate]">{{ cate.value }}</option>
+                    </select>
+                </div>
+            </div>
             <div class="input-group align-items-center">
                 <input type="text" class="form-control radious" placeholder="오늘은 @@이 많이 검색됐네요~" aria-label="Username" aria-describedby="basic-addon1">
                 <a href="#"><span class="search_icon"><img src="../assets/search.png"></span></a>
@@ -35,10 +52,49 @@
 export default {
     name:'header',
     computed:{
-    
-        
     },
-    
+    data() {
+        return {
+            categoryObj: {},
+            maincate: '',
+            midcate: '',
+        }
+    },
+    created() {
+        this.getCategoryList();
+    },
+    methods: {
+        async getCategoryList() {
+            console.log('ddd')
+            const categoryList = await this.$get('/api/categoryList');
+            console.log(categoryList);
+            let maincate = '';
+            let midcate = '';      
+            categoryList.forEach(item => {
+                if(item.maincate !== maincate) {
+                    maincate = item.maincate;
+                    this.categoryObj[maincate] = {};
+                    midcate = '';          
+                }
+                if(item.midcate !== midcate) {
+                    midcate = item.midcate;
+                    this.categoryObj[maincate][midcate] = [];
+                }   
+                const obj = {
+                    id: item.imenu,
+                    value: item.menu
+                };
+                this.categoryObj[maincate][midcate].push(obj);
+            });      
+        },
+        changeCate1() {
+            this.midcate = '';
+            // this.product.category_id = '';
+        },
+        changeCate2() {
+            // this.product.category_id = '';
+        },
+    }
 }
 </script>
 

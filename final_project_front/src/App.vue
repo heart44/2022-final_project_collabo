@@ -26,7 +26,8 @@ export default{
     font-weight: normal;
     font-style: normal;
 }
-html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; } 
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
@@ -34,11 +35,17 @@ html, body { height: 100%; margin: 0; }
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
-main {
-  min-height: 100%;
+#wrap {
+  /* min-height: 100%;
+  position: relative;
+  padding-bottom: 100px; */
+  display: flex;
+  flex-direction: column;
+  min-height: 100Vh;
 }
-main > div {  }
+/* main { padding-bottom: 50px; } */
 nav {
   padding: 30px;
 }
@@ -51,9 +58,9 @@ nav a.router-link-exact-active {
   text-decoration: none;
   pointer-events: none; 
 }
-footer {
-  height: 80px;
-  /* position: relative;
-  transform: translateY(-100%); */
-}
+/* footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  width: 100%;
+} */
 </style>
