@@ -44,7 +44,6 @@ class ApiController extends Controller {
         ];
         return $this->model->productDetail($param);
     }
-   
 
     public function cate1List(){
         return $this->model->cate1List();
