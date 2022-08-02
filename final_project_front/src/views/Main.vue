@@ -1,18 +1,18 @@
 <template>
   <main>
     <div class="container">    
-        <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
-          <div id="weatherIcon">
-            <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">
-          </div>
-          <div class="d-flex flex-column justify-content-center align-items-end">
-            <div id="weatherText">
-              {{ temp }}
-              {{ weather }}
-            </div>
-            <span class="text-sm color-gray">{{ today }} 기준 <span class="pointer" @click="askForCoords">🔄</span></span>
-          </div>
+      <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
+        <div id="weatherIcon">
+          <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">
         </div>
+        <div class="d-flex flex-column justify-content-center align-items-end">
+          <div id="weatherText">
+            {{ temp }}
+            {{ weather }}
+          </div>
+          <span class="text-sm color-gray">{{ today }} 기준 <span class="pointer" @click="askForCoords">🔄</span></span>
+        </div>
+      </div>
 
       <div class="card-group text-center">
         <div class="card">
