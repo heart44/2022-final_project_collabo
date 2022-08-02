@@ -14,16 +14,16 @@
         </div>
       </div> -->
       
-        <div class="" v-if="weatherOk === true">
+        <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
           <div id="weatherIcon">
-            <img :src="'http://openweathermap.org/img/wn/'+wicon+'@4x.png'">
+            <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">
           </div>
-          <div>
+          <div class="d-flex flex-column justify-content-center align-items-end">
             <div id="weatherText">
               {{ temp }}
               {{ weather }}
             </div>
-            <span class="text-sm color-gray">{{ today }} 기준</span>
+            <span class="text-sm color-gray">{{ today }} 기준 <span class="pointer" @click="askForCoords">🔄</span></span>
           </div>
         </div>
 
@@ -46,6 +46,13 @@
           <img src="">
           <div class="card-body">
             <h5 class="card-title">어쩌구메뉴</h5>
+          </div>
+        </div>
+        
+        <div class="card">
+          <img src="">
+          <div class="card-body">
+            <h5 class="card-title">저쩌구메뉴</h5>
           </div>
         </div>
       </div>
@@ -184,7 +191,7 @@ export default {
 <style scoped>
   .bold { font-weight: bold; }
   .border-carrot { border-color: #F26C38; }
-  .text-sm { 
-    font-size: 0.8rem; 
-  }
+  .text-sm { font-size: 0.8rem; }
+  .color-gray { color: #ccc; }
+  .pointer { cursor: pointer; }
 </style>
