@@ -4,9 +4,9 @@ use PDO;
 
 class ApiModel extends Model {
     public function getCategoryList() {
-        $sql = "SELECT a.*, b.icate2, b.midcate
-                FROM category1 a, category2 b
-                WHERE a.icate1 = b.icate1
+        $sql = "SELECT a.*, b.icate2, b.midcate, c.imenu, c.menu
+                FROM category1 a, category2 b, menu_cd c
+                WHERE a.icate1 = b.icate1 and b.icate2 = c.icate2
                 ORDER BY a.icate1 asc";
         
         $stmt = $this->pdo->prepare($sql);
