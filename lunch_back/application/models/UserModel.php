@@ -1,21 +1,29 @@
 <?php
+
 namespace application\models;
 use PDO;
 
 class UserModel extends Model {
-    public function signUp(&$param) {
-        $sql = "INSERT INTO t_user (social_type, email, nickname, profile_img, thumb_img)
-                VALUES (:social_type, :email, :nickname, :profile_img, :thumb_img)
-                ON duplicate key update updated_at = now()";
-        
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":social_type", $param["social_type"]);
-        $stmt->bindValue(":email", $param["email"]);
-        $stmt->bindValue(":nickname", $param["nickname"]);
-        $stmt->bindValue(":profile_img", $param["profile_img"]);
-        $stmt->bindValue(":thumb_img", $param["thumb_img"]);
-        $stmt->execute();
+    public function signUp(&$param){
+        $sql = "INSERT INTO user
+                (
+                    social_type, email, nick, birth, job, profileimg
 
+                )
+                VALUES
+                (
+                    :social_type, :email, :nick, :birth, :job, :profileimg
+                )
+                ON duplicate key update
+                moddt = now()";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':social_type', $param["social_type"]);
+        $stmt->bindValue(':email', $param["email"]);
+        $stmt->bindValue(':nick', $param["nick"]);
+        $stmt->bindValue(':birth', 0);
+        $stmt->bindValue(':job', 0);
+        $stmt->bindValue(':profileimg', $param["profileimg"]);
+        $stmt->execute();
         return intval($this->pdo->lastInsertId());
     }
 }
