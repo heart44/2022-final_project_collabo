@@ -162,10 +162,14 @@ export default {
       this.weather = this.weatherKr[weatherId];
       this.wicon = data.weather[0].icon;
       this.today = new Date(data.dt * 1000).toLocaleString('ko-KR',{year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false});
-      this.getPushMenu(this.temp, weatherId);
+      this.getPushMenu(this.temp, data.weather[0].main);
     },
 
     async getPushMenu(temp, weather) {
+      console.log(parseInt(temp));
+      console.log(weather);
+      // const rs = this.$get(`/menu/list/${parseInt(temp)}/${weather}`);
+      // console.log(rs);
     }
   },
   created() {
