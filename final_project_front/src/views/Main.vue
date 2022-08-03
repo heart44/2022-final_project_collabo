@@ -2,15 +2,15 @@
   <main>
     <div class="container">    
       <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
-        <div id="weatherIcon">
-          <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">
-        </div>
         <div class="d-flex flex-column justify-content-center align-items-end">
           <div id="weatherText">
             {{ temp }}
             {{ weather }}
           </div>
           <span class="text-sm color-gray">{{ today }} 기준 <span class="pointer" @click="askForCoords">🔄</span></span>
+        </div>
+        <div id="weatherIcon">
+          <img :src="'http://openweathermap.org/img/wn/'+wicon+'@2x.png'">
         </div>
       </div>
 
@@ -60,24 +60,24 @@ export default {
       weather: '',
       wicon: '',
       weatherKr: {
-        201: '가벼운 비를 동반한 천둥구름',
-        200: '비를 동반한 천둥구름',
-        202: '폭우를 동반한 천둥구름',
-        210: '천둥구름 약간',
-        211: '천둥구름',
-        212: '많은 천둥구름',
-        221: '불규칙적인 천둥구름',
-        230: '연무를 조금 동반한 천둥구름',
-        231: '연무를 동반한 천둥구름',
-        232: '많은 안개비를 동반한 천둥구름',
-        300: '안개비 약간',
-        301: '안개비',
-        302: '많은 안개비',
+        201: '가벼운 비를 동반한 뇌우',
+        200: '비를 동반한 뇌우',
+        202: '폭우를 동반한 뇌우',
+        210: '뇌우 조금',
+        211: '뇌우',
+        212: '많은 뇌우',
+        221: '불규칙적인 뇌우',
+        230: '연무를 조금 동반한 뇌우',
+        231: '연무를 동반한 뇌우',
+        232: '많은 가랑비를 동반한 뇌우',
+        300: '가랑비 약간',
+        301: '가랑비',
+        302: '많은 가랑비',
         310: '이슬비 약간',
         311: '이슬비',
         312: '많은 이슬비',
-        313: '소나기와 안개비',
-        314: '많은 소나기와 안개비',
+        313: '소나기와 가랑비',
+        314: '많은 소나기와 가랑비',
         321: '여우비',
         500: '비 약간',
         501: '비',
@@ -100,11 +100,11 @@ export default {
         621: '소낙눈',
         622: '많은 소낙눈',
         701: '박무',
-        711: '스모그',
+        711: '연기',
         721: '실안개',
         731: '황사',
         741: '안개',
-        751: '모래',
+        751: '모래 바람',
         761: '미세먼지',
         762: '화산재',
         771: '돌풍',
@@ -162,11 +162,10 @@ export default {
       this.weather = this.weatherKr[weatherId];
       this.wicon = data.weather[0].icon;
       this.today = new Date(data.dt * 1000).toLocaleString('ko-KR',{year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false});
+      this.getPushMenu(this.temp, weatherId);
     },
 
-    // 10도 이하 : 추움 / 25도 이상 더움
-    async getPushMenu() {
-      // 추천메뉴 가져오기...
+    async getPushMenu(temp, weather) {
     }
   },
   created() {
