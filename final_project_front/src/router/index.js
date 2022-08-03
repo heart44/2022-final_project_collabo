@@ -6,7 +6,6 @@ import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
 import KakaoLogin from '../views/KakaoLogin';
 import NaverLogin from '../views/NaverLogin';
-
 import Main from '../views/Main';
 import store from '@/store';
 import MyPage from '../views/MyPage';
