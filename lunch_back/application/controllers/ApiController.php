@@ -17,7 +17,7 @@
             if(count($urlPaths) !== 3) {
                 exit();
             }        
-            $param = [ "cate1" => $urlPaths[2] ];
+            $param = [ "area1" => $urlPaths[2] ];
             return $this->model->AreaCate2List($param);
         }
     
@@ -27,8 +27,8 @@
                 exit();
             }        
             $param = [ 
-                "cate1" => $urlPaths[2], 
-                "cate2" => $urlPaths[3]
+                "area1" => $urlPaths[2], 
+                "area2" => $urlPaths[3]
             ];
             return $this->model->AreaCate3List($param);
         }
