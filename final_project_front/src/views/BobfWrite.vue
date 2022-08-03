@@ -78,7 +78,7 @@ export default {
     },
     methods: {
         insBobF() {
-            const res = this.$post('/api/insBobF', this.composition);
+            const res = this.$post('api/insBobF', this.composition);
             console.log(res);
             this.$router.push( {path: '/'} );
         }

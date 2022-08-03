@@ -15,31 +15,10 @@
       </div>
 
       <div class="card-group text-center">
-        <div class="card">
+        <div class="card" v-for="item in menuList" :key="item">
           <img src="">
           <div class="card-body">
-            <h5 class="card-title">아무메뉴</h5>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="">
-          <div class="card-body">
-            <h5 class="card-title">추천메뉴</h5>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="">
-          <div class="card-body">
-            <h5 class="card-title">어쩌구메뉴</h5>
-          </div>
-        </div>
-        
-        <div class="card">
-          <img src="">
-          <div class="card-body">
-            <h5 class="card-title">저쩌구메뉴</h5>
+            <h5 class="card-title">{{ item.menu }}</h5>
           </div>
         </div>
       </div>
@@ -134,6 +113,7 @@ export default {
         961: '심한 폭풍',
         962: '허리케인'
       },
+      menuList: [],
     }
   },
   methods: {
@@ -162,10 +142,20 @@ export default {
       this.weather = this.weatherKr[weatherId];
       this.wicon = data.weather[0].icon;
       this.today = new Date(data.dt * 1000).toLocaleString('ko-KR',{year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false});
-      this.getPushMenu(this.temp, weatherId);
+      this.getPushMenu(this.temp, data.weather[0].main);
     },
 
     async getPushMenu(temp, weather) {
+      console.log(parseInt(temp));
+      console.log(weather);
+      const rsArr = await this.$get(`menu/menuListbyWeather/${parseInt(temp)}/${weather}`);
+      // console.log(rsArr);
+
+      while(this.menuList.length < 4){
+        let rndMenu = rsArr.splice(Math.floor(Math.random() * rsArr.length),1)[0];
+        this.menuList.push(rndMenu);
+      }
+      console.log(this.menuList)
     }
   },
   created() {
