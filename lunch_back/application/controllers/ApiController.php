@@ -36,9 +36,9 @@
 
 
 
-        //
-        public function selRestaurant() {
-            return $this->model->selRestaurant();
+        //밥친구 리스트
+        public function selBobfList() {
+            return $this->model->selBobfList();
         }
 
         public function insBobF() {

@@ -1,7 +1,7 @@
 <template>
 <main>
   <div>
-
+    <div>
       <div>
         <div>
           <div>
@@ -11,31 +11,29 @@
                 {{ key }}
               </option>
             </select>
-            </div>
-          <div>
+            
             <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
-              <option value="" selected>구/군 선택</option>
-              <option value="" v-for="item in AreaCate2List" :key="item">
+              <option value="">구/군 선택</option>
+              <option :value="item" v-for="item in AreaCate2List" :key="item">
                 {{ item }}
               </option>
             </select>
-          </div>
-          <div>
-            <select class="form-select">
-              <option value="" selected>구/군 선택</option>
-              <option value="" v-for="item in SubArea" :key="item">
+
+            <select class="form-select" @change="getBobfList" v-model="getBobfList" v-if="selectedAreaCate2 !== ''">
+              <option value="">제발.......그만해..이러다 다 죽어...</option>
+              <option :value="item" v-for="item in Areacate3List" :key="item">
                 {{ item }}
               </option>
             </select>
+            <!-- <form>
+              <div>
+                <label for="party">밥 먹을 날 선택하기</label>
+                <input id="party" type="date" name="partydate" v-model="date"
+                      min="2022-01-01" max="2022-12-31"
+                      pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
+              </div>
+            </form> -->
           </div>
-          <form>
-            <div>
-              <label for="party">밥 먹을 날 선택하기</label>
-              <input id="party" type="date" name="partydate" v-model="date"
-                    min="2022-01-01" max="2022-12-31"
-                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
-            </div>
-          </form>
         </div>
       </div>
 
@@ -68,7 +66,7 @@
           </div>
         </div>
       </div>
-
+    </div>
   </div>
 </main>
 </template>
@@ -110,26 +108,33 @@ export default {
       AreaCate3List: [],
       selectedAreaCate1: '',
       selectedAreaCate2: '',
+      selectedAreaCate3: 0,
     };
   },
   computed: {
-  },
+    },
   created() {
     //지역
     this.getRestArea();
-    this.selRestaurant();
+    this.selBobfList();
+    this.getBobfList();
     // this.getAreaCate1List();
   },
   methods: {
-    //지역
+    async selBobfList() {
+      this.AreaCate1['value']
+      this.BobfList = await this.$post('api/selBobfList', {});
+    },
+
+    //지역 카테고리
     async getRestArea() {
-        const Addr = await this.$get('api/selArea', {});
+      const Addr = await this.$get('api/selArea', {});
         console.log(Addr);
         // const Addr = await this.$get('api/selArea', {})
         
         /*R
         for(let i=0; i<Addr.length; i++){
-            let Addr1 = Addr[i].area1
+          let Addr1 = Addr[i].area1
             let Addr2 = Addr[i].area2
             let Addr3 = Addr[i].area3
             
@@ -155,30 +160,56 @@ export default {
         this.Areacate3List = [];
 
         this.getAreaCate2List(this.selectedAreaCate1);
+        this.getBobfList();
     },
     changeAreaCate2() {
       this.selectedAreaCate3 = 0;
       this.AreaCate3List = [];
       this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
+      this.getBobfList();
     },
 
-    // async getAreaCate1List() {
-    //   this.AreaCate1List = await this.$get('/api/AreaCate1List', {});
-    // },
     async getAreaCate2List(area1) {
-      this.AreaCate2List = await this.$get(`/api/AreaCate2List/${area1}`, {});
+      this.AreaCate2List = [];
+      const area2 = await this.$get(`/api/AreaCate2List/${area1}`, {});
+
+      area2.forEach(item => {
+        console.log(item["area4"]);
+        if(item.area2 !== '' ) {
+            this.AreaCate2List.push(item["area2"]);
+        } else if(item.area2 === '' && item.area3 !== '' ){
+          this.AreaCate2List.push(item["area3"]);
+          console.log(this.AreaCate2List);
+        } else {
+          this.AreaCate2List.push(item["area4"]);
+        }
+        }
+      )
       console.log(this.AreaCate2List);
+      this.AreaCate2List = new Set(this.AreaCate2List);
+
     },
-    async getAreaCate3List(area1, area2) {
-      this.AreaCate3List = await this.$get(`/api/AreaCate3List/${area1}/${area2}`, {});
+    async getAreaCate3List(area1, area2, area3) {
+      this.AreaCate3List = await this.$get(`api/AreaCate3List/${area1}/${area2}/${area3}`, {});
     },
-    
+  
+  
+    async getBobfList() {
+      
+      const param = {};
+      console.log(param)
+      if(this.selectedAreaCate3 > 0) {
+        param['area3'] = this.selectedAreaCate3;
+      } else {
+        if(this.selectedAreaCate1 !== '') {
+          param['area1'] = this.selectedAreaCate1;
+        }
+        if(this.selectedAreaCate2 !== '') {
+          param['area2'] = this.selectedAreaCate2;
+        }
+      }
 
-
-
-    async selRestaurant() {
-      this.AreaCate1['value']
-      this.BobfList = await this.$post('api/selRestaurant', {});
+      this.BobfList = await this.$get('api/selBobfList', param);
     },
 
   }
