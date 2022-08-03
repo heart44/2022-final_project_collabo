@@ -2,7 +2,7 @@
 namespace application\controllers;
 
 class MenuController extends Controller{
-    public function list(){
+    public function menuListbyWeather(){
         $urlPaths = getUrlPaths();
         if(count($urlPaths) !== 4) {
             exit();

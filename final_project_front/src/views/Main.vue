@@ -168,8 +168,8 @@ export default {
     async getPushMenu(temp, weather) {
       console.log(parseInt(temp));
       console.log(weather);
-      // const rs = this.$get(`/menu/list/${parseInt(temp)}/${weather}`);
-      // console.log(rs);
+      const rs = await this.$get(`/menu/menuListbyWeather/${parseInt(temp)}/${weather}`, {});
+      console.log(rs);
     }
   },
   created() {
