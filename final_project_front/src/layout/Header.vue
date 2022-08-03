@@ -26,8 +26,8 @@
             </div>
             
             <div class="d-flex">
-                <div v-if="cookie === undefined">
-                    <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
+                <div v-if="user.email === undefined">
+                    <router-link class="login_b" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
                 </div>
                 <div v-else>
                     <div class="dropdown">
@@ -64,6 +64,11 @@ export default {
         this.getCategoryList();
     },
     methods: {
+        async login(params){
+            const data = await this.$post('/user/signup', params);                       
+            params.iuser = data.result;
+            this.$store.commit('user', params);
+        },
         async searchMenu(search) {
             if(search !== '') {
 

@@ -1,6 +1,7 @@
 <template>
     <main>
         <div class="vue-tempalte">
+            <a href="#" class="back"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
             <form>
             <h1>비밀번호 찾기</h1>
 
@@ -14,7 +15,7 @@
             </button>
             </form>
         </div>
-    </main>
+  </main>
 </template>
 
 <script>
@@ -35,7 +36,7 @@ export default {
         place-content: center;
     }
     .vue-tempalte{
-        position: relative;
+       position: relative;
         width:850px;
         height:500px;
         background: #fff;
@@ -68,6 +69,7 @@ export default {
         margin: 0 auto;
         border:2px solid #333333;
     }
+   
     .btn:focus{
         box-shadow: none;
     }
@@ -86,5 +88,13 @@ export default {
         border: 2px solid #2B3F6B;
         background-color: white;
         color:#2B3F6B;
+    }
+    .back img{
+        position: absolute;
+        left:0;
+        margin: 15px 15px;
+    }
+    form{
+        padding-top: 70px;
     }
 </style>

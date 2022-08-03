@@ -9,6 +9,7 @@ import NaverLogin from '../views/NaverLogin';
 import Main from '../views/Main';
 import store from '@/store';
 import MyPage from '../views/MyPage';
+import swal from 'sweetalert2';
 
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
