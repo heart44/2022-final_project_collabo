@@ -7,6 +7,7 @@ import PassWord from '../views/PassWord';
 import KakaoLogin from '../views/KakaoLogin';
 import NaverLogin from '../views/NaverLogin';
 import Main from '../views/Main';
+import SearchList from '../views/SearchList'
 import store from '@/store';
 import MyPage from '../views/MyPage';
 
@@ -25,6 +26,11 @@ const routes = [
     path: '/',
     name: 'Main',
     component: Main
+  },
+  {
+    path: '/SearchList',
+    name: 'SearchList',
+    component: SearchList
   },
   {
     path: '/BobfList',

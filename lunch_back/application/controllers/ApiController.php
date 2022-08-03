@@ -33,12 +33,10 @@
             return $this->model->AreaCate3List($param);
         }
 
-
-
-
         //밥친구 리스트
         public function selBobfList() {
             return $this->model->selBobfList();
+
         }
 
         public function insBobF() {
@@ -46,9 +44,5 @@
             print_r($json);
             return [_RESULT => $this->model->insBobF($json)];
         }
-        
-        //검색 카테고리
-        public function searchCategoryList() {
-            return $this->model->getSearchCategoryList();
-        }
+
     }

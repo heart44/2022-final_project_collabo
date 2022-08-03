@@ -1,47 +1,47 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark main-bg shadows p-3 mb-5 bg-body rounded">
         <div class="container">
-            <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
-            <div class="row">
-                <div class="col-auto">
-                    <select class="form-select" v-model="maincate" @change="changeCate1">
-                        <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
-                    </select>
-                </div>
-                <div class="col-auto" v-if="maincate !== ''">
-                    <select class="form-select" v-model="midcate" @change="changeCate2">
-                        <option :key="name" v-for="(value, name) of categoryObj[maincate]">{{ name }}</option>
-                    </select>                         <!-- of: 객체, in으로 해도 동작은 함-->
-                </div>
-                <!-- 
-                <div class="col-auto" v-if="midcate !== ''">
-                    <select class="form-select" v-model="menu"> -->  <!-- in: 배열-->
-                        <!-- <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[maincate][midcate]">{{ cate.value }}</option>
-                    </select>
-                </div>  -->
+        <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
+        <div class="row">
+            <div class="col-auto">
+                <select class="form-select" v-model="maincate" @change="changeCate1">
+                    <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
+                </select>
             </div>
-            <div class="input-group align-items-center">
-                <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu(search)" placeholder="오늘은 @@이 많이 검색됐네요~" aria-label="Username" aria-describedby="basic-addon1">
-                <a href="#" role="button" @click="searchMenu(search)"><span class="search_icon"><img src="../assets/search.png"></span></a>
+            <div class="col-auto" v-if="maincate !== ''">
+                <select class="form-select" v-model="midcate" @change="changeCate2">
+                    <option :key="name" v-for="(value, name) of categoryObj[maincate]">{{ name }}</option>
+                </select>                         <!-- of: 객체, in으로 해도 동작은 함-->
             </div>
-            
-            <div class="d-flex">
-                <div v-if="cookie === undefined">
-                    <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
-                </div>
-                <div v-else>
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>     
+            <!-- 
+            <div class="col-auto" v-if="midcate !== ''">
+                <select class="form-select" v-model="menu"> -->  <!-- in: 배열-->
+                    <!-- <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[maincate][midcate]">{{ cate.value }}</option>
+                </select>
+            </div>  -->
+        </div>
+        <div class="input-group align-items-center">
+            <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="오늘은 @@이 많이 검색됐네요~" aria-label="Username" aria-describedby="basic-addon1">
+            <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
+        </div>
+        
+        <div class="d-flex">
+            <div v-if="cookie === undefined">
+                <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
+            </div>
+            <div v-else>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>     
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><router-link class="" to="/MyPage"><a class="dropdown-item" href="#">마이페이지</a></router-link></li>
                             <li><a class="dropdown-item" href="#">다이어리</a></li>
                         </ul>
-                    </div>
-                    <button class="btn btn-danger" type="button" @click="Logout">로그아웃</button>
                 </div>
+                <button class="btn btn-danger" type="button" @click="Logout">로그아웃</button>
             </div>
         </div>
-  </nav>
+        </div>
+    </nav>
 </template>
 
 <script>
@@ -49,7 +49,7 @@ export default {
     name:'header',
     computed:{
         user() {
-            return this.$store.state.user;
+        return this.$store.state.user;
         }
     },
     data() {
@@ -58,40 +58,46 @@ export default {
             maincate: '',
             midcate: '',
             menu: '',
+            search: ''
         }
     },
     created() {
         this.getCategoryList();
     },
     methods: {
-        async searchMenu(search) {
-            if(search !== '') {
-
+        async searchMenu() {
+            if(this.search.trim() !== '') {
+                const param = { search_word: this.search }
+                console.log(param)
+                // await this.$post('/search/searchLog', param);
+                const searchList = await this.$post('search/menuCrawling', param);
+                console.log(searchList);
+                this.$router.push( {path: '/SearchList'} );
             }
         },
         async getCategoryList() {
             // console.log('ddd')
-            const categoryList = await this.$get('/api/searchCategoryList');
+            const categoryList = await this.$get('/search/searchCategoryList');
             console.log(categoryList);
             let maincate = '';
             let midcate = '';      
             categoryList.forEach(item => {
-                if(item.maincate !== maincate) {
-                    maincate = item.maincate;
-                    this.categoryObj[maincate] = {};
-                    midcate = '';          
-                }
-                if(item.midcate !== midcate) {
-                    midcate = item.midcate;
-                    this.categoryObj[maincate][midcate] = [];
-                }   
-                const obj = {
-                    id: item.imenu,
-                    value: item.menu
-                };
-                // console.log(obj)
-                this.categoryObj[maincate][midcate].push(obj);
-                // console.log(this.categoryObj)
+            if(item.maincate !== maincate) {
+                maincate = item.maincate;
+                this.categoryObj[maincate] = {};
+                midcate = '';          
+            }
+            if(item.midcate !== midcate) {
+                midcate = item.midcate;
+                this.categoryObj[maincate][midcate] = [];
+            }   
+            const obj = {
+                id: item.imenu,
+                value: item.menu
+            };
+            // console.log(obj)
+            this.categoryObj[maincate][midcate].push(obj);
+            // console.log(this.categoryObj)
             });      
         },
         changeCate1() {
@@ -107,7 +113,7 @@ export default {
 
 <style scoped>
 .main-bg{
-   border-bottom: 1px solid #F26C38; 
+    border-bottom: 1px solid #F26C38; 
 }
 .logo img{
     width: 200px;
@@ -138,7 +144,7 @@ input:focus {
     border-radius: 30px !important;
 }
 .shadows{
-   box-shadow: 5px 1px 5px #F26C38;
+    box-shadow: 5px 1px 5px #F26C38;
 }
 .btn-secondary{
     background-color:#F26C38;
