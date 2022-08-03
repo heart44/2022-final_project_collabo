@@ -9,6 +9,7 @@ class MenuController extends Controller{
         }
         $temp = intval($urlPaths[2]);
         $weather = $urlPaths[3];
+
         // 1:추위 2:더위 3:맑음 4:흐림 5:비 6:눈 7:바람 8:먼지
         $param = [];
         if($temp >= 25) {

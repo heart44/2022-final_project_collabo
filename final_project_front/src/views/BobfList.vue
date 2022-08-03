@@ -166,11 +166,11 @@ export default {
     //   this.AreaCate1List = await this.$get('/api/AreaCate1List', {});
     // },
     async getAreaCate2List(area1) {
-      this.AreaCate2List = await this.$get(`/api/AreaCate2List/${area1}`, {});
+      this.AreaCate2List = await this.$get(`api/AreaCate2List/${area1}`, {});
       console.log(this.AreaCate2List);
     },
     async getAreaCate3List(area1, area2) {
-      this.AreaCate3List = await this.$get(`/api/AreaCate3List/${area1}/${area2}`, {});
+      this.AreaCate3List = await this.$get(`api/AreaCate3List/${area1}/${area2}`, {});
     },
     
 
