@@ -185,15 +185,17 @@ export default {
         }
         }
       )
+
       console.log(this.AreaCate2List);
       this.AreaCate2List = new Set(this.AreaCate2List);
 
     },
     async getAreaCate3List(area1, area2, area3) {
       this.AreaCate3List = await this.$get(`api/AreaCate3List/${area1}/${area2}/${area3}`, {});
+
     },
   
-  
+
     async getBobfList() {
       
       const param = {};
