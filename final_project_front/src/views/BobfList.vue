@@ -7,13 +7,13 @@
           <div>
             <select class="form-select" @change="changeAreaCate1" v-model="selectedAreaCate1">
               <option value="" >시/도 선택</option>
-              <option :value="item" v-for="item, key in AreaCate1" :key="key">
+              <option :value="key" v-for="item, key in AreaCate1" :key="key">
                 {{ key }}
               </option>
             </select>
             </div>
           <div>
-            <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedCate1 !== ''">
+            <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
               <option value="" selected>구/군 선택</option>
               <option value="" v-for="item in AreaCate2List" :key="item">
                 {{ item }}
@@ -118,18 +118,9 @@ export default {
     //지역
     this.getRestArea();
     this.selRestaurant();
-    this.getAreaCate1List();
+    // this.getAreaCate1List();
   },
   methods: {
-    ddd(e) {
-      console.log(e.target.value);
-      console.log(this.RestArea)
-      const Area2 = this.RestArea.filter(function(el) {
-            return el.area1 === e.target.value;
-        })
-        console.log(Area2);
-        // this.SubArea.push(Area2.area2)
-    },
     //지역
     async getRestArea() {
         const Addr = await this.$get('api/selArea', {});
@@ -156,13 +147,14 @@ export default {
       this.SubArea = Array.from(new Set(this.SubArea))
       */
     },
+    
     changeAreaCate1() {
         this.selectedAreaCate2 = '';
         this.selectedAreaCate3 = 0;
         this.Areacate2List = [];
         this.Areacate3List = [];
 
-        this.getCate2List(this.selectedAreaCate1);
+        this.getAreaCate2List(this.selectedAreaCate1);
     },
     changeAreaCate2() {
       this.selectedAreaCate3 = 0;
@@ -170,9 +162,9 @@ export default {
       this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
     },
 
-    async getAreaCate1List() {
-      this.AreaCate1List = await this.$get('/api/AreaCate1List', {});
-    },
+    // async getAreaCate1List() {
+    //   this.AreaCate1List = await this.$get('/api/AreaCate1List', {});
+    // },
     async getAreaCate2List(area1) {
       this.AreaCate2List = await this.$get(`/api/AreaCate2List/${area1}`, {});
       console.log(this.AreaCate2List);
@@ -180,6 +172,7 @@ export default {
     async getAreaCate3List(area1, area2) {
       this.AreaCate3List = await this.$get(`/api/AreaCate3List/${area1}/${area2}`, {});
     },
+    
 
 
 
