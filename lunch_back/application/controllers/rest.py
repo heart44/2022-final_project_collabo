@@ -5,7 +5,7 @@ import io
 from urllib.request import urlopen
 from urllib.parse import quote
 import json
-import pandas as pd
+# import pandas as pd
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
