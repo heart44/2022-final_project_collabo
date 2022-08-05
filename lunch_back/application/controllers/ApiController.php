@@ -28,10 +28,23 @@
             }        
             $param = [ 
                 "area1" => $urlPaths[2], 
-                "area2" => $urlPaths[3]
+                "area2" => $urlPaths[3],
+                "area3" => $urlPaths[3]
             ];
             return $this->model->AreaCate3List($param);
         }
+
+        // public function AreaCate4List() {
+        //     $urlPaths = getUrlPaths();
+        //     if(count($urlPaths) !== 4) {
+        //         exit();
+        //     }        
+        //     $param = [ 
+        //         "area1" => $urlPaths[2],
+        //         "area3" => $urlPaths[3]
+        //     ];
+        //     return $this->model->AreaCate4List($param);
+        // }
 
         //밥친구 리스트
         public function selBobfList() {

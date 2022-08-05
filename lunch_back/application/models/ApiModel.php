@@ -30,10 +30,10 @@
         }
     
         public function AreaCate3List(&$param) {
-            $sql = "SELECT area4 FROM area
+            $sql = "SELECT area3, area4 FROM area
                     WHERE area1 = :area1
                     AND area2 = :area2
-                    AND area3 = :area3
+                    OR area3 = :area3
                     GROUP BY area4";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":area1", $param["area1"]);
@@ -42,8 +42,6 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
-    
-
 
         //밥친구 리스트
         public function selBobfList() {

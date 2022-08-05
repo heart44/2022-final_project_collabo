@@ -5,13 +5,15 @@
       <div>
         <div>
           <div>
+            <!-- 지역 셀렉트1 -->
             <select class="form-select" @change="changeAreaCate1" v-model="selectedAreaCate1">
               <option value="" >시/도 선택</option>
               <option :value="key" v-for="item, key in AreaCate1" :key="key">
                 {{ key }}
               </option>
             </select>
-            
+
+            <!-- 지역 셀렉트2 -->
             <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
               <option value="">구/군 선택</option>
               <option :value="item" v-for="item in AreaCate2List" :key="item">
@@ -19,20 +21,29 @@
               </option>
             </select>
 
-            <select class="form-select" @change="getBobfList" v-model="getBobfList" v-if="selectedAreaCate2 !== ''">
-              <option value="">제발.......그만해..이러다 다 죽어...</option>
-              <option :value="item" v-for="item in Areacate3List" :key="item">
+            <!-- 지역 셀렉트3 -->
+            <select class="form-select" @change="changeAreaCate3" v-model="selectedAreaCate3" v-if="selectedAreaCate2 !== '' && AreaCate3List.length !== 0 ">
+              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option :value="item" v-for="item in AreaCate3List" :key="item">
                 {{ item }}
               </option>
             </select>
-            <!-- <form>
+
+            <!-- 지역 셀렉트4 -->
+            <select class="form-select" @change="getBobfList" v-model="selectedAreaCate4" v-if="selectedAreaCate3 !== ''  && AreaCate4List.length !== 0 ">
+              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option :value="item" v-for="item in AreaCate4List" :key="item">
+                {{ item }}
+              </option>
+            </select>
+            <form>
               <div>
                 <label for="party">밥 먹을 날 선택하기</label>
                 <input id="party" type="date" name="partydate" v-model="date"
                       min="2022-01-01" max="2022-12-31"
                       pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
               </div>
-            </form> -->
+            </form>
           </div>
         </div>
       </div>
@@ -106,9 +117,11 @@ export default {
       AreaCate1List: [],
       AreaCate2List: [],
       AreaCate3List: [],
+      AreaCate4List: [],
       selectedAreaCate1: '',
       selectedAreaCate2: '',
-      selectedAreaCate3: 0,
+      selectedAreaCate3: '',
+      selectedAreaCate4:'',
     };
   },
   computed: {
@@ -118,7 +131,6 @@ export default {
     this.getRestArea();
     this.selBobfList();
     this.getBobfList();
-    // this.getAreaCate1List();
   },
   methods: {
     async selBobfList() {
@@ -129,28 +141,7 @@ export default {
     //지역 카테고리
     async getRestArea() {
       const Addr = await this.$get('api/selArea', {});
-        console.log(Addr);
-        // const Addr = await this.$get('api/selArea', {})
-        
-        /*R
-        for(let i=0; i<Addr.length; i++){
-          let Addr1 = Addr[i].area1
-            let Addr2 = Addr[i].area2
-            let Addr3 = Addr[i].area3
-            
-            this.RestArea.push(Addr1);
-
-            // if(Addr[i].area2 !== '' && Addr[i].area3 !== '') {
-            //   this.SubArea.push(Addr2+'/'+Addr3);
-            // } else {
-            //   this.SubArea.push(Addr2,Addr3);
-            // }
-            this.SubArea.push(Addr2);
-        }
-
-      this.RestArea = Array.from(new Set(this.RestArea))
-      this.SubArea = Array.from(new Set(this.SubArea))
-      */
+      // console.log(Addr);
     },
     
     changeAreaCate1() {
@@ -168,40 +159,66 @@ export default {
       this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
       this.getBobfList();
     },
+    changeAreaCate3() {
+      this.selectedAreaCate4 = 0;
+      this.AreaCate4List = [];
+      this.getAreaCate4List(this.selectedAreaCate1, this.selectedAreaCate2, this.selectedAreaCate3);
+      this.getBobfList();
+    },
 
     async getAreaCate2List(area1) {
       this.AreaCate2List = [];
       const area2 = await this.$get(`/api/AreaCate2List/${area1}`, {});
 
       area2.forEach(item => {
-        console.log(item["area4"]);
         if(item.area2 !== '' ) {
             this.AreaCate2List.push(item["area2"]);
         } else if(item.area2 === '' && item.area3 !== '' ){
           this.AreaCate2List.push(item["area3"]);
-          console.log(this.AreaCate2List);
         } else {
           this.AreaCate2List.push(item["area4"]);
         }
-        }
-      )
+      })
 
-      console.log(this.AreaCate2List);
       this.AreaCate2List = new Set(this.AreaCate2List);
 
     },
-    async getAreaCate3List(area1, area2, area3) {
-      this.AreaCate3List = await this.$get(`api/AreaCate3List/${area1}/${area2}/${area3}`, {});
+    async getAreaCate3List(area1, area2_5) {
+      const area3 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
+      
+      area3.forEach(item => {
+        if(item.area3 !== '' && item.area3 !== area2_5) {
+            this.AreaCate3List.push(item["area3"]);
+        } else if(item.area3 !== '' && item.area3 === area2_5 || item.area3 === '' && item.area4 !== '' ){
+          this.AreaCate3List.push(item["area4"]);
+        }
+      })
+
+      this.AreaCate3List = new Set(this.AreaCate3List);
 
     },
+    async getAreaCate4List(area1, area2_5) {
+      const area4 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
+      
+      area4.forEach(item => {
+        if(item.area3 !== '' && item.area3 !== area2_5) {
+            this.AreaCate4List.push(item['area4']);
+        }
+      })
+    },
+    
   
 
     async getBobfList() {
       
       const param = {};
-      console.log(param)
+      if(this.selectedAreaCate4 > 0) {
+        param['area4'] = this.selectedAreaCate4;
+        console.log(parma['area4'])
+      } else
       if(this.selectedAreaCate3 > 0) {
         param['area3'] = this.selectedAreaCate3;
+        console.log(param['area3'])
       } else {
         if(this.selectedAreaCate1 !== '') {
           param['area1'] = this.selectedAreaCate1;
