@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 
-
 export default createStore({
   state() {
     return {
@@ -28,5 +27,4 @@ export default createStore({
       state.searchWord = data
     }
   },
-
 })
