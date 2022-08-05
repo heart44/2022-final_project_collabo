@@ -9,7 +9,12 @@ import BobfList from '../views/BobfList'
 
 import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
+
+import Diary from '../views/Diary';
+import Profile from '../views/Profile';
+
 // import NaverLogin from '../views/NaverLogin';
+
 import MyPage from '../views/MyPage';
 import Join from '../views/Join';
 
@@ -67,6 +72,16 @@ const routes = [
     path: '/Join',
     name: 'Join',
     component: Join
+  },
+  {
+    path:'/Diary',
+    name: 'Diary',
+    component:Diary
+  },
+  {
+    path:'/Profile',
+    name:'Profile',
+    component: Profile
   }
 ];
 
