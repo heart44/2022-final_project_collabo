@@ -18,7 +18,7 @@
         <div class="card" v-for="item in menuList" :key="item">
           <img src="">
           <div class="card-body">
-            <h5 class="card-title">{{ item.menu }}</h5>
+            <h5 class="card-title m-0">{{ item.menu }}</h5>
           </div>
         </div>
       </div>

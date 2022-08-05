@@ -26,7 +26,7 @@
         </div>
         
         <div class="d-flex">
-            <div v-if="cookie === undefined">
+            <div v-if="user.email === undefined">
                 <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
             </div>
             <div v-else>
@@ -47,18 +47,22 @@
 <script>
 export default {
     name:'header',
-    computed:{
-        user() {
-        return this.$store.state.user;
-        }
-    },
     data() {
         return {
             categoryObj: {},
             maincate: '',
             midcate: '',
             menu: '',
-            search: ''
+            search: '',
+            searchList: {}
+        }
+    },
+    computed:{
+        user() {
+            return this.$store.state.user;
+        },
+        getSearchList() {
+            return this.$store.state.searchList;
         }
     },
     created() {
@@ -70,9 +74,13 @@ export default {
                 const param = { search_word: this.search }
                 console.log(param)
                 // await this.$post('/search/searchLog', param);
-                const searchList = await this.$post('search/menuCrawling', param);
-                console.log(searchList);
+                this.searchList = await this.$post('search/menuCrawling', param);
+                console.log(this.searchList);
+                // this.emitter.emit('searchlist', this.search)
+                this.$store.commit('setSearchList', this.searchList);
+                this.$store.commit('setSearchWord', this.search);
                 this.$router.push( {path: '/SearchList'} );
+                this.search = ''
             }
         },
         async getCategoryList() {
