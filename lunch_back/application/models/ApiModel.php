@@ -43,7 +43,7 @@
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
-        
+
         //밥친구 리스트
         public function selBobfList() {
             $sql = "SELECT 
@@ -72,7 +72,9 @@
                     ctnt = :ctnt, 
                     total_mem = :total_mem, 
                     cur_mem = :cur_mem, 
-                    img_path = :img_path
+                    img_path = :img_path,
+                    sido = :sido,
+                    gugun = :gugun
                     ";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":irest", $param["irest"]);
@@ -83,6 +85,8 @@
             $stmt->bindValue(":total_mem", $param["total_mem"]);
             $stmt->bindValue(":cur_mem", $param["cur_mem"]);
             $stmt->bindValue(":img_path", $param["img_path"]);
+            $stmt->bindValue(":sido", $param["sido"]);
+            $stmt->bindValue(":gugun", $param["gugun"]);
             $stmt->execute();
             return intval($this->pdo->lastInserId());
         }
