@@ -1,7 +1,7 @@
 <?php
     define('_ROOT', $_SERVER['DOCUMENT_ROOT']);
     define('_DBTYPE', 'mysql'); //mysql, mariadb 등
-    define('_DBHOST', 'localhost'); //DB접속 주소
+    define('_DBHOST', 'localhost:3308'); //DB접속 주소 뒤에 3308 지우기
     define('_DBNAME', 'lunch'); //DB명
     define('_DBUSER', 'root'); //아이디
     define('_DBPASSWORD', '506greendg@'); //비번

@@ -4,7 +4,7 @@
     class UserController extends Controller{
         public function signup(){
             $json = getJson();
-            $result = $this->model->signUp($json);
+            $result = $this->model->signup($json);
             if($result){
                 $this->flash(_LOGINUSER, $result);
                 return [_RESULT => $result];

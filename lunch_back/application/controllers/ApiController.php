@@ -32,11 +32,7 @@
             ];
             return $this->model->AreaCate3List($param);
         }
-
-
-
-
-        
+        //
         public function selRestaurant() {
             return $this->model->selRestaurant();
         }
@@ -46,9 +42,5 @@
             print_r($json);
             return [_RESULT => $this->model->insBobF($json)];
         }
-        
-        //검색 카테고리
-        public function searchCategoryList() {
-            return $this->model->getSearchCategoryList();
-        }
+
     }

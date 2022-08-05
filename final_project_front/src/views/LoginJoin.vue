@@ -1,138 +1,79 @@
 <template>
     <main>
-  <div class="container" id="container">
-        <!-- 회원가입 -->
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>JOIN</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><img src="../assets/naver.svg"></a>
-                    <a href="#" class="social" @click="kakaoLogin"><img src="../assets/kakao.svg"></a>
-                    <a href="#" class="social"><img src="../assets/google.svg"></a>
-                </div>
-                <span>or use your email for registration</span>
-                <div class="infield">
-                    <input type="text" placeholder="Name" />
-                    <label></label>
-                </div>
-                <div class="infield">
-                    <input type="email" placeholder="Email" name="email"/>
-                    <label></label>
-                </div>
-                <div class="infield">
-                    <input type="password" placeholder="Password" />
-                    <label></label>
-                </div>
-                <button>JOIN</button>
-            </form>
-        </div>
-
-        <!-- 로그인 -->
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>LOGIN</h1>
-                <span>Social Login</span>
-                <div class="social-container">
-                    <a href="#" class="social"><img src="../assets/naver.svg"></a>
-                    <a href="#" class="social" @click="kakaoLogin"><img src="../assets/kakao.svg"></a>
-                    <a href="#" class="social"><img src="../assets/google.svg"></a>
-                </div>
-                <div class="infield">
-                    <input type="email" placeholder="Email" name="email"/>
-                    <label></label>
-                </div>
-                <div class="infield">
-                    <input type="password" placeholder="Password" />
-                    <label></label>
-                </div>
-                <a href="#" class="forgot"><router-link class="f_password" to="/PassWord">비밀번호 찾기</router-link></a>
-                <button>LOGIN</button>
-            </form>
-        </div>
-
-        <div class="overlay-container" id="overlayCon">
-            <div class="overlay">
-                <!-- 회원가입 -->
-                <div class="overlay-panel overlay-left">
-                    <h1>Welcome Back!</h1>
-                    <p>To keep connected with us please login with your personal info</p>
-                    <button>LOGIN</button>
-                </div>
-
-                <!-- 로그인 -->
-                <div class="overlay-panel overlay-right">
-                    <h1>Hello!</h1>
-                    <p>Enter your personal details and start journey with us</p>
-                    <button v-on:click="btnJoin">JOIN</button>
-                </div>
+        <div class="container" id="container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h1>JOIN</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><img src="../assets/naver.svg"></a>
+                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
+                        <a href="#" class="social"><img src="../assets/google.svg"></a>
+                    </div>
+                    <span>or use your email for registration</span>
+                    <div class="infield">
+                        <input type="text" placeholder="Name" />
+                        <label></label>
+                    </div>
+                    <div class="infield">
+                        <input type="email" placeholder="Email" name="email"/>
+                        <label></label>
+                    </div>
+                    <div class="infield">
+                        <input type="password" placeholder="Password" />
+                        <label></label>
+                    </div>
+                    <button>JOIN</button>
+                </form>
             </div>
-            <button id="overlayBtn"></button>
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h1>LOGIN</h1>
+                    <span>Social Login</span>
+                    <div class="social-container">
+                        <a href="#" class="social"><img src="../assets/naver.svg"></a>
+                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
+                        <a href="#" class="social"><img src="../assets/google.svg"></a>
+                    </div>
+                    <div class="infield">
+                        <input type="email" placeholder="Email" name="email"/>
+                        <label></label>
+                    </div>
+                    <div class="infield">
+                        <input type="password" placeholder="Password" />
+                        <label></label>
+                    </div>
+                    <a href="#" class="forgot"><router-link class="f_password" to="/PassWord">비밀번호 찾기</router-link></a>
+                    <button>LOGIN</button>
+                </form>
+            </div>
+            <div class="overlay-container" id="overlayCon">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Welcome Back!</h1>
+                        <p>To keep connected with us please login with your personal info</p>
+                        <button>LOGIN</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Hello!</h1>
+                        <p>Enter your personal details and start journey with us</p>
+                        <button class="join"><router-link to="/Join">JOIN</router-link></button>
+                    </div>
+                </div>
+                <!-- <button id="overlayBtn"></button> -->
+            </div>
         </div>
-    </div>
-     </main>
+    </main>
 </template>
 
 <script>
 
 export default {
     data(){
+
     },
     methods:{
-        btnJoin(select){
-            select.classList.toggle("right-panel-active");
-            
-            select.classList.remove('btnScaled');
-
-            window.requestAnimationFrame( () =>{
-                overlayBtn.classList.add('btnScaled');
-            });
-        },
-        kakaoLogin(){
-           window.Kakao.Auth.login({
-                scope: 'profile_nickname, profile_image, account_email',
-                success: this.getProfile,
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        kakaoLogout(){
-            window.Kakao.Auth.logout(async res => {
-                console.log(res);
-                this.$store.commit('user', {});
-                this.$router.push({path: '/'}); //라우터 주소 이동. (option 사항)
-                await this.$post('/user/logout');
-            })
-        },
-        getProfile(authObj){
-            console.log(authObj);
-            window.Kakao.API.request({
-                url: '/v2/user/me',
-                success: async res => {
-                    const acc = res.kakao_account;
-                    console.log(acc);
-                    const params = {
-                        social_type: 1,
-                        email: acc.email,
-                        nick: acc.profile.nickname,
-                        profileimg: acc.profile.profile_image_url
-                    }
-                    console.log(params);
-                    const data = await this.$post('/user/signup', params);                       
-                    console.log(data.result);
-                    this.$store.commit('setIuser', data.result);
-                    // this.login(params);
-                },
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        async login(params){
-            const data = await this.$post('/user/signup', params);                       
-            params.iuser = data.result;
-            this.$store.commit('user', params);
-        },
+       
+     
     },
     created(){
 
@@ -230,7 +171,6 @@ label{
 }
 input::placeholder {
     color: #2B3F6B;
- 
 }
 input:focus ~ label{
     width:100%;
@@ -277,7 +217,7 @@ button{
     transition:transform 0.6s ease-in-out;
     z-index: 9;
 }
-#overlayBtn{
+/* #overlayBtn{
     cursor: pointer;
     position:absolute;
     left:50%;
@@ -288,7 +228,8 @@ button{
     border:2px solid white;
     background:transparent;
     border-radius: 20px;
-}
+} */
+
 .overlay{
     position:relative;
     background:#F26C38;
