@@ -9,7 +9,7 @@ export default {
          lang: 'kr',
          units: 'metric',
       }
-    },
+   },
    methods: {
       async $post(url, data) {
          return (await axios({
@@ -54,8 +54,8 @@ export default {
          }
          return await this.$get(this.url, parameter);
       },
-        getOnlyDateStr(date) {
-            return new Date(date).toISOString().slice(0, 10).replaceAll('-', '');
-        },
-    }
+      getOnlyDateStr(date) {
+         return new Date(date).toISOString().slice(0, 10).replaceAll('-', '');
+      },
+   }
 }
