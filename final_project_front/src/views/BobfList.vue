@@ -1,41 +1,50 @@
 <template>
 <main>
   <div>
-
+    <div>
       <div>
         <div>
           <div>
+            <!-- 지역 셀렉트1 -->
             <select class="form-select" @change="changeAreaCate1" v-model="selectedAreaCate1">
               <option value="" >시/도 선택</option>
               <option :value="key" v-for="item, key in AreaCate1" :key="key">
                 {{ key }}
               </option>
             </select>
-            </div>
-          <div>
+
+            <!-- 지역 셀렉트2 -->
             <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
-              <option value="" selected>구/군 선택</option>
-              <option value="" v-for="item in AreaCate2List" :key="item">
+              <option value="">구/군 선택</option>
+              <option :value="item" v-for="item in AreaCate2List" :key="item">
                 {{ item }}
               </option>
             </select>
-          </div>
-          <div>
-            <select class="form-select">
-              <option value="" selected>구/군 선택</option>
-              <option value="" v-for="item in SubArea" :key="item">
+
+            <!-- 지역 셀렉트3 -->
+            <select class="form-select" @change="changeAreaCate3" v-model="selectedAreaCate3" v-if="selectedAreaCate2 !== '' && AreaCate3List.length !== 0 ">
+              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option :value="item" v-for="item in AreaCate3List" :key="item">
                 {{ item }}
               </option>
             </select>
+
+            <!-- 지역 셀렉트4 -->
+            <select class="form-select" @change="getBobfList" v-model="selectedAreaCate4" v-if="selectedAreaCate3 !== ''  && AreaCate4List.length !== 0 ">
+              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option :value="item" v-for="item in AreaCate4List" :key="item">
+                {{ item }}
+              </option>
+            </select>
+            <form>
+              <div>
+                <label for="party">밥 먹을 날 선택하기</label>
+                <input id="party" type="date" name="partydate" v-model="date"
+                      min="2022-01-01" max="2022-12-31"
+                      pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
+              </div>
+            </form>
           </div>
-          <form>
-            <div>
-              <label for="party">밥 먹을 날 선택하기</label>
-              <input id="party" type="date" name="partydate" v-model="date"
-                    min="2022-01-01" max="2022-12-31"
-                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
-            </div>
-          </form>
         </div>
       </div>
 
@@ -68,7 +77,7 @@
           </div>
         </div>
       </div>
-
+    </div>
   </div>
 </main>
 </template>
@@ -108,44 +117,30 @@ export default {
       AreaCate1List: [],
       AreaCate2List: [],
       AreaCate3List: [],
+      AreaCate4List: [],
       selectedAreaCate1: '',
       selectedAreaCate2: '',
+      selectedAreaCate3: '',
+      selectedAreaCate4:'',
     };
   },
   computed: {
-  },
+    },
   created() {
     //지역
     this.getRestArea();
-    this.selRestaurant();
-    // this.getAreaCate1List();
+    this.selBobfList();
+    // this.getBobfList();
   },
   methods: {
-    //지역
+    async selBobfList() {
+      this.BobfList = await this.$post('api/selBobfList', {});
+    },
+
+    //지역 카테고리
     async getRestArea() {
-        const Addr = await this.$get('api/selArea', {});
-        console.log(Addr);
-        // const Addr = await this.$get('api/selArea', {})
-        
-        /*R
-        for(let i=0; i<Addr.length; i++){
-            let Addr1 = Addr[i].area1
-            let Addr2 = Addr[i].area2
-            let Addr3 = Addr[i].area3
-            
-            this.RestArea.push(Addr1);
-
-            // if(Addr[i].area2 !== '' && Addr[i].area3 !== '') {
-            //   this.SubArea.push(Addr2+'/'+Addr3);
-            // } else {
-            //   this.SubArea.push(Addr2,Addr3);
-            // }
-            this.SubArea.push(Addr2);
-        }
-
-      this.RestArea = Array.from(new Set(this.RestArea))
-      this.SubArea = Array.from(new Set(this.SubArea))
-      */
+      const Addr = await this.$get('api/selArea', {});
+      // console.log(Addr);
     },
     
     changeAreaCate1() {
@@ -155,30 +150,75 @@ export default {
         this.Areacate3List = [];
 
         this.getAreaCate2List(this.selectedAreaCate1);
+        this.getBobfList();
     },
     changeAreaCate2() {
       this.selectedAreaCate3 = 0;
       this.AreaCate3List = [];
       this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
+      this.getBobfList();
+    },
+    changeAreaCate3() {
+      this.selectedAreaCate4 = 0;
+      this.AreaCate4List = [];
+      this.getAreaCate4List(this.selectedAreaCate1, this.selectedAreaCate2, this.selectedAreaCate3);
+      this.getBobfList();
     },
 
-    // async getAreaCate1List() {
-    //   this.AreaCate1List = await this.$get('/api/AreaCate1List', {});
-    // },
     async getAreaCate2List(area1) {
-      this.AreaCate2List = await this.$get(`api/AreaCate2List/${area1}`, {});
-      console.log(this.AreaCate2List);
+      this.AreaCate2List = [];
+      const area2 = await this.$get(`/api/AreaCate2List/${area1}`, {});
+
+      area2.forEach(item => {
+        if(item.area2 !== '' ) {
+            this.AreaCate2List.push(item["area2"]);
+        } else if(item.area2 === '' && item.area3 !== '' ){
+          this.AreaCate2List.push(item["area3"]);
+        } else {
+          this.AreaCate2List.push(item["area4"]);
+        }
+      })
+  
+      this.AreaCate2List = new Set(this.AreaCate2List);
+
     },
-    async getAreaCate3List(area1, area2) {
-      this.AreaCate3List = await this.$get(`api/AreaCate3List/${area1}/${area2}`, {});
+    async getAreaCate3List(area1, area2_5) {
+      const area3 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
+      
+      area3.forEach(item => {
+        if(item.area3 !== '' && item.area3 !== area2_5) {
+            this.AreaCate3List.push(item["area3"]);
+        } else if(item.area3 !== '' && item.area3 === area2_5 || item.area3 === '' && item.area4 !== '' ){
+          this.AreaCate3List.push(item["area4"]);
+        }
+      })
+
+      if(this.AreaCate3List.length === 0) {
+        this.AreaCate3List = []
+      } else {
+        this.AreaCate3List = new Set(this.AreaCate3List);
+      }
+
+    },
+    async getAreaCate4List(area1, area2_5) {
+      const area4 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
+      
+      area4.forEach(item => {
+        if(item.area3 !== '' && item.area3 !== area2_5) {
+            this.AreaCate4List.push(item['area4']);
+        }
+      })
     },
     
+  
+
+    async getBobfList() {
+      const select1 = this.selectedAreaCate1;
+      const test = this.AreaCate1
+      console.log("test[select1]: " + test[select1])
 
 
-
-    async selRestaurant() {
-      this.AreaCate1['value']
-      this.BobfList = await this.$post('api/selRestaurant', {});
+      // this.BobfList = await this.$get('api/selBobfList', param);
     },
 
   }

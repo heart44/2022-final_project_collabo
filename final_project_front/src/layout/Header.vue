@@ -26,7 +26,7 @@
         </div>
         
         <div class="d-flex">
-            <div v-if="cookie === undefined">
+            <div v-if="user.email === undefined">
                 <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
             </div>
             <div v-else>
@@ -37,7 +37,7 @@
                             <li><a class="dropdown-item" href="#">다이어리</a></li>
                         </ul>
                 </div>
-                <button class="btn btn-danger" type="button" @click="Logout">로그아웃</button>
+                <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
             </div>
         </div>
         </div>
@@ -47,32 +47,44 @@
 <script>
 export default {
     name:'header',
-    computed:{
-        user() {
-        return this.$store.state.user;
-        }
-    },
     data() {
         return {
             categoryObj: {},
             maincate: '',
             midcate: '',
             menu: '',
-            search: ''
+            search: '',
+            searchList: {}
+        }
+    },
+    computed:{
+        user() {
+            return this.$store.state.user;
+        },
+        getSearchList() {
+            return this.$store.state.searchList;
         }
     },
     created() {
         this.getCategoryList();
     },
     methods: {
+        async signout() {
+            this.$store.commit('user', {});
+            await this.$post('user/signout');
+        },
         async searchMenu() {
             if(this.search.trim() !== '') {
                 const param = { search_word: this.search }
                 console.log(param)
                 // await this.$post('/search/searchLog', param);
-                const searchList = await this.$post('search/menuCrawling', param);
-                console.log(searchList);
+                this.searchList = await this.$post('search/menuCrawling', param);
+                console.log(this.searchList);
+                // this.emitter.emit('searchlist', this.search)
+                this.$store.commit('setSearchList', this.searchList);
+                this.$store.commit('setSearchWord', this.search);
                 this.$router.push( {path: '/SearchList'} );
+                this.search = ''
             }
         },
         async getCategoryList() {

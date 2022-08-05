@@ -1,14 +1,36 @@
 <template>
     <main>
         <div>
-            <h1>hi</h1>
+            <h3>{{ getSearchWord }}</h3>
+            {{ getSearchList }}
         </div>
     </main>
 </template>
 
 <script>
 export default {
+    name: "SearchList",
+    data() {
+        return {
+            searchList: {},
+            searchWord: ''
+        }
+    },
+    created() {
+        this.searchList = this.getSearchList
+        this.searchWord = this.getSearchWord
+    },
+    computed: {
+        getSearchList() {
+            return this.$store.getters.getSearchList;
+        },
+        getSearchWord() {
+            return this.$store.getters.getSearchWord;
+        }
+    },
+    watch: {
 
+    }
 }
 </script>
 
