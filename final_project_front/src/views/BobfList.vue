@@ -130,7 +130,6 @@ export default {
     //지역
     this.getRestArea();
     this.selBobfList();
-    // this.getBobfList();
   },
   methods: {
     async selBobfList() {
@@ -219,7 +218,23 @@ export default {
       const test = this.AreaCate1
       console.log("test[select1]: " + test[select1])
 
+      const test3 = await this.$get('api/selBobfList', {});
+      // for(let i=0; i<test3.length; i++) {
+      //   let test4 = test3[i].rest_address;
+      //   let test5 = test4.split(' ')[0];
+        
+      //   if(test[select1] === test5) {
+      //     console.log(test5)
+      //   }
+      // }
 
+      test3.forEach(item => {
+        if(item.rest_address.split(' ')[0] === test[select1] ) {
+          this.BobfList = [];
+          console.log(item)
+          this.BobfList.push(item)
+        }
+      })
       // this.BobfList = await this.$get('api/selBobfList', param);
     },
 
