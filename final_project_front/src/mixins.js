@@ -54,21 +54,6 @@ export default {
          }
          return await this.$get(this.url, parameter);
       },
-      //   async getWeatherKr(nx, ny, date) {
-      //       const parameter = {
-      //           ServiceKey: this.ServiceKey,
-      //           pageNo: 1,
-      //           numOfRows: 266,
-      //           dataType: 'json',
-      //           base_date: date,
-      //           base_time: 2300,
-      //           nx,
-      //           ny
-      //       }
-      //       console.log(parameter);
-      //       return await this.$api(this.baseurl, parameter);
-
-      //   },
         getOnlyDateStr(date) {
             return new Date(date).toISOString().slice(0, 10).replaceAll('-', '');
         },

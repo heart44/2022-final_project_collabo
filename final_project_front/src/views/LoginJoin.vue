@@ -26,7 +26,7 @@
                 </form>
             </div> -->
             <div class="form-container sign-in-container">
-                <form @keyup.enter="signin(user.email, user.pw)">
+                <form>
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
@@ -35,17 +35,18 @@
                         <img class="social" src="../assets/google.svg">
                     </div>
                     <div class="infield">
-                        <input type="email" placeholder="Email" name="email" v-model="user.email"/>
+                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="email" placeholder="Email" name="email" v-model="inputUser.email"/>
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input type="password" placeholder="Password" v-model="user.pw" />
+                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="password" placeholder="Password" v-model="inputUser.pw" />
                         <label></label>
                     </div>
                     <router-link class="f_password" to="/PassWord"><span class="forgot">비밀번호 찾기</span></router-link>
-                    <button type="button" @click="signin(user.email, user.pw)">LOGIN</button>
+                    <button type="button" @click="signin(inputUser.email, inputUser.pw)">LOGIN</button>
                 </form>
             </div>
+
             <div class="overlay-container" id="overlayCon">
                 <div class="overlay">
                     <!-- <div class="overlay-panel overlay-left">
@@ -70,7 +71,7 @@
 export default {
     data(){
         return{
-            user:{
+            inputUser:{
                 email: '',
                 pw: '',
             }
@@ -80,7 +81,16 @@ export default {
        async signin(email, pw) {
         console.log(email);
         console.log(pw);
-        // const rs = await this.$post();
+        const param = {
+            email: email,
+            pw: pw
+        }
+        const dbUser = await this.$post('user/signin', param);
+        if(dbUser.result) {
+            console.log(dbUser);
+            this.$store.commit('user', dbUser.result);
+            this.$router.push('../');
+        }
        },
     },
     created(){
