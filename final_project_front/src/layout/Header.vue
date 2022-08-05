@@ -26,7 +26,7 @@
         </div>
         
         <div class="d-flex">
-            <div v-if="cookie === undefined">
+            <div v-if="user.email === undefined">
                 <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
             </div>
             <div v-else>
