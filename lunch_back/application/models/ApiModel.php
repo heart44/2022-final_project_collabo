@@ -19,9 +19,10 @@
         }
     
         public function AreaCate2List(&$param) {
-            $sql = "SELECT area2 FROM area
+            $sql = "SELECT area2, area3, area4 FROM area
                     WHERE area1 = :area1
-                    GROUP BY area2";
+                    GROUP BY area2, area3, area4";
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":area1", $param["area1"]);
             $stmt->execute();
@@ -29,21 +30,22 @@
         }
     
         public function AreaCate3List(&$param) {
-            $sql = "SELECT area3 FROM area
+            $sql = "SELECT area3, area4 FROM area
                     WHERE area1 = :area1
                     AND area2 = :area2
-                    GROUP BY area3";
+                    OR area3 = :area3
+                    GROUP BY area4";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":area1", $param["area1"]);
             $stmt->bindValue(":area2", $param["area2"]);
+            $stmt->bindValue(":area3", $param["area3"]);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
-    
 
-
-        //
-        public function selRestaurant() {
+        
+        //밥친구 리스트
+        public function selBobfList() {
             $sql = "SELECT 
                         bobf.*,
                         rest.rest_name, rest.rest_address,
@@ -59,6 +61,8 @@
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
+
+        //밥친구 글 쓰기
         public function insBobF(&$param) {
             $sql = "INSERT INTO bobf SET
                     irest = :irest, 
@@ -82,4 +86,5 @@
             $stmt->execute();
             return intval($this->pdo->lastInserId());
         }
+
     }
