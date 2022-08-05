@@ -1,11 +1,9 @@
-import { createStore } from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+import { createStore } from 'vuex'
 
 export default createStore({
   state() {
     return {
       user: {},
-      sallerSelectedProduct: {},
       searchList: {},
       searchWord: '',
     }
@@ -16,14 +14,11 @@ export default createStore({
     },
     getSearchWord(state) {
       return state.searchWord;
-    }
+    },
   },
   mutations: {
     user: (state, data) => {
       state.user = data;
-    },
-    sallerSelectedProduct: (state, data) => {
-      state.sallerSelectedProduct = data;
     },
     setSearchList: (state, data) => {
       state.searchList = data
@@ -32,9 +27,4 @@ export default createStore({
       state.searchWord = data
     }
   },
-  plugins: [
-    createPersistedState({
-      paths: ['user']
-    })
-  ],
-});
+})

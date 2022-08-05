@@ -1,6 +1,7 @@
 <template>
     <main>
         <div class="vue-tempalte">
+            <a href="#" class="back"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
             <form>
             <h1>비밀번호 찾기</h1>
 
@@ -87,4 +88,13 @@ export default {
         background-color: white;
         color:#2B3F6B;
     }
+    .back img{
+        position: absolute;
+        left:0;
+        margin: 15px 15px;
+    }
+    form{
+        padding-top: 70px;
+    }
+
 </style>

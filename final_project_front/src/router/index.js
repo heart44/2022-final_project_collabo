@@ -12,7 +12,6 @@ import PassWord from '../views/PassWord';
 import NaverLogin from '../views/NaverLogin';
 import MyPage from '../views/MyPage';
 
-
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
   if(store.state.user.iuser === undefined){
@@ -59,16 +58,15 @@ const routes = [
     component:NaverLogin
   },
   {
-    path:'/PassWord',
-    name: 'PassWord',
-    component: PassWord
-  },
-  {
     path:'/MyPage',
     name: 'MyPage',
     component: MyPage
   },
-
+  {
+    path: '/Join',
+    name: 'Join',
+    component: Join
+  }
 ];
 
 const router = createRouter({
