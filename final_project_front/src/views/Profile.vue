@@ -21,7 +21,6 @@
                     <div class="profile-img">
                       <div v-if="!files.length" class="room-file-upload-example-container">
                           <div class="image-box">
-                            <label for="file">일반 사진 등록</label>
                             <input type="file" id="file" ref="files" @change="imageUpload" multiple />
                           </div>
                         </div>
@@ -141,10 +140,6 @@ main{
   border-radius: 10px;
   box-shadow: 2px 2px 3px;
 }
-.profile-img{
-  padding-left:45%;
-  padding-bottom:25px;
-}
 .profile-img img{
   width:170px;
 }
@@ -168,6 +163,7 @@ main{
   padding-top:50px;
   font-weight: bold;
   font-size: 25px;
+  width:200px;
 }
 .file-preview-container{
   padding-top:40px;

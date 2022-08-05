@@ -7,13 +7,21 @@
                 <li><router-link class="" to="/Diary"><button class="btn" type="button">다이어리</button></router-link></li>
             </ul>
         </div>
+        <main>
+           
+        </main>
     </div>
 </div>
 </template>
 
 <script>
 export default {
-
+  data(){
+   
+  },
+  methods: {
+     
+  },
 }
 </script>
 
@@ -38,12 +46,20 @@ button:focus{
     outline:none;
     box-shadow:none;
 }
+main{
+  width:1240px;
+}
 .btn{
     border:2px solid #F26C38;
+    border-radius:10px;
     text-align: center;
     color: #F26C38;
     font-size:20px;
     padding-top:7px;
     box-shadow: 1px 1px 2px;
 }
+main{
+  width:1240px;
+}
+
 </style>

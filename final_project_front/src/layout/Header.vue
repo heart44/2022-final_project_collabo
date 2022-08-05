@@ -34,7 +34,7 @@
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>     
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><router-link class="" to="/MyPage"><a class="dropdown-item" href="#">마이페이지</a></router-link></li>
-                            <li><a class="dropdown-item" href="#">다이어리</a></li>
+                            <li><router-link class="" to="/Diary"><a class="dropdown-item" href="#">다이어리</a></router-link></li>
                         </ul>
                 </div>
                 <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
