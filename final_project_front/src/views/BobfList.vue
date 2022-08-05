@@ -179,7 +179,7 @@ export default {
           this.AreaCate2List.push(item["area4"]);
         }
       })
-
+  
       this.AreaCate2List = new Set(this.AreaCate2List);
 
     },
@@ -194,8 +194,12 @@ export default {
         }
       })
 
-      this.AreaCate3List = new Set(this.AreaCate3List);
-
+      if(this.AreaCate3List.length === 0) {
+        this.AreaCate3List = []
+      } else {
+        this.AreaCate3List = new Set(this.AreaCate3List);
+      }
+      
     },
     async getAreaCate4List(area1, area2_5) {
       const area4 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
