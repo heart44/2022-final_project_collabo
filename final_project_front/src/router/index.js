@@ -13,8 +13,6 @@ import PassWord from '../views/PassWord';
 import Diary from '../views/Diary';
 import Profile from '../views/Profile';
 
-// import NaverLogin from '../views/NaverLogin';
-
 import MyPage from '../views/MyPage';
 import Join from '../views/Join';
 
@@ -58,11 +56,6 @@ const routes = [
     name: 'PassWord',
     component: PassWord
   },
-  // {
-  //   path: '/NaverLogin',
-  //   name:'NaverLogin',
-  //   component:NaverLogin
-  // },
   {
     path:'/MyPage',
     name: 'MyPage',
