@@ -2,7 +2,13 @@
     <main>
         <div>
             <h3>{{ getSearchWord }}</h3>
-            {{ getSearchList }}
+            <div v-for="rest in getSearchList" :key="rest">
+                <div>{{ rest.name }}</div>
+                <div>{{ rest.address }}</div>
+                <div>{{ rest.category }}</div>
+                <div>{{ rest.menuInfo }}</div>
+                <hr>
+            </div>
         </div>
     </main>
 </template>
@@ -12,7 +18,7 @@ export default {
     name: "SearchList",
     data() {
         return {
-            searchList: {},
+            searchList: [],
             searchWord: ''
         }
     },

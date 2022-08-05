@@ -4,7 +4,7 @@ export default createStore({
   state() {
     return {
       user: {},
-      searchList: {},
+      searchList: [],
       searchWord: '',
     }
   },
