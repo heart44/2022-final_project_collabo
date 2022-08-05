@@ -6,7 +6,7 @@
                     <h1>JOIN</h1>
                     <div class="social-container">
                         <a href="#" class="social"><img src="../assets/naver.svg"></a>
-                        <a href="#" class="social" @click="kakaoLogin"><img src="../assets/kakao.svg"></a>
+                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
                         <a href="#" class="social"><img src="../assets/google.svg"></a>
                     </div>
                     <span>or use your email for registration</span>
@@ -30,8 +30,8 @@
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
-                        <a href="#" class="social" @click="NaverLogin"><img src="../assets/naver.svg"></a>
-                        <a href="#" class="social" @click="kakaoLogin"><img src="../assets/kakao.svg"></a>
+                        <a href="#" class="social"><img src="../assets/naver.svg"></a>
+                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
                         <a href="#" class="social"><img src="../assets/google.svg"></a>
                     </div>
                     <div class="infield">
@@ -56,10 +56,10 @@
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
                         <p>Enter your personal details and start journey with us</p>
-                        <button>JOIN</button>
+                        <button class="join"><router-link to="/Join">JOIN</router-link></button>
                     </div>
                 </div>
-                <button id="overlayBtn"></button>
+                <!-- <button id="overlayBtn"></button> -->
             </div>
         </div>
     </main>
@@ -72,91 +72,8 @@ export default {
 
     },
     methods:{
-        kakaoLogin(){
-            window.Kakao.Auth.login({
-                scope: 'profile_nickname, profile_image, account_email',
-                success: this.getProfile,
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        NaverLogin(){
-            window.Naver.Auth.login({
-                scope: '',
-                success: this.getProfile2,
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        NaverLogout(){
-            window.Naver.Auth.logout(async res => {
-                console.log(res);
-                this.$store.commit('user', {});
-                this.$router.push({path: '/'}); 
-                await this.$post('/user/logout');
-            })
-        },
-        kakaoLogout(){
-            window.Kakao.Auth.logout(async res => {
-                console.log(res);
-                this.$store.commit('user', {});
-                this.$router.push({path: '/'}); //라우터 주소 이동. (option 사항)
-                await this.$post('/user/logout');
-            })
-        },
-        getProfile(authObj){
-            console.log(authObj);
-            window.Kakao.API.request({
-                url: '/v2/user/me',
-                success: async res => {
-                    const acc = res.kakao_account;
-                    console.log(acc);
-                    const params = {
-                        social_type: 1,
-                        email: acc.email,
-                        nick: acc.profile.nickname,
-                        profileimg: acc.profile.profile_image_url
-                    }
-                    console.log(params);
-                    const data = await this.$post('/user/signup', params);                       
-                    console.log(data.result);
-                    this.$store.commit('setIuser', data.result);
-                    // this.login(params);
-                },
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        getProfile2(authObj){
-            console.log(authObj);
-            window.Naver.API.request({
-                url: '/v2/user/me',
-                success: async res => {
-                    const acc = res.naver_account;
-                    console.log(acc);
-                    const params = {
-                        social_type: 1,
-                        email: acc.email,
-                        nickname: acc.profile.nickname,
-                        profile_img: acc.profile.profile_image_url,
-                        thumb_img: acc.profile.thumbnail_image_url
-                    }
-                    console.log(params);
-                    this.login(params);
-                },
-                fail: e => {
-                    console.error(e);
-                }
-            });
-        },
-        async login(params){
-            const data = await this.$post('/user/signup', params);                       
-            params.iuser = data.result;
-            this.$store.commit('user', params);
-        },
+       
+     
     },
     created(){
 
@@ -300,7 +217,7 @@ button{
     transition:transform 0.6s ease-in-out;
     z-index: 9;
 }
-#overlayBtn{
+/* #overlayBtn{
     cursor: pointer;
     position:absolute;
     left:50%;
@@ -311,7 +228,8 @@ button{
     border:2px solid white;
     background:transparent;
     border-radius: 20px;
-}
+} */
+
 .overlay{
     position:relative;
     background:#F26C38;
