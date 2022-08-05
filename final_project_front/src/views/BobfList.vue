@@ -130,11 +130,10 @@ export default {
     //지역
     this.getRestArea();
     this.selBobfList();
-    this.getBobfList();
+    // this.getBobfList();
   },
   methods: {
     async selBobfList() {
-      this.AreaCate1['value']
       this.BobfList = await this.$post('api/selBobfList', {});
     },
 
@@ -199,7 +198,7 @@ export default {
       } else {
         this.AreaCate3List = new Set(this.AreaCate3List);
       }
-      
+
     },
     async getAreaCate4List(area1, area2_5) {
       const area4 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
@@ -214,25 +213,12 @@ export default {
   
 
     async getBobfList() {
-      
-      const param = {};
-      if(this.selectedAreaCate4 > 0) {
-        param['area4'] = this.selectedAreaCate4;
-        console.log(parma['area4'])
-      } else
-      if(this.selectedAreaCate3 > 0) {
-        param['area3'] = this.selectedAreaCate3;
-        console.log(param['area3'])
-      } else {
-        if(this.selectedAreaCate1 !== '') {
-          param['area1'] = this.selectedAreaCate1;
-        }
-        if(this.selectedAreaCate2 !== '') {
-          param['area2'] = this.selectedAreaCate2;
-        }
-      }
+      const select1 = this.selectedAreaCate1;
+      const test = this.AreaCate1
+      console.log("test[select1]: " + test[select1])
 
-      this.BobfList = await this.$get('api/selBobfList', param);
+
+      // this.BobfList = await this.$get('api/selBobfList', param);
     },
 
   }

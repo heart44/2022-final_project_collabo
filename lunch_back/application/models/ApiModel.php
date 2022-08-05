@@ -43,6 +43,7 @@
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
+        
         //밥친구 리스트
         public function selBobfList() {
             $sql = "SELECT 
