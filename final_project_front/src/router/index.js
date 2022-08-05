@@ -9,8 +9,9 @@ import BobfList from '../views/BobfList'
 
 import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
-import NaverLogin from '../views/NaverLogin';
+// import NaverLogin from '../views/NaverLogin';
 import MyPage from '../views/MyPage';
+import Join from '../views/Join';
 
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
@@ -52,11 +53,11 @@ const routes = [
     name: 'PassWord',
     component: PassWord
   },
-  {
-    path: '/NaverLogin',
-    name:'NaverLogin',
-    component:NaverLogin
-  },
+  // {
+  //   path: '/NaverLogin',
+  //   name:'NaverLogin',
+  //   component:NaverLogin
+  // },
   {
     path:'/MyPage',
     name: 'MyPage',
