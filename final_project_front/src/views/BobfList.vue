@@ -15,7 +15,7 @@
 
             <!-- 지역 셀렉트2 -->
             <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
-              <option value="">구/군 선택</option>
+              <option value="">지역 선택</option>
               <option :value="item" v-for="item in AreaCate2List" :key="item">
                 {{ item }}
               </option>
@@ -23,7 +23,7 @@
 
             <!-- 지역 셀렉트3 -->
             <select class="form-select" @change="changeAreaCate3" v-model="selectedAreaCate3" v-if="selectedAreaCate2 !== '' && AreaCate3List.length !== 0 ">
-              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option value="">지역 선택</option>
               <option :value="item" v-for="item in AreaCate3List" :key="item">
                 {{ item }}
               </option>
@@ -31,7 +31,7 @@
 
             <!-- 지역 셀렉트4 -->
             <select class="form-select" @change="getBobfList" v-model="selectedAreaCate4" v-if="selectedAreaCate3 !== ''  && AreaCate4List.length !== 0 ">
-              <option value="0">제발.......그만해..이러다 다 죽어...</option>
+              <option value="">지역 선택</option>
               <option :value="item" v-for="item in AreaCate4List" :key="item">
                 {{ item }}
               </option>
@@ -121,7 +121,7 @@ export default {
       selectedAreaCate1: '',
       selectedAreaCate2: '',
       selectedAreaCate3: '',
-      selectedAreaCate4:'',
+      selectedAreaCate4: '',
     };
   },
   computed: {
@@ -145,7 +145,8 @@ export default {
     
     changeAreaCate1() {
         this.selectedAreaCate2 = '';
-        this.selectedAreaCate3 = 0;
+        this.selectedAreaCate3 = '';
+        this.selectedAreaCate4 = '';
         this.Areacate2List = [];
         this.Areacate3List = [];
 
@@ -153,13 +154,14 @@ export default {
         this.getBobfList();
     },
     changeAreaCate2() {
-      this.selectedAreaCate3 = 0;
+      this.selectedAreaCate3 = '';
+      this.selectedAreaCate4 = '';
       this.AreaCate3List = [];
       this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
       this.getBobfList();
     },
     changeAreaCate3() {
-      this.selectedAreaCate4 = 0;
+      this.selectedAreaCate4 = '';
       this.AreaCate4List = [];
       this.getAreaCate4List(this.selectedAreaCate1, this.selectedAreaCate2, this.selectedAreaCate3);
       this.getBobfList();
