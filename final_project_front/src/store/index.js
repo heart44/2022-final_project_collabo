@@ -6,6 +6,16 @@ export default createStore({
     return {
       user: {},
       sallerSelectedProduct: {},
+      searchList: {},
+      searchWord: '',
+    }
+  },
+  getters: {
+    getSearchList(state) {
+      return state.searchList;
+    },
+    getSearchWord(state) {
+      return state.searchWord;
     }
   },
   mutations: {
@@ -14,6 +24,12 @@ export default createStore({
     },
     sallerSelectedProduct: (state, data) => {
       state.sallerSelectedProduct = data;
+    },
+    setSearchList: (state, data) => {
+      state.searchList = data
+    },
+    setSearchWord: (state, data) => {
+      state.searchWord = data
     }
   },
   plugins: [

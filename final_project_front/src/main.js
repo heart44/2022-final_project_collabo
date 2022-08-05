@@ -5,9 +5,12 @@ import router from './router'
 import mixins from './mixins';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import mitt from 'mitt';
 
-createApp(App)
-.mixin(mixins)
+export const emitter = mitt();
+const app = createApp(App)
+app.config.globalProperties.emitter = emitter;
+app.mixin(mixins)
 .use(router)
 .use(store)
 .use(VueSweetalert2)
