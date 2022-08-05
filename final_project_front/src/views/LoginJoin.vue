@@ -1,13 +1,13 @@
 <template>
     <main>
         <div class="container" id="container">
-            <div class="form-container sign-up-container">
-                <form action="#">
+            <!-- <div class="form-container sign-up-container">
+                <form>
                     <h1>JOIN</h1>
                     <div class="social-container">
-                        <a href="#" class="social"><img src="../assets/naver.svg"></a>
-                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
-                        <a href="#" class="social"><img src="../assets/google.svg"></a>
+                        <img class="social" src="../assets/naver.svg">
+                        <img class="social" src="../assets/kakao.svg">
+                        <img class="social" src="../assets/google.svg">
                     </div>
                     <span>or use your email for registration</span>
                     <div class="infield">
@@ -22,37 +22,37 @@
                         <input type="password" placeholder="Password" />
                         <label></label>
                     </div>
-                    <button>JOIN</button>
+                    <button type="button">JOIN</button>
                 </form>
-            </div>
+            </div> -->
             <div class="form-container sign-in-container">
-                <form action="#">
+                <form @keyup.enter="signin(user.email, user.pw)">
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
-                        <a href="#" class="social"><img src="../assets/naver.svg"></a>
-                        <a href="#" class="social"><img src="../assets/kakao.svg"></a>
-                        <a href="#" class="social"><img src="../assets/google.svg"></a>
+                        <img class="social" src="../assets/naver.svg">
+                        <img class="social" src="../assets/kakao.svg">
+                        <img class="social" src="../assets/google.svg">
                     </div>
                     <div class="infield">
-                        <input type="email" placeholder="Email" name="email"/>
+                        <input type="email" placeholder="Email" name="email" v-model="user.email"/>
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input type="password" placeholder="Password" />
+                        <input type="password" placeholder="Password" v-model="user.pw" />
                         <label></label>
                     </div>
-                    <a href="#" class="forgot"><router-link class="f_password" to="/PassWord">비밀번호 찾기</router-link></a>
-                    <button>LOGIN</button>
+                    <router-link class="f_password" to="/PassWord"><span class="forgot">비밀번호 찾기</span></router-link>
+                    <button type="button" @click="signin(user.email, user.pw)">LOGIN</button>
                 </form>
             </div>
             <div class="overlay-container" id="overlayCon">
                 <div class="overlay">
-                    <div class="overlay-panel overlay-left">
+                    <!-- <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us please login with your personal info</p>
                         <button>LOGIN</button>
-                    </div>
+                    </div> -->
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
                         <p>Enter your personal details and start journey with us</p>
@@ -69,11 +69,19 @@
 
 export default {
     data(){
-
+        return{
+            user:{
+                email: '',
+                pw: '',
+            }
+        }
     },
     methods:{
-       
-     
+       async signin(email, pw) {
+        console.log(email);
+        console.log(pw);
+        // const rs = await this.$post();
+       },
     },
     created(){
 
