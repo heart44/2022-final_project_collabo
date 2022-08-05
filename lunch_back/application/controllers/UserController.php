@@ -28,7 +28,7 @@
             return [_RESULT => $dbUser];
         }
 
-        public function logout(){
+        public function signout(){
             $this->flash(_LOGINUSER);
             return [_RESULT => 1];
         }
