@@ -37,7 +37,7 @@
                             <li><a class="dropdown-item" href="#">다이어리</a></li>
                         </ul>
                 </div>
-                <button class="btn btn-danger" type="button" @click="Logout">로그아웃</button>
+                <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
             </div>
         </div>
         </div>
@@ -69,6 +69,10 @@ export default {
         this.getCategoryList();
     },
     methods: {
+        async signout() {
+            this.$store.commit('user', {});
+            await this.$post('user/signout');
+        },
         async searchMenu() {
             if(this.search.trim() !== '') {
                 const param = { search_word: this.search }
