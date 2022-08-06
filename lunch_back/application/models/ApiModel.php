@@ -91,4 +91,11 @@
             return intval($this->pdo->lastInserId());
         }
 
+        public function selRestList() {
+            $sql = "SELECT * FROM restaurant";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }
+
     }

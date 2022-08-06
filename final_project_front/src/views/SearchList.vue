@@ -3,6 +3,9 @@
         <div>
             <h3>{{ getSearchWord }}</h3>
             {{ getSearchList }}
+            <div v-for="rest in getSearchList" :key="rest">
+                <div>{{ rest.name }}</div>
+            </div>
         </div>
     </main>
 </template>
@@ -17,8 +20,8 @@ export default {
         }
     },
     created() {
-        this.searchList = this.getSearchList
-        this.searchWord = this.getSearchWord
+        // this.searchList = this.getSearchList
+        // this.searchWord = this.getSearchWord
     },
     computed: {
         getSearchList() {

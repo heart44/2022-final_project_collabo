@@ -44,6 +44,7 @@ export default {
             fr.readAsDataURL(file);
          });
       },
+
       async getWeather(lat, lon) {
          const parameter = {
             lat: lat,
@@ -54,8 +55,9 @@ export default {
          }
          return await this.$get(this.url, parameter);
       },
-        getOnlyDateStr(date) {
-            return new Date(date).toISOString().slice(0, 10).replaceAll('-', '');
-        },
+
+      getOnlyDateStr(date) {
+         return new Date(date).toISOString().slice(0, 10).replaceAll('-', '');
+      },
     }
 }
