@@ -1,4 +1,9 @@
 <?php
+function menuSubstring($menuList) {
+    $menu_price = explode("|", $menuList);
+    echo $menu_price;
+}
+
 function getRandomFileNm($fileName) {
     return gen_uuid_v4() . "." . getExt($fileName);
 }

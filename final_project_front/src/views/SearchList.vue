@@ -4,14 +4,14 @@
         <br>
         <div class="d-flex column">
             <div  class="col-4">
-                <div v-for="rest in getSearchList" :key="rest">
+                <div v-for="rest of getSearchList" :key="rest">
+                    <div style="width:100px;height:100px;">이미지 : <img :src=rest.thumUrl style="width:100%;height:100%;"></div>
                     <div>가게이름 : {{ rest.name }}</div>
                     <div>가게주소 : {{ rest.address }}</div>
                     <div>카테고리 : {{ rest.category[0] }}</div>
+                    <div>전화번호 : {{ rest.tel }}</div>
                     <div>영업시간 : {{ rest.bizhourInfo }}</div>
                     <div>메뉴 : {{ rest.menuInfo }}</div>
-                    <div>x : {{ rest.x }}</div>
-                    <div>y : {{ rest.y }}</div>
                     <hr>
                 </div>
             </div>
@@ -25,18 +25,17 @@ export default {
     name: "SearchList",
     data() {
         return {
-            // searchList: [],
-            // searchWord: '',
-            map: {}
+
         }
     },
     created() {
-        // this.searchList = this.getSearchList
-        // this.searchWord = this.getSearchWord
+        this.insSearchList()
+    },
+    updated() {
+        this.insSearchList()
     },
     mounted() {
         this.mapContainer()
-        console.log(this.$refs.mapDiv)
     },
     computed: {
         getSearchList() {
@@ -59,6 +58,25 @@ export default {
             const map = new kakao.maps.Map(this.$refs.mapDiv, options);
             console.log(map)
         },
+        async insSearchList() {
+            let params = []
+            this.getSearchList.forEach(item => {
+                params.push({
+                    name: item.name,
+                    addr: item.address,
+                    cate2: item.category[0],
+                    tel: item.tel,
+                    menu: item.menuInfo,
+                    open_close: item.bizhourInfo,
+                    lon_x: item.x,
+                    lat_y: item.y,
+                    img_path: item.thumUrl
+                })
+            });
+            console.log(params)
+            const rs = await this.$post('/search/searchList', params);
+            console.log(rs)
+        }
     },
     
 }
