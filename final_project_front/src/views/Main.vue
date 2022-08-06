@@ -116,13 +116,19 @@ export default {
       menuList: [],
     }
   },
+  computed: {
+    getCurrentLoc() {
+      return this.$store.getters.currentLoc;
+    }
+  },
   methods: {
+    //검색리스트에 뽀려가욘~@--
     askForCoords() {
       navigator.geolocation.getCurrentPosition(pos => {
         console.log(pos);
         this.lat = pos.coords.latitude;
         this.lon = pos.coords.longitude;
-        // console.log(this.lat, this.lon);
+        console.log('로케이션', this.lat, this.lon);
         this.getPlaceWeather(this.lat, this.lon);
         this.weatherOk = true;
       }, err => {
@@ -133,6 +139,13 @@ export default {
     },
     // openweather api
     async getPlaceWeather(lat, lon) {
+      const params = {
+          lat: lat,
+          lon: lon
+      }
+      console.log('dkdkdkdk',params)
+      this.$store.commit('currentLoc', params);
+
       const data = await this.getWeather(lat, lon);
       console.log(data);
 
