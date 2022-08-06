@@ -1,7 +1,7 @@
 <template>
     <main>
-        <div class="container" id="container">
-            <!-- <div class="form-container sign-up-container">
+        <div class="container" ref="container">
+            <div class="form-container sign-up-container">
                 <form>
                     <h1>JOIN</h1>
                     <div class="social-container">
@@ -24,7 +24,7 @@
                     </div>
                     <button type="button">JOIN</button>
                 </form>
-            </div> -->
+            </div>
             <div class="form-container sign-in-container">
                 <form>
                     <h1>LOGIN</h1>
@@ -35,11 +35,11 @@
                         <img class="social" src="../assets/google.svg">
                     </div>
                     <div class="infield">
-                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="email" placeholder="Email" name="email" v-model="inputUser.email"/>
+                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="password" placeholder="Password" v-model="inputUser.pw" />
+                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="password" placeholder="Password" ref="pw" v-model="inputUser.pw" />
                         <label></label>
                     </div>
                     <router-link class="f_password" to="/PassWord"><span class="forgot">비밀번호 찾기</span></router-link>
@@ -49,18 +49,18 @@
 
             <div class="overlay-container" id="overlayCon">
                 <div class="overlay">
-                    <!-- <div class="overlay-panel overlay-left">
+                    <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us please login with your personal info</p>
-                        <button>LOGIN</button>
-                    </div> -->
+                        <button @click="changeLoginBox">LOGIN</button>
+                    </div>
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
                         <p>Enter your personal details and start journey with us</p>
-                        <button class="join"><router-link to="/Join">JOIN</router-link></button>
+                        <button class="join" @click="changeLoginBox">JOIN</button>
                     </div>
                 </div>
-                <!-- <button id="overlayBtn"></button> -->
+                <button ref="overlayBtn"></button>
             </div>
         </div>
     </main>
@@ -78,20 +78,43 @@ export default {
         }
     },
     methods:{
-       async signin(email, pw) {
-        console.log(email);
-        console.log(pw);
-        const param = {
-            email: email,
-            pw: pw
+        async signin(email, pw) {
+            console.log(email);
+            console.log(pw);
+            if(email === "") {
+                this.$refs.email.focus();
+                this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
+            } else if(pw === "") {
+                this.$refs.pw.focus();
+                this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
+            }
+            const param = {
+                email: email,
+                pw: pw
+            }
+            const dbUser = await this.$post('user/signin', param);
+            if(dbUser.result) {
+                console.log(dbUser);
+                this.$store.commit('user', dbUser.result);
+                this.$router.push('../');
+            } else {
+                this.$swal.fire('로그인 실패!', '아이디와 비밀번호를 다시 한 번 확인해주세요.', 'error');
+            }
+        },
+        changeLoginBox() {
+            const container = this.$refs.container;
+            // const overlayCon = this.$refs.overlayCon;
+            const overlayBtn = this.$refs.overlayBtn;
+            
+            container.classList.toggle('right-panel-active');
+
+            overlayBtn.classList.remove('btnScaled');
+            window.requestAnimationFrame( () =>{
+                overlayBtn.classList.add('btnScaled');
+            });
         }
-        const dbUser = await this.$post('user/signin', param);
-        if(dbUser.result) {
-            console.log(dbUser);
-            this.$store.commit('user', dbUser.result);
-            this.$router.push('../');
-        }
-       },
+
+       
     },
     created(){
 

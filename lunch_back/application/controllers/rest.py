@@ -14,14 +14,16 @@ def call(var_1):
     # 무언가를 처리하고..
     url2 = 'https://map.naver.com/v5/api/search?caller=pcweb&query='+ quote(var_1) +'&type=all&searchCoord=128.591585;35.8666565&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko'
     httpRes = urlopen(url2)
+    # print(httpRes)
     jsonData = json.load(httpRes)
     # print로 값을 return해서 php에서 받을 수 있음
     # print(jsonData['result']['place']['list'])
     menuList = jsonData['result']['place']['list']
+    # print(menuList)
     totalList = list()
     for i in range(len(menuList)):
         itemList = {}
-        itemList['name'] = format(menuList[i].get('name'))
+        itemList["name"] = format(menuList[i].get('name'))
         itemList['category'] = format(menuList[i].get('category'))
         itemList['address'] = format(menuList[i].get('address'))
         itemList['telDisplay'] = format(menuList[i].get('telDisplay'))
@@ -31,8 +33,6 @@ def call(var_1):
         itemList['bizhourInfo'] = format(menuList[i].get('bizhourInfo'))
         itemList['menuInfo'] = format(menuList[i].get('menuInfo'))
         itemList['distance'] = format(menuList[i].get('distance'))
-        itemList['marker'] = format(menuList[i].get('marker'))
-        itemList['markerSelected'] = format(menuList[i].get('markerSelected'))
         totalList.append(itemList)
         # print(list[i])
     print(totalList)
