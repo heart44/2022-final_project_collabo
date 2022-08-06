@@ -8,24 +8,24 @@
         <div class="profile-box">
                   <div class="my-p">
                     <div class="my-nick">
-                      <p class="p_tag">닉네임 
+                      <div class="p_tag">닉네임 
                         <div class="my d-flex">
                           <input type="text" name="name" :value="user.nick">
                           <input type="button" name="name" value="수정">
                         </div>
-                      </p>
-                      <p>나이 
+                      </div>
+                     <div class="p_tag">나이 
                         <div class="my d-flex">
                           <input type="text" name="name" :value="user.birth">
                           <input type="button" name="name" value="수정">
                         </div>
-                      </p>
-                      <p>직업 
+                      </div>
+                      <div class="p_tag">직업 
                         <div class="my d-flex">
                           <input type="text" name="name" :value="user.job">
                           <input type="button" name="name" value="수정">
                         </div>
-                      </p>
+                      </div>
                     </div>
                     <div class="profile-img">
                       <div v-if="!files.length" class="room-file-upload-example-container">
@@ -111,7 +111,6 @@ export default {
   color: white;
   cursor: pointer;
 }
-
 a{
   text-decoration:none;
   margin-right:10px;
@@ -140,9 +139,6 @@ button:focus{
   border-radius: 10px;
   box-shadow: 2px 2px 3px;
 }
-.profile-img{
-  width:250px;
-}
 .preview{
   width:170px;
   height: 170px;
@@ -156,6 +152,7 @@ button:focus{
 .my-p{
   display:flex;
   height:450px;
+  width:300px;
 }
 .my-nick{
   text-align:left;
@@ -163,7 +160,10 @@ button:focus{
   padding-top:50px;
   font-weight: bold;
   font-size: 25px;
-  width:450px;
+  width:300px;
+}
+.profile-img{
+  margin: 30px 100px;
 }
 .btn-profile{
   border-top:1px solid #a6a6a6;
@@ -205,5 +205,8 @@ input[type="button"]{
   top:20px;
   z-index:1;
   cursor: pointer;
+}
+label{
+  width:100px;
 }
 </style>
