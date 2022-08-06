@@ -149,6 +149,7 @@ export default {
       console.log(parseInt(temp));
       console.log(weather);
       const rsArr = await this.$get(`menu/menuListbyWeather/${parseInt(temp)}/${weather}`);
+      
       // console.log(rsArr);
 
       while(this.menuList.length < 4){
