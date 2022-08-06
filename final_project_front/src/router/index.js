@@ -15,7 +15,7 @@ import Profile from '../views/Profile';
 
 import MyPage from '../views/MyPage';
 import Join from '../views/Join';
-
+import ModalDiary from '../views/ModalDiary';
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
   if(store.state.user.iuser === undefined){
@@ -75,6 +75,11 @@ const routes = [
     path:'/Profile',
     name:'Profile',
     component: Profile
+  },
+  {
+    path:'/ModalDiary',
+    name:'ModalDiary',
+    component: ModalDiary
   }
 ];
 
