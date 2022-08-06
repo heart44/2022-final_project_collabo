@@ -5,8 +5,9 @@ export default createStore({
   state() {
     return {
       user: {},
-      searchList: {},
+      searchList: [],
       searchWord: '',
+      currentLoc: {}
     }
   },
   getters: {
@@ -16,6 +17,9 @@ export default createStore({
     getSearchWord(state) {
       return state.searchWord;
     },
+    getCurrentLoc(state) {
+      return state.currentLoc;
+    }
   },
   mutations: {
     user: (state, data) => {
@@ -26,11 +30,14 @@ export default createStore({
     },
     setSearchWord: (state, data) => {
       state.searchWord = data
+    },
+    currentLoc: (state, data) => {
+      state.currentLoc = data
     }
   },
   plugins: [
     createPersistedState({
-      paths: ['user']
+      paths: ['user'],
     })
   ],
 })
