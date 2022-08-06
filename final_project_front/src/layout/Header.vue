@@ -62,7 +62,10 @@ export default {
             return this.$store.state.user;
         },
         getSearchList() {
-            return this.$store.state.searchList;
+            return this.$store.state.getSearchList;
+        },
+        getCurrentLoc() {
+            return this.$store.getters.getCurrentLoc;
         }
     },
     created() {
