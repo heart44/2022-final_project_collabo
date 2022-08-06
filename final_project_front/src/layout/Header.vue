@@ -62,7 +62,10 @@ export default {
             return this.$store.state.user;
         },
         getSearchList() {
-            return this.$store.state.searchList;
+            return this.$store.state.getSearchList;
+        },
+        getCurrentLoc() {
+            return this.$store.getters.getCurrentLoc;
         }
     },
     created() {
@@ -80,7 +83,7 @@ export default {
                 // await this.$post('/search/searchLog', param);    //이거 검색기록임~ 나중에 주석 풀겨
                 // const result = await this.$post('search/menuCrawling', param);
                 const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.search}&type=all&searchCoord=128.591585;35.8666565&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);
-                console.log(result['result']['place']['list']);
+                // console.log(result['result']['place']['list']);
 
                 // this.emitter.emit('searchlist', this.search)
                 
