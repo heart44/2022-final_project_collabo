@@ -19,45 +19,52 @@
         //검색 리스트 저장
         public function searchList() {
             $json = getJson();
-            $search_word = "";
-            switch($search_word) {
-                case strpos($search_word, "국수"): case "짬뽕": case strpos($search_word, "면"): case strpos($search_word, "우동"):
-                case "파스타": case "스파게티": case "라멘": case strpos($search_word, "짜장"): case strpos($search_word, "자장"):
+            echo $json;
+            $search_word = "스테이크";
+
+            switch ($search_word) {
+                case "짬뽕": case "파스타": case "스파게티": case "라멘":
                     $maincate = 1;
                     break;
-                case "삼겹살": case "갈비": case "스테이크": case strpos($search_word, "고기"): case "돈까스": 
+                case "삼겹살": case "갈비": case "스테이크": case "돈까스":
                 case "탕수육": case "깐풍기":
                     $maincate = 2;
                     break;
-                case strpos($search_word, "밥"): case "백반": case "짜글이":
+                case "백반": case "짜글이":
                     $maincate = 3;
                     break;
-                case strpos($search_word, "탕"): case strpos($search_word, "찌개"): case strpos($search_word, "찜"):
-                    $maincate = 4;
-                    break;
-                case strpos($search_word, "샐러드"):
-                    $maincate = 5;
-                    break;
-                case strpos($search_word, "튀김"): case strpos($search_word, "전"): case strpos($search_word, "빵"):
-                case strpos($search_word, "도넛"): case "떡볶이":
+                case "떡볶이":
                     $maincate = 6;
                     break;
                 default:
                     $maincate = 7;
                     break;
-                
             }
 
-            foreach($json as $item) {
-                // $cateId = $this->model->insSearchRest($item);
-                $param = menuSubstring($item["menu"]);
-                echo $param;
-                $cate2 = [ "maincate" => $maincate ];
-                echo $cate2;
-                // $this->model->insMenuCate2($cate2);
+            if(strpos($search_word, "면") || strpos($search_word, "국수") || strpos($search_word, "우동") || strpos($search_word, "짜장") || strpos($search_word, "자장")) {
+                $maincate = 1;
+            } else if(strpos($search_word, "고기")) {
+                $maincate = 2;
+            } else if(strpos($search_word, "밥")) {
+                $maincate = 3;
+            } else if(strpos($search_word, "탕") || strpos($search_word, "찌개") || strpos($search_word, "찜")) {
+                $maincate = 4;
+            } else if(strpos($search_word, "샐러드")) {
+                $maincate = 5;
+            } else if(strpos($search_word, "튀김") || strpos($search_word, "전") || strpos($search_word, "빵") || strpos($search_word, "도넛")) {
+                $maincate = 6;
             }
+
+            // foreach($json as $item) {
+            //     // $cateId = $this->model->insSearchRest($item);
+            //     $param = menuSubstring($item["menu"]);
+            //     echo $param;
+            //     $cate2 = [ "maincate" => $maincate ];
+            //     echo $cate2;
+            //     // $this->model->insMenuCate2($cate2);
+            // }
             // $this->model->getMenuCD($json);
-            return $json;
+            return ["rs" => $json];
         }
 
         //검색 키워드로 크롤링 해오기 (혹시 모르니까 나중에 지울게요,,,,,,,,)

@@ -15,7 +15,7 @@
                     <hr>
                 </div>
             </div>
-            <div ref="mapDiv" class="col-8" style="width:400px;height:400px;">{{ mapContainer }}</div>
+            <div ref="mapDiv" class="col-8" style="width:400px;height:400px;"></div>
         </div>
     </main>
 </template>
@@ -73,6 +73,7 @@ export default {
                     img_path: item.thumUrl
                 })
             });
+            //params.push(this.getSearchWord);
             console.log(params)
             const rs = await this.$post('/search/searchList', params);
             console.log(rs)
