@@ -153,10 +153,11 @@ export default {
 
       const userInfo = await this.$post('user/profile', param);
       if(userInfo.result) {
-        // this.$store.commit('user', param);
+        param.pw = null;
+        this.$store.commit('updateUser', param);
         console.log('dddd');
       }
-        // console.log(this.user);
+        console.log(this.user);
 
 
     },

@@ -26,6 +26,11 @@ export default createStore({
     user: (state, data) => {
       state.user = data;
     },
+    updateUser: (state, data) => {
+        for(const value in data) {
+          state.user[value] = data[value];
+        }
+    },
     setSearchList: (state, data) => {
       state.searchList = data
     },
