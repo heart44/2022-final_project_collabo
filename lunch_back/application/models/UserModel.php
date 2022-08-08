@@ -43,4 +43,23 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateUser(&$param) {
+        $sql = "UPDATE user SET 
+        nick = :nick, 
+        birth = :birth, 
+        job = :job, ";
+        if($param['pw'] !== "") {
+            $sql .= "pw = :pw, ";
+        }
+        $sql .= " moddt = NOW() 
+        WHERE iuser = :iuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':nick', $param["nick"]);
+        $stmt->bindValue(':birth', $param["birth"]);
+        $stmt->bindValue(':job', $param["job"]);
+        $stmt->bindValue(':iuser', $param["iuser"]);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }

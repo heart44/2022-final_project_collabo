@@ -4,6 +4,8 @@
     class UserController extends Controller{
         public function signup(){
             $json = getJson();
+            // 비밀번호 암호화
+            // $json["pw"] = password_hash($json["pw"], PASSWORD_BCRYPT);
             $result = $this->model->signup($json);
             if($result){
                 return [_RESULT => $result];
@@ -39,6 +41,19 @@
                 return [_RESULT => 1];
             }
             return [_RESULT => 0];
+        }
 
+        public function profile() {
+            switch(getMethod()) {
+                case _DELETE:
+                case _POST:
+                    $json = getJson();
+                    $json["iuser"] = getIuser();
+                    $result = $this->model->updateUser($json);
+                    if($result){
+                        return [_RESULT => 1];
+                    }
+                    return [_RESULT => 0];
+                }
         }
     }

@@ -84,7 +84,6 @@ export default {
                 birthYear: 0,
                 job: 0,
             },
-            year: [],
             duplication: '',
             emailError: '',
         }
@@ -124,11 +123,6 @@ export default {
             window.requestAnimationFrame( () =>{
                 overlayBtn.classList.add('btnScaled');
             });
-        },
-        birthYearList(){
-            for(let i = new Date().getFullYear(); i>1899; i--) {
-                this.year.push(i);
-            }
         },
         async signup(){
             const join = this.inputUser;
@@ -187,8 +181,13 @@ export default {
         },
     },
     created(){
-        this.birthYearList();
+        this.$store.commit('year');
     },
+    computed: {
+        year() {
+            return this.$store.state.year;
+        }
+    }
 }
 </script>
 

@@ -3,6 +3,7 @@
     <Header />
     <router-view/>
     <router-link to="/BobfList">BobfList</router-link>
+    <router-link to="/Profile">profile</router-link>
     <Footer />
   </div>
 </template>
@@ -58,5 +59,8 @@ nav a.router-link-exact-active {
   color: white;
   text-decoration: none;
   pointer-events: none; 
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

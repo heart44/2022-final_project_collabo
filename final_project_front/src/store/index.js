@@ -7,7 +7,8 @@ export default createStore({
       user: {},
       searchList: [],
       searchWord: '',
-      currentLoc: {}
+      currentLoc: {},
+      year: [],
     }
   },
   getters: {
@@ -19,7 +20,7 @@ export default createStore({
     },
     getCurrentLoc(state) {
       return state.currentLoc;
-    }
+    },
   },
   mutations: {
     user: (state, data) => {
@@ -33,6 +34,12 @@ export default createStore({
     },
     currentLoc: (state, data) => {
       state.currentLoc = data
+    },
+    year: (state) => {
+      state.year = [];
+      for(let i = new Date().getFullYear(); i>1899; i--) {
+        state.year.push(i);
+      }
     }
   },
   plugins: [
