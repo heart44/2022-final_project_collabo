@@ -16,4 +16,11 @@ foreach($menu_price as $item) {
     array_push($aaa, $ddd);
 }
 
-print_r($aaa);
+// print_r($aaa);
+
+echo "<br>";
+
+foreach($aaa as $list) {
+    echo $list["name"];
+    echo $list["price"] . "<br>";
+}

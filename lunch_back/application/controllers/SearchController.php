@@ -17,54 +17,58 @@
         }
 
         //검색 리스트 저장
-        public function searchList() {
+        public function searchList() {  //완전 하드코딩....슬프다.....
             $json = getJson();
-            echo $json;
-            $search_word = "스테이크";
+            $search_word = end($json);                  //검색한 메뉴
+            $maincate = getMaincate($search_word);      //maincate 뭔지 가져오기
 
-            switch ($search_word) {
-                case "짬뽕": case "파스타": case "스파게티": case "라멘":
-                    $maincate = 1;
-                    break;
-                case "삼겹살": case "갈비": case "스테이크": case "돈까스":
-                case "탕수육": case "깐풍기":
-                    $maincate = 2;
-                    break;
-                case "백반": case "짜글이":
-                    $maincate = 3;
-                    break;
-                case "떡볶이":
-                    $maincate = 6;
-                    break;
-                default:
-                    $maincate = 7;
-                    break;
+            array_pop($json);                           //마지막 메뉴 이름 삭제
+            foreach($json as $item) {                   //음식점 반복문
+                $cateId = $this->model->insSearchRest($item);   //레스토랑 insert (pk)
+                $paramCate2 = [ "icate1" => $maincate, "midcate" => $item["cate2"] ];
+                $icate2 = $this->model->selcate2($paramCate2);  //category2에 data 있는지 확인
+                $icate21 = $this->model->insMenuCate2($paramCate2); //일단 category2에 insert
+                if(!$icate2) {  //없으면 
+                    $icate2 = $icate21; //새로운 icate2로 바꾸고
+                    $paramMenuCD = [ "icate2" => $icate2, "menu" => $search_word ];
+                } else { // 있으면 셀렉해온 icate2 넣음
+                    $paramMenuCD = [ "icate2" => $icate2, "menu" => $search_word ];
+                }
+                $imenu = $this->model->getMenuCD($paramMenuCD); //메뉴 코드 있는지 확인
+                $imenu11 = $this->model->insMenuCD($paramMenuCD);   //일단 insert
+                if(!$imenu) {   //없으면
+                    $imenu = $imenu11; //새로운 키로 바꿈
+                    $params = [ "imenu" => $imenu, "irest" => $cateId ];
+                } else { //있으면 셀렉해온 키 넣음
+                    $params = [ "imenu" => $imenu, "irest" => $cateId ];
+                }
+                if($item["menu"]) { //메뉴가 있으면 아래 코드 실행
+                    $menuList = menuSubstring($item["menu"]);   //메뉴 자르는 함수
+                    foreach($menuList as $list) {   //자른 메뉴 반복해서 DB에 넣음
+                        $params["name"] = $list["name"];
+                        $params["price"] = $list["price"];
+                        $rs = $this->model->insSearchMenu($params);
+                    }
+                } else { //없으면 걍 null값 넣음^^
+                    $param["name"] = "";
+                    $param["price"] = "";
+                    $rs = $this->model->insSearchMenu($params);
+                }
             }
 
-            if(strpos($search_word, "면") || strpos($search_word, "국수") || strpos($search_word, "우동") || strpos($search_word, "짜장") || strpos($search_word, "자장")) {
-                $maincate = 1;
-            } else if(strpos($search_word, "고기")) {
-                $maincate = 2;
-            } else if(strpos($search_word, "밥")) {
-                $maincate = 3;
-            } else if(strpos($search_word, "탕") || strpos($search_word, "찌개") || strpos($search_word, "찜")) {
-                $maincate = 4;
-            } else if(strpos($search_word, "샐러드")) {
-                $maincate = 5;
-            } else if(strpos($search_word, "튀김") || strpos($search_word, "전") || strpos($search_word, "빵") || strpos($search_word, "도넛")) {
-                $maincate = 6;
-            }
+            return ["rs" => $rs];
+        }
 
-            // foreach($json as $item) {
-            //     // $cateId = $this->model->insSearchRest($item);
-            //     $param = menuSubstring($item["menu"]);
-            //     echo $param;
-            //     $cate2 = [ "maincate" => $maincate ];
-            //     echo $cate2;
-            //     // $this->model->insMenuCate2($cate2);
-            // }
-            // $this->model->getMenuCD($json);
-            return ["rs" => $json];
+        public function restList() {
+            $urlPaths = getUrlPaths();
+            if(!isset($urlPaths[2])) {
+                exit();
+            }
+            $param = [ "search_word" => $urlPaths[2] ];
+            // echo $param;
+            $rs = $this->model->getRestList($param);
+
+            return ["rs" => $rs];
         }
 
         //검색 키워드로 크롤링 해오기 (혹시 모르니까 나중에 지울게요,,,,,,,,)
