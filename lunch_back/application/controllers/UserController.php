@@ -27,8 +27,18 @@
             return [_RESULT => $dbUser];
         }
 
-        public function signout(){
+        public function signout() {
             $this->flash(_LOGINUSER);
             return [_RESULT => 1];
+        }
+
+        public function doubleCheck() {
+            $json = getJson();
+            $check = $this->model->doubleCheckUser($json);
+            if(!empty($check)) {
+                return [_RESULT => 1];
+            }
+            return [_RESULT => 0];
+
         }
     }

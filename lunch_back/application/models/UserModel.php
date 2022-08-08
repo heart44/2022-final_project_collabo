@@ -7,14 +7,12 @@ class UserModel extends Model {
     public function signup(&$param){
         $sql = "INSERT INTO user
                 (
-                    social_type, email, nick, pw, birth, job
+                    social_type, email, pw, nick, birth, job
                 )
                 VALUES
                 (
-                    :social_type, :email, :nick, :pw, :birth, :job
+                    :social_type, :email, :pw, :nick, :birth, :job
                 )
-                -- ON duplicate key update
-                -- moddt = now()
                 ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':social_type', $param["social_type"]);
@@ -24,8 +22,7 @@ class UserModel extends Model {
         $stmt->bindValue(':birth', $param["birth"]);
         $stmt->bindValue(':job', $param["job"]);
         $stmt->execute();
-        return $stmt->rowCount();
-        // return intval($this->pdo->lastInsertId());
+        return intval($this->pdo->lastInsertId());
     }
 
     public function signin(&$param) {
@@ -34,5 +31,16 @@ class UserModel extends Model {
         $stmt->bindValue(':email', $param["email"]);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    // 중복이메일검사
+    public function doubleCheckUser(&$param) {
+        $sql = " SELECT social_type, email FROM user
+                 WHERE social_type = :social_type AND email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':social_type', $param["social_type"]);
+        $stmt->bindValue(':email', $param["email"]);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -9,9 +9,11 @@
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
+                        <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email" @blur="doubleCheck()" @change="isEmail" />
                         <label></label>
                     </div>
+                    <span class="errormsg">{{ emailError }}</span>
+                    <span class="errormsg">{{ duplication }}</span>
                     <div class="infield">
                         <input type="password" placeholder="Password" ref="pw" v-model="inputUser.pw"/>
                         <label></label>
@@ -22,10 +24,9 @@
                             <option v-for="i in year" :key="i" :value="i">{{ i }}</option>
                         </select>
                         <select class="mt-2 mb-2 ms-1" v-model="inputUser.job">
-                            <option value="">Job</option>
+                            <option value="0">Job</option>
                             <option value="1">직장인</option>
                             <option value="2">학생</option>
-                            <option value="0">기타</option>
                         </select>
                     </div>
                     <button type="button" @click="signup()">JOIN</button>
@@ -81,9 +82,11 @@ export default {
                 email: '',
                 pw: '',
                 birthYear: 0,
-                job: '',
+                job: 0,
             },
             year: [],
+            duplication: '',
+            emailError: '',
         }
     },
     methods:{
@@ -134,29 +137,58 @@ export default {
             if(join.email === "") {
                 this.$refs.email.focus();
                 this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
+                return;
             } else if(this.inputUser.pw === "") {
                 this.$refs.pw.focus();
                 this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
+                return;
             }
             const param = {
                 social_type: 0,
-                nick: this.inputUser.nick,
                 email: this.inputUser.email,
                 pw: this.inputUser.pw,
+                nick: this.inputUser.nick,
                 birth: this.inputUser.birthYear,
                 job: this.inputUser.job
             }
+            console.log(param);
             const joinUser = await this.$post('user/signup', param);
+            console.log(joinUser);
             if(joinUser.result) {
-                console.log(joinUser);
                 this.$refs.loginBtn.click();
                 this.$swal.fire('회원 가입에 성공했습니다.', '', 'success');
+                this.inputUser.nick = "";
+                this.inputUser.birthYear = 0;
+                this.inputUser.job = 0;
+                this.inputUser.pw = "";
             }
-        }
+        },
+        async doubleCheck() {
+            const param = {
+                social_type: 0,
+                email: this.inputUser.email
+            }
+            const rs = await this.$post('user/doubleCheck', param);
+            if(rs.result) {
+                this.duplication = '중복된 이메일이 존재합니다.';
+            } else {
+                this.duplication = '';
+            }
+        },
+        isEmail() {
+            const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+            const check = regExp.test(this.inputUser.email);
+            console.log(check);
+            if(!check) {
+                this.emailError = '올바른 이메일 형식이 아닙니다.';
+            } else {
+                this.emailError = '';
+            }
+        },
     },
     created(){
         this.birthYearList();
-    }
+    },
 }
 </script>
 
@@ -253,6 +285,10 @@ input::placeholder, select {
 }
 input:focus ~ label{
     width:100%;
+}
+select:focus {
+    outline: 3px solid #2b3f6b33;
+    transition: 0.1s;
 }
 a{
     color: #2B3F6B;
@@ -397,5 +433,9 @@ p{
     100%{
         width:143.67px;
     }
+}
+.errormsg {
+    font-size: 0.7rem;
+    color: #F26C38;
 }
 </style>
