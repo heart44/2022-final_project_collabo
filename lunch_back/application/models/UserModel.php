@@ -50,7 +50,7 @@ class UserModel extends Model {
         birth = :birth, 
         job = :job, ";
         if($param['pw'] !== "") {
-            $sql .= "pw = :pw, ";
+            $sql .= "pw = {$param['pw']}, ";
         }
         $sql .= " moddt = NOW() 
         WHERE iuser = :iuser";

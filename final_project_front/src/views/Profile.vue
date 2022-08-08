@@ -24,7 +24,7 @@
                 <select
                   :key="i"
                   v-model="inputUser.birthYear"
-                  :disabled="inputUser.birthYear !== 0"
+                  :disabled="user.birth !== 0"
                 >
                   <option value="0">birthYear</option>
                   <option v-for="i in year" :key="i" :value="i">{{ new Date().getFullYear() - i + 1 }}</option>
@@ -152,6 +152,11 @@ export default {
       };
 
       const userInfo = await this.$post('user/profile', param);
+      if(userInfo.result) {
+        // this.$store.commit('user', param);
+        console.log('dddd');
+      }
+        // console.log(this.user);
 
 
     },
