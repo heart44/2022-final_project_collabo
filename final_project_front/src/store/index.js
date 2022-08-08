@@ -9,6 +9,7 @@ export default createStore({
       searchWord: '',
       currentLoc: {},
       restInfo: {},
+      restList: []
     }
   },
   getters: {
@@ -21,6 +22,9 @@ export default createStore({
     getCurrentLoc(state) {
       return state.currentLoc;
     },
+    getRestList(state) {
+      return state.restList;
+    }
   },
   mutations: {
     user: (state, data) => {
@@ -34,6 +38,9 @@ export default createStore({
     },
     currentLoc: (state, data) => {
       state.currentLoc = data
+    },
+    restList: (state, data) => {
+      state.restList = data
     },
     restInfo: (state, data) => {
       state.restInfo = data

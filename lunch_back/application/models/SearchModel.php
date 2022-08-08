@@ -18,16 +18,30 @@
 
         //메뉴코드 가져오기
         public function getMenuCD(&$param) {
-            $sql = "INSERT INTO menu_cd
-                    SET menu = :search_word
-                        icate2 = :icate2";
+            $sql = "SELECT imenu FROM menu_cd 
+                    WHERE icate2 = :icate2 AND menu = :menu";
     
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menu", $param["search_word"]);
             $stmt->bindValue(":icate2", $param["icate2"]);
+            $stmt->bindValue(":menu", $param["menu"]);
             $stmt->execute();
 
-            return $stmt->rowCount();
+            $rs = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $rs["imenu"];
+        }
+
+        //검색 시 음식점 리스트 가져오기
+        public function getRestList(&$param) {
+            $sql = "SELECT a.*, d.menu
+                    FROM restaurant a, menu_list b, category2 c, menu_cd d
+                    WHERE a.irest = b.irest AND b.imenu = d.imenu AND d.icate2 = c.icate2 AND d.menu = :menu
+                    GROUP BY a.irest";
+            
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":menu", $param["search_word"]);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_OBJ); 
         }
 
         //검색 로그 저장
@@ -42,16 +56,53 @@
             return $stmt->rowCount();
         }
 
+        //category2 저장
+        public function insMenuCate2(&$param) {
+            $sql = "INSERT INTO category2 (midcate, icate1)
+                    VALUES (:midcate, :icate1)
+                    ON DUPLICATE KEY UPDATE moddt = now()";
+            
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":midcate", $param["midcate"]);
+            $stmt->bindValue(":icate1", $param["icate1"]);
+
+            $stmt->execute();
+
+            return intval($this->pdo->lastInsertId());
+        }
+
+        public function selcate2($param) {
+            $sql = "SELECT a.icate2 FROM category2 a, category1 b 
+                    WHERE a.icate1 = b.icate1 and a.midcate = :midcate and a.icate1 = :icate1";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":midcate", $param["midcate"]);
+            $stmt->bindValue(":icate1", $param["icate1"]);
+            $stmt->execute();
+
+            $rs = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $rs["icate2"];
+        }
+
+        //메뉴 코드 저장
+        public function insMenuCD(&$param) {
+            $sql = "INSERT INTO menu_cd (menu, icate2)
+                    VALUES (:menu, :icate2)
+                    ON duplicate key update moddt = now()";
+            
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":menu", $param["menu"]);
+            $stmt->bindValue(":icate2", $param["icate2"]);
+            $stmt->execute();
+
+            return intval($this->pdo->lastInsertId());
+        }
+
         //레스토랑 저장
         public function insSearchRest(&$param) {
-            $sql = "INSERT INTO restaurant 
-                    SET rest_name = :rest_name, 
-                        rest_address = :rest_address, 
-                        tel = :tel, 
-                        open_close = :open_close, 
-                        lon_y = :lon_y, 
-                        lat_x = :lat_x, 
-                        img_path = :img_path";
+            $sql = "INSERT INTO restaurant (rest_name, rest_address, tel, open_close, lon_x, lat_y, img_path)
+                    VALUES (:rest_name, :rest_address, :tel, :open_close, :lon_x, :lat_y, :img_path)
+                    ON duplicate key update moddt = now()";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":rest_name", $param["name"]);
@@ -68,15 +119,13 @@
 
         //메뉴 저장
         public function insSearchMenu(&$param) {
-            $sql = "INSERT INTO menu_list 
-                    SET imenu = :imenu,
-                        menu = :menu,
-                        price = :price,
-                        irest = :irest";
+            $sql = "INSERT INTO menu_list (imenu, menu, price, irest)
+                    VALUES (:imenu, :menu, :price, :irest)
+                    ON duplicate key update moddt = now()";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":imenu", $param["imenu"]);
-            $stmt->bindValue(":menu", $param["menu"]);
+            $stmt->bindValue(":menu", $param["name"]);
             $stmt->bindValue(":price", $param["price"]);
             $stmt->bindValue(":irest", $param["irest"]);
             $stmt->execute();
