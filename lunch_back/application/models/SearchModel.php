@@ -42,6 +42,12 @@
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
+
+            //(6371*ACOS(COS(RADIANS(:lat_y))*COS(RADIANS(a.lat_y))*COS(RADIANS(a.lon_x)-RADIANS(:lon_x))+SIN(RADIANS(:lat_y))*SIN(RADIANS(a.lat_y)))) AS dis
+            //$stmt->bindValue(":lat_y", $param["lat_y"]);
+            //$stmt->bindValue(":lon_x", $param["lon_x"]);
+            //HAVING dis <= 1
+            //ORDER BY dis
         }
 
         //검색 로그 저장

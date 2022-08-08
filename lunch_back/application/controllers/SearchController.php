@@ -61,10 +61,14 @@
 
         public function restList() {
             $urlPaths = getUrlPaths();
-            if(!isset($urlPaths[2])) {
+            if(!isset($urlPaths[2]) || !isset($urlPaths[3]) || !isset($urlPaths[4])) {
                 exit();
             }
-            $param = [ "search_word" => $urlPaths[2] ];
+            $param = [ 
+                "search_word" => $urlPaths[2], 
+                "lon_x" => $urlPaths[3], 
+                "lat_y" => $urlPaths[4], 
+            ];
             // echo $param;
             $rs = $this->model->getRestList($param);
 
