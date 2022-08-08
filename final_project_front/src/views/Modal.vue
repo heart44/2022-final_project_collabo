@@ -1,34 +1,52 @@
 <template>
   <Transition name="modal">
-    <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">
-              <h3>{{ getSearchWord }}</h3>
-            </slot>
-          </div>
 
-          <div class="modal-body">
-            <slot name="body">
-              <div class="input-group align-items-center">
-                {{ getSearchList }}
+      <div v-if="show" class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+              <slot name="header">
+                <h3>{{ getSearchWord }}</h3>
+              </slot>
             </div>
-            </slot>
-          </div>
 
-          <div class="modal-footer">
-            <slot name="footer">
-              default footer
-                <button class="modal-default-button" @click="$emit('close')">
-                OK
-                </button>
-            </slot>
+            <div class="modal-body">
+              <slot name="body">
+                <div class="input-group align-items-center">
+                  <div class="infiniteScroll">
+
+
+                    <div  v-for="rest of getSearchList" :key="rest">
+                        <div style="width:100px;height:100px;">이미지 : <img :src=rest.thumUrl style="width:100%;height:100%;"></div>
+                          <div>
+                            가게 이름 : <input type="hidden" id="name" v-model="rest.name" >{{ rest.name }}
+                          </div>
+                          <div>
+                            가게 주소 : <input type="hidden" v-model="rest.address">{{rest.address}}
+                          </div>
+                          <input type="button" @click="[RestInfo(rest.name, rest.address), $emit('close')]" >
+                        <hr>
+                    </div>
+                    
+                  
+                  </div>
+                </div>
+              </slot>
+            </div>
+
+
+            <div class="modal-footer">
+              <slot name="footer">
+                  <button class="modal-default-button" @click="$emit('close')">
+                  OK
+                  </button>
+              </slot>
+            </div>
+            
           </div>
-          
         </div>
       </div>
-    </div>
+
   </Transition>
 </template>
 
@@ -41,7 +59,7 @@ export default {
     data() {
         return {
             searchList: {},
-            searchWord: ''
+            searchWord: '',
         }
     },
     created() {
@@ -54,15 +72,27 @@ export default {
         },
         getSearchWord() {
             return this.$store.getters.getSearchWord;
-        }
+        },
     },
     methods: {
-    }
+      RestInfo(name, addr) { 
+
+        const param = { name : name, addr : addr}
+
+        this.$store.commit('restInfo', param)
+      }
+    },
 
 }
 </script>
 
 <style>
+    .infiniteScroll {
+      overflow: auto;
+      height: 50vh;
+      /* border: 2px solid #dce4ec;
+      border-radius: 5px; */
+    }
     .modal-mask {
         position: fixed;
         z-index: 9998;
@@ -79,7 +109,7 @@ export default {
         vertical-align: middle;
     }
     .modal-container {
-        width: 300px;
+        width: 600px;
         margin: 0px auto;
         padding: 20px 30px;
         background-color: #fff;

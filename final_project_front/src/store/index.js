@@ -7,7 +7,8 @@ export default createStore({
       user: {},
       searchList: [],
       searchWord: '',
-      currentLoc: {}
+      currentLoc: {},
+      restInfo: {},
     }
   },
   getters: {
@@ -19,7 +20,7 @@ export default createStore({
     },
     getCurrentLoc(state) {
       return state.currentLoc;
-    }
+    },
   },
   mutations: {
     user: (state, data) => {
@@ -33,7 +34,11 @@ export default createStore({
     },
     currentLoc: (state, data) => {
       state.currentLoc = data
+    },
+    restInfo: (state, data) => {
+      state.restInfo = data
     }
+
   },
   plugins: [
     createPersistedState({

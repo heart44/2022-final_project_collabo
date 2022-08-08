@@ -8,7 +8,9 @@
                 <slot name="body">
                 <div class="input-group align-items-center">
                     <input type="text" class="form-control radious" v-model="searchRest" @keyup.enter="searchArea()" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
-                    <a href="#" role="button" @click="[showModal = true, searchArea()]"><span class="search_icon"><img src="../assets/search.png"></span></a>
+                    <a href="#" role="button" @click="[showModal = true, searchArea()]">
+                        <span class="search_icon"><img src="../assets/search.png"></span>
+                    </a>
                     <Teleport to="body">
                         <modal :show="showModal" @close="showModal = false"></modal>                        
                     </Teleport>
@@ -26,7 +28,7 @@
             <div class="">
                 <label for="" class="form-label">작성자</label>
                 <div class="">
-                    <input type="text" class="form-control" ref="iuser" v-model="composition.iuser">
+                    <input type="text" class="form-control" ref="iuser" v-model="user.nick">
                 </div>
             </div>
                 
@@ -55,7 +57,7 @@
             <div class="">
                 <label for="" class="form-label">날짜 시간</label>
                 <div class="">
-                    <input type="datetime-local" class="form-control" ref="partydt" v-model="composition.partydt">
+                    <input type="datetime-local" class="form-control" ref="partydt" v-model="this.testdate" >
                 </div>
             </div>
 
@@ -81,7 +83,11 @@
                     <button type="button" class="btn" @click="insBobF">저장</button>
                 </div>
             </div>
-            
+
+            <div>
+                테스트 공간 
+                {{ restInfo }}
+            </div>
         </div>
     </main>
 </template>
@@ -93,24 +99,43 @@ export default {
     components: {
         Modal
     },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        },
+        getSearchList() {
+            return this.$store.state.getSearchList;
+        },
+        restInfo() {
+            return this.$store.state.restInfo;
+        }
+
+    },
     data() {
         return {
+            testName: '',
+            //가게 검색 모달
             showModal: false,
             searchRest: '',
             searchWord: '',
-            searchList: [],
+            searchList: {},
             
-
+            //insert 요소
             composition: {
                 title: '',
-                iuser: 1,
+                iuser: '',
                 irest: '',
                 partydt: '',
                 ctnt: '',
                 total_mem: '',
                 cur_mem: 1,
                 img_path: ''
+                
             },
+            
+            testdate: '',
+
+            //지역 검색 Object
             AreaCate1: {
                 "서울특별시": "서울",
                 "경기도": "경기",
@@ -130,6 +155,8 @@ export default {
                 "광주광역시": "광주",
                 "제주특별자치도": "제주"
             },
+
+            //지역에 따른 식당 리스트
             RestList: [],
             selectedAreaCate1: '',
             selectedAreaCate2: '',
@@ -139,6 +166,7 @@ export default {
     created() {
         this.selRestList(),
         this.searchWord = this.getSearchWord
+        this.getNowDate()
     },
     methods: {
         changeAreaCate1() {
@@ -159,32 +187,62 @@ export default {
             this.RestList = new Set(this.test);
 
         },
+
+
         insBobF() {
             const param = {};
+
+            this.composition.iuser = this.user.iuser;
+            this.composition.partydt = this.testdate
+
             if(this.selectedAreaCate2 !== '') {
                 this.composition.irest = this.selectedAreaCate2;
                 console.log(this.composition.irest)
             }
+            
             const res = this.$post('api/insBobF', this.composition);
+
+            console.log(this.composition)
             // console.log("res: " + res);
             // this.$router.push( {path: '/'} );
         },
         
-        //검색
+
+        //모달 검색
         getSearchWord() {
           return this.$store.getters.getSearchWord;
         },
         async searchArea() {
-            console.log(this.searchRest);
             if(this.searchRest.trim() !== '') {
+
                 const param = { search_word: this.searchRest }
                 console.log(param)
-                this.searchList = await this.$post('search/menuCrawling', param);
-                // this.$store.commit('setSearchList', this.searchList);
+                console.log(this.searchList);
+                // this.searchList = await this.$post('search/menuCrawling', param);
+                const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.searchRest}&type=all&searchCoord=128.591585;35.8666565&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);
+                console.log(result['result']['place']['list']);
+
+                
+                this.$store.commit('setSearchList', result['result']['place']['list']);
                 this.$store.commit('setSearchWord', this.searchRest);
                 this.searchRest = ''
             }
         },
+
+
+        //오늘 날짜 가져오기
+        getNowDate() {
+            const date = new Date();
+
+            let year = date.getFullYear()
+            let month = ('0' + (date.getMonth() + 1)).slice(-2)
+            let day = ('0' + date.getDate()).slice(-2)
+
+            const dateString = year + '-' + month + '-' + day
+            
+            this.testdate = dateString + "T12:00"
+
+        }
     }
 }
 </script>
