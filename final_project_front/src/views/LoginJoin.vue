@@ -2,31 +2,38 @@
     <main>
         <div class="container" ref="container">
             <div class="form-container sign-up-container">
-                <form>
+                <form @keyup.enter="signup()">
                     <h1>JOIN</h1>
-                    <div class="social-container">
-                        <img class="social" src="../assets/naver.svg">
-                        <img class="social" src="../assets/kakao.svg">
-                        <img class="social" src="../assets/google.svg">
-                    </div>
-                    <span>or use your email for registration</span>
                     <div class="infield">
-                        <input type="text" placeholder="Name" />
+                        <input type="text" placeholder="Nickname" v-model="inputUser.nick" />
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input type="email" placeholder="Email" name="email"/>
+                        <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email" @blur="doubleCheck()" @change="isEmail" />
                         <label></label>
                     </div>
+                    <span class="errormsg">{{ emailError }}</span>
+                    <span class="errormsg">{{ duplication }}</span>
                     <div class="infield">
-                        <input type="password" placeholder="Password" />
+                        <input type="password" placeholder="Password" ref="pw" v-model="inputUser.pw"/>
                         <label></label>
                     </div>
-                    <button type="button">JOIN</button>
+                    <div class="d-flex flex-row infield">
+                        <select class="mt-2 mb-2 me-1" :key="i" v-model="inputUser.birthYear">
+                            <option value="0">birthYear</option>
+                            <option v-for="i in year" :key="i" :value="i">{{ i }}</option>
+                        </select>
+                        <select class="mt-2 mb-2 ms-1" v-model="inputUser.job">
+                            <option value="0">Job</option>
+                            <option value="1">직장인</option>
+                            <option value="2">학생</option>
+                        </select>
+                    </div>
+                    <button type="button" @click="signup()">JOIN</button>
                 </form>
             </div>
             <div class="form-container sign-in-container">
-                <form>
+                <form @keyup.enter="signin()">
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
@@ -35,15 +42,15 @@
                         <img class="social" src="../assets/google.svg">
                     </div>
                     <div class="infield">
-                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
+                        <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input @keyup.enter="signin(inputUser.email, inputUser.pw)" type="password" placeholder="Password" ref="pw" v-model="inputUser.pw" />
+                        <input type="password" placeholder="Password" ref="pw" v-model="inputUser.pw" />
                         <label></label>
                     </div>
                     <router-link class="f_password" to="/PassWord"><span class="forgot">비밀번호 찾기</span></router-link>
-                    <button type="button" @click="signin(inputUser.email, inputUser.pw)">LOGIN</button>
+                    <button type="button" @click="signin()">LOGIN</button>
                 </form>
             </div>
 
@@ -52,7 +59,7 @@
                     <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us please login with your personal info</p>
-                        <button @click="changeLoginBox">LOGIN</button>
+                        <button @click="changeLoginBox" ref="loginBtn">LOGIN</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
@@ -67,30 +74,35 @@
 </template>
 
 <script>
-
 export default {
     data(){
         return{
             inputUser:{
+                nick: '',
                 email: '',
                 pw: '',
-            }
+                birthYear: 0,
+                job: 0,
+            },
+            year: [],
+            duplication: '',
+            emailError: '',
         }
     },
     methods:{
-        async signin(email, pw) {
-            console.log(email);
-            console.log(pw);
-            if(email === "") {
+        async signin() {
+            console.log(this.inputUser.email);
+            console.log(this.inputUser.pw);
+            if(this.inputUser.email === "") {
                 this.$refs.email.focus();
                 this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
-            } else if(pw === "") {
+            } else if(this.inputUser.pw === "") {
                 this.$refs.pw.focus();
                 this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
             }
             const param = {
-                email: email,
-                pw: pw
+                email: this.inputUser.email,
+                pw: this.inputUser.pw
             }
             const dbUser = await this.$post('user/signin', param);
             if(dbUser.result) {
@@ -112,13 +124,71 @@ export default {
             window.requestAnimationFrame( () =>{
                 overlayBtn.classList.add('btnScaled');
             });
-        }
+        },
+        birthYearList(){
+            for(let i = new Date().getFullYear(); i>1899; i--) {
+                this.year.push(i);
+            }
+        },
+        async signup(){
+            const join = this.inputUser;
+            console.log(join.nick, join.email, join.pw, join.birthYear, join.job);
 
-       
+            if(join.email === "") {
+                this.$refs.email.focus();
+                this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
+                return;
+            } else if(this.inputUser.pw === "") {
+                this.$refs.pw.focus();
+                this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
+                return;
+            }
+            const param = {
+                social_type: 0,
+                email: this.inputUser.email,
+                pw: this.inputUser.pw,
+                nick: this.inputUser.nick,
+                birth: this.inputUser.birthYear,
+                job: this.inputUser.job
+            }
+            console.log(param);
+            const joinUser = await this.$post('user/signup', param);
+            console.log(joinUser);
+            if(joinUser.result) {
+                this.$refs.loginBtn.click();
+                this.$swal.fire('회원 가입에 성공했습니다.', '', 'success');
+                this.inputUser.nick = "";
+                this.inputUser.birthYear = 0;
+                this.inputUser.job = 0;
+                this.inputUser.pw = "";
+            }
+        },
+        async doubleCheck() {
+            const param = {
+                social_type: 0,
+                email: this.inputUser.email
+            }
+            const rs = await this.$post('user/doubleCheck', param);
+            if(rs.result) {
+                this.duplication = '중복된 이메일이 존재합니다.';
+            } else {
+                this.duplication = '';
+            }
+        },
+        isEmail() {
+            const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+            const check = regExp.test(this.inputUser.email);
+            console.log(check);
+            if(!check) {
+                this.emailError = '올바른 이메일 형식이 아닙니다.';
+            } else {
+                this.emailError = '';
+            }
+        },
     },
     created(){
-
-    }
+        this.birthYearList();
+    },
 }
 </script>
 
@@ -191,10 +261,10 @@ span{
 }
 .infield{
     position: relative;
-    margin: 8px 0px;
+    margin: 0.5rem 0;
     width:100%;
 }
-input{
+input, select{
     width:100%;
     padding: 12px 15px;
     border: 2px solid #2B3F6B;
@@ -210,11 +280,15 @@ label{
     background:#2B3F6B;
     transition: 0.3s;
 }
-input::placeholder {
+input::placeholder, select {
     color: #2B3F6B;
 }
 input:focus ~ label{
     width:100%;
+}
+select:focus {
+    outline: 3px solid #2b3f6b33;
+    transition: 0.1s;
 }
 a{
     color: #2B3F6B;
@@ -359,5 +433,9 @@ p{
     100%{
         width:143.67px;
     }
+}
+.errormsg {
+    font-size: 0.7rem;
+    color: #F26C38;
 }
 </style>
