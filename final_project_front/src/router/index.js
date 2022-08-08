@@ -15,6 +15,7 @@ import Profile from '../views/Profile';
 
 import MyPage from '../views/MyPage';
 import Join from '../views/Join';
+import DiaryWrite from '../views/DiaryWrite';
 
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
@@ -75,6 +76,11 @@ const routes = [
     path:'/Profile',
     name:'Profile',
     component: Profile
+  },
+  {
+    path:'/DiaryWrite',
+    name:'DiaryWrite',
+    component: DiaryWrite
   }
 ];
 
