@@ -27,6 +27,7 @@
                         </div>
                       </div>
                     </div>
+                    
                     <div class="profile-img">
                       <div v-if="!files.length" class="room-file-upload-example-container">
                           <div class="image-box">
@@ -46,6 +47,7 @@
                             </div>
                         </div>
                     </div>
+                    
                   </div>
                   <div class="btn-profile can_sub">
                     <span class="cancel"><a href="#">CANCEL</a></span>

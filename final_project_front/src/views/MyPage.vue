@@ -21,7 +21,7 @@ button{
   border-radius:15px;
   color:#2B3F6B;
 }
- button:focus{
+button:focus{
     outline:none;
     box-shadow:none;
 }

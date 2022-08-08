@@ -15,7 +15,6 @@ import Profile from '../views/Profile';
 
 import MyPage from '../views/MyPage';
 import Join from '../views/Join';
-import ModalDiary from '../views/ModalDiary';
 import DiaryWrite from '../views/DiaryWrite';
 
 //네비게이션 가드
@@ -77,11 +76,6 @@ const routes = [
     path:'/Profile',
     name:'Profile',
     component: Profile
-  },
-  {
-    path:'/ModalDiary',
-    name:'ModalDiary',
-    component: ModalDiary
   },
   {
     path:'/DiaryWrite',
