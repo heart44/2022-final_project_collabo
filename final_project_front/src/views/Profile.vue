@@ -1,62 +1,101 @@
 <template>
   <div class="container">
     <div class="content">
-        <ul class="nav">
-            <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
-            <li><router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link></li>
-        </ul>
-        <div class="profile-box">
-                  <div class="my-p">
-                    <div class="my-nick">
-                      <div class="p_tag">닉네임 
-                        <div class="my d-flex">
-                          <input type="text" name="name" :value="user.nick">
-                          <input type="button" name="name" value="수정">
-                        </div>
-                      </div>
-                     <div class="p_tag">나이 
-                        <div class="my d-flex">
-                          <input type="text" name="name" :value="user.birth">
-                          <input type="button" name="name" value="수정">
-                        </div>
-                      </div>
-                      <div class="p_tag">직업 
-                        <div class="my d-flex">
-                          <input type="text" name="name" :value="user.job">
-                          <input type="button" name="name" value="수정">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="profile-img">
-                      <div v-if="!files.length" class="room-file-upload-example-container">
-                          <div class="image-box">
-                            <label className="file-button" for="file" >업로드</label>
-                            <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
-                          </div>
-                        </div>
-          
-                        <div v-else class="file-preview-content-container">
-                            <div class="file-preview-container">
-                                <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-                                    <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
-                                       <img src="../assets/close.png">
-                                    </div>
-                                    <img class="preview" :src="file.preview" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+      <ul class="nav">
+        <li>
+          <router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link>
+        </li>
+        <li>
+          <router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link>
+        </li>
+      </ul>
+      <div class="profile-box">
+        <div class="my-p">
+          <div class="my-nick">
+            <div class="p_tag">
+              닉네임
+              <div class="my d-flex">
+                <input type="text" name="name" v-model="inputUser.nick" />
+              </div>
+            </div>
+            <div class="p_tag">
+              나이
+              <div class="my d-flex">
+                <select
+                  :key="i"
+                  v-model="inputUser.birthYear"
+                  :disabled="user.birth !== 0"
+                >
+                  <option value="0">birthYear</option>
+                  <option v-for="i in year" :key="i" :value="i">{{ new Date().getFullYear() - i + 1 }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="p_tag">
+              직업
+              <div class="my d-flex">
+                <select v-model="inputUser.job">
+                    <option value="0">선택 안 함</option>
+                    <option value="1">직장인</option>
+                    <option value="2">학생</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="p_tag">
+              비밀번호 변경
+              <div class="my d-flex">
+                <input type="password" v-model="inputUser.pw"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-img">
+            <!-- <div
+              v-if="!inputUser.files.length"
+              class="room-file-upload-example-container">
+              <div class="image-box">
+                <label className="file-button" for="file">업로드</label>
+                <input type="file" ref="files" @change="imageUpload" style="display: none"/>
+              </div>
+            </div>
+
+            <div v-else class="file-preview-content-container">
+              <div class="file-preview-container">
+                <div class="file-preview-wrapper">
+                  <div class="file-close-button"
+                    @click="fileDeleteButton">
+                    <img src="../assets/close.png" />
                   </div>
-                  <div class="btn-profile can_sub">
-                    <span class="cancel"><a href="#">CANCEL</a></span>
-                    <span class="submit"><a href="#">SUBMIT</a></span>
+                  <img class="preview" :src="file.preview" />
+                </div>
+              </div>
+            </div> -->
+            <div class="image-box">
+              <label class="file-button" for="img">업로드</label>
+              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
+            </div>
+
+            <div v-if="imgSrc !== ''" class="file-preview-content-container">
+              <div class="file-preview-container">
+                <div class="file-preview-wrapper">
+                  <div class="file-close-button"
+                    @click="delPreview">
+                    <img src="../assets/close.png" />
                   </div>
-                          
-        </div> 
+                  <img class="preview" :src="imgSrc"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-profile can_sub">
+          <span class="cancel m-2 text-info pointer">CANCEL</span>
+          <span class="submit m-2 text-danger pointer" @click="profileMod()">SUBMIT</span>
+        </div>
+      </div>
     </div>
- </div>
+  </div>
 </template>
 
 <script>
@@ -158,15 +197,12 @@ button:focus {
 .btn {
   margin-right: 10px;
 }
-.btn{
-  margin-right:10px;
-}
-.profile-box{
-  margin: 0 auto; 
-  margin-top:70px;
-  width:600px;
-  height:500px;
-  border: 1px solid #2B3F6B;
+.profile-box {
+  margin: 0 auto;
+  margin-top: 70px;
+  width: 600px;
+  height: 500px;
+  border: 1px solid #2b3f6b;
   border-radius: 10px;
   box-shadow: 2px 2px 3px;
 }
