@@ -13,7 +13,7 @@ import PassWord from '../views/PassWord';
 
 import Diary from '../views/Diary';
 import Profile from '../views/Profile';
-
+import UpdateDiary from '../views/UpdateDiary';
 import MyPage from '../views/MyPage';
 import DiaryWrite from '../views/DiaryWrite';
 
@@ -81,6 +81,11 @@ const routes = [
     path:'/DiaryWrite',
     name:'DiaryWrite',
     component: DiaryWrite
+  },
+  {
+    path:'/UpdateDiary',
+    name:'UpdateDiary',
+    component: UpdateDiary
   }
 ];
 
