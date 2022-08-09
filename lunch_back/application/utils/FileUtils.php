@@ -53,6 +53,8 @@ function getMaincate($search_word) {
         $maincate = 5;
     } else if(strpos($search_word, "튀김") || strpos($search_word, "전") || strpos($search_word, "빵") || strpos($search_word, "도넛")) {
         $maincate = 6;
+    } else {
+        $maincate = 7;
     }
 
     return $maincate;

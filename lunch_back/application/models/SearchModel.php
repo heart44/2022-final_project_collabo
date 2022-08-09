@@ -34,11 +34,11 @@
         public function getRestList(&$param) {
             $sql = "SELECT a.*, d.menu
                     FROM restaurant a, menu_list b, category2 c, menu_cd d
-                    WHERE a.irest = b.irest AND b.imenu = d.imenu AND d.icate2 = c.icate2 AND d.menu = :menu
+                    WHERE a.irest = b.irest AND b.imenu = d.imenu AND d.icate2 = c.icate2 AND d.menu LIKE :menu
                     GROUP BY a.irest";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menu", $param["search_word"]);
+            $stmt->bindValue(":menu", "%".$param["search_word"]."%");
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
