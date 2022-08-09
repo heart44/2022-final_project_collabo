@@ -48,11 +48,8 @@
         public function selBobfList() {
             $sql = "SELECT 
                         bobf.*,
-                        -- rest.rest_name, rest.rest_address,
                         user.nick
                     FROM bobf
-                        -- LEFT JOIN restaurant rest
-                        -- ON bobf.irest = rest.irest
                         LEFT JOIN user
                         ON bobf.iuser = user.iuser
                     ";
@@ -91,9 +88,11 @@
             return intval($this->pdo->lastInsertId());
         }
 
-        public function selRestList() {
-            $sql = "SELECT * FROM restaurant";
+        public function selRestList(&$param) {
+            $sql = "SELECT * FROM restaurant
+                    WHERE rest_name = :rest_name";
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":rest_name", $param["rest_name"]);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
