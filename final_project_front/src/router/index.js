@@ -4,8 +4,9 @@ import store from '@/store';
 import Main from '../views/Main';
 import SearchList from '../views/SearchList'
 
-import BobfWrite from '../views/BobfWrite'
 import BobfList from '../views/BobfList'
+import BobfDetail from '../views/BobfDetail'
+import BobfWrite from '../views/BobfWrite'
 
 import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
@@ -41,6 +42,11 @@ const routes = [
     path: '/BobfList',
     name: 'BobfList',
     component: BobfList
+  },
+  {
+    path: '/BobfDetail',
+    name: '/BobfDetail',
+    component: BobfDetail
   },
   {
     path: '/BobfWrite',

@@ -9,7 +9,8 @@ export default createStore({
       searchWord: '',
       currentLoc: {},
       restInfo: {},
-      restList: []
+      restList: [],
+      bobfDetailInfo: {}
     }
   },
   getters: {
@@ -42,8 +43,11 @@ export default createStore({
     restList: (state, data) => {
       state.restList = data
     },
-    restInfo: (state, data) => {
-      state.restInfo = data
+    // restInfo: (state, data) => {
+    //   state.restInfo = data
+    // },
+    bobfDetailInfo: (state, data) => {
+      state.bobfDetailInfo = data
     }
 
   },

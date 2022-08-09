@@ -48,11 +48,11 @@
         public function selBobfList() {
             $sql = "SELECT 
                         bobf.*,
-                        rest.rest_name, rest.rest_address,
+                        -- rest.rest_name, rest.rest_address,
                         user.nick
                     FROM bobf
-                        LEFT JOIN restaurant rest
-                        ON bobf.irest = rest.irest
+                        -- LEFT JOIN restaurant rest
+                        -- ON bobf.irest = rest.irest
                         LEFT JOIN user
                         ON bobf.iuser = user.iuser
                     ";
@@ -65,7 +65,7 @@
         //밥친구 글 쓰기
         public function insBobF(&$param) {
             $sql = "INSERT INTO bobf SET
-                    irest = :irest, 
+                    restname = :restname, 
                     iuser = :iuser, 
                     title = :title, 
                     partydt = :partydt, 
@@ -77,7 +77,7 @@
                     gugun = :gugun
                     ";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":irest", $param["irest"]);
+            $stmt->bindValue(":restname", $param["restname"]);
             $stmt->bindValue(":iuser", $param["iuser"]);
             $stmt->bindValue(":title", $param["title"]);
             $stmt->bindValue(":partydt", $param["partydt"]);

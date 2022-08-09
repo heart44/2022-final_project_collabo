@@ -54,26 +54,28 @@
 
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6" :key="ibobf" v-for="ibobf in BobfList">
-          <div class="card" style="width: 18rem;">
-            <a style="cursor:pointer;">
-                <img
-                    alt="이미지" class="card-img-top">
+          <div class="card" style="width: 18rem;" @click="goDetail">
+            <a @click="goToDetail(ibobf)" style="cursor:pointer;">
+              <a style="cursor:pointer;">
+                  <img
+                      alt="이미지" class="card-img-top">
+              </a>
+              <div class="card-body">
+                  <h5 class="card-title">{{ ibobf.title }}</h5>
+                  <p class="card-text">
+                      <span class="badge bd-dark text-black me-1">{{ ibobf.nick }}</span>
+                  </p>
+                  <p class="card-text">
+                      <span class="badge bd-dark text-black">
+                        {{ ibobf.rest_address }}
+                        </span>
+                  </p>
+                      <span class="card-text badge bd-dark text-black">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</span>
+                  <div class="d-flex justify-content-between align-ites-center">
+                      <small class="text-dark">{{  }}</small>
+                  </div>
+              </div>
             </a>
-            <div class="card-body">
-                <h5 class="card-title">{{ ibobf.title }}</h5>
-                <p class="card-text">
-                    <span class="badge bd-dark text-black me-1">{{ ibobf.nick }}</span>
-                </p>
-                <p class="card-text">
-                    <span class="badge bd-dark text-black">
-                      {{ ibobf.rest_address }}
-                      </span>
-                </p>
-                    <span class="card-text badge bd-dark text-black">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</span>
-                <div class="d-flex justify-content-between align-ites-center">
-                    <small class="text-dark">{{  }}</small>
-                </div>
-            </div>
           </div>
         </div>
       </div>
@@ -242,6 +244,13 @@ export default {
       //   }
       // })
       // this.BobfList = await this.$get('api/selBobfList', param);
+    },
+
+    goToDetail(ibobf) {
+      const res = ibobf
+      console.log("res :", res)
+      this.$store.commit('bobfDetailInfo', res)
+      this.$router.push( {path: '/BobfDetail'} );
     },
 
   }
