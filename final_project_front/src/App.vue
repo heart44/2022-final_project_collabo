@@ -58,4 +58,7 @@ nav a.router-link-exact-active {
   text-decoration: none;
   pointer-events: none; 
 }
+.pointer {
+  cursor: pointer;
+}
 </style>

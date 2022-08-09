@@ -10,6 +10,7 @@ export default createStore({
       currentLoc: {},
       restInfo: {},
       restList: [],
+      year: [],
       bobfDetailInfo: {}
     }
   },
@@ -31,6 +32,11 @@ export default createStore({
     user: (state, data) => {
       state.user = data;
     },
+    updateUser: (state, data) => {
+        for(const value in data) {
+          state.user[value] = data[value];
+        }
+    },
     setSearchList: (state, data) => {
       state.searchList = data
     },
@@ -43,13 +49,15 @@ export default createStore({
     restList: (state, data) => {
       state.restList = data
     },
-    // restInfo: (state, data) => {
-    //   state.restInfo = data
-    // },
     bobfDetailInfo: (state, data) => {
       state.bobfDetailInfo = data
+    },
+    year: (state) => {
+      state.year = [];
+      for(let i = new Date().getFullYear(); i>1899; i--) {
+        state.year.push(i);
+      }
     }
-
   },
   plugins: [
     createPersistedState({

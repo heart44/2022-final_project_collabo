@@ -15,7 +15,6 @@ import Diary from '../views/Diary';
 import Profile from '../views/Profile';
 
 import MyPage from '../views/MyPage';
-import Join from '../views/Join';
 import DiaryWrite from '../views/DiaryWrite';
 
 //네비게이션 가드
@@ -67,11 +66,6 @@ const routes = [
     path:'/MyPage',
     name: 'MyPage',
     component: MyPage
-  },
-  {
-    path: '/Join',
-    name: 'Join',
-    component: Join
   },
   {
     path:'/Diary',
