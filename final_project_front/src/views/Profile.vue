@@ -83,7 +83,7 @@
                     @click="delPreview">
                     <img src="../assets/close.png" />
                   </div>
-                  <img class="preview" :src="imgSrc" />
+                  <img class="preview" :src="imgSrc"/>
                 </div>
               </div>
             </div>
@@ -128,10 +128,16 @@ export default {
       this.inputUser.nick = this.user.nick;
       this.inputUser.birthYear = this.user.birth;
       this.inputUser.job = this.user.job;
+      this.imgSrc = this.user.profileimg ?
+      'static/img/profile/'+this.user.iuser+'/'+this.user.profileimg : '';
     },
     async profileMod() {
-      const image = await this.$base64(this.$refs.profileImg.files[0]);
+      let image = '';
+      if(this.$refs.profileImg.files.length !== 0) {
+        image = await this.$base64(this.$refs.profileImg.files[0]);
+      }
       const param = {
+        iuser: this.user.iuser,
         pw: this.inputUser.pw,
         nick: this.inputUser.nick,
         birth: this.inputUser.birthYear,
@@ -142,6 +148,7 @@ export default {
       const userInfo = await this.$post('user/profile', param);
       if(userInfo.result) {
         param.pw = null;
+        param.profileimg = userInfo.result.profileimg;
         this.$store.commit('updateUser', param);
       }
     },
@@ -149,11 +156,18 @@ export default {
     previewImage() {
       let img = this.$refs.profileImg.files[0];
       this.imgSrc = URL.createObjectURL(img)
-      
-      console.log(img);
     },
-    delPreview() {
+    async delPreview() {
       this.imgSrc = "";
+      if(this.user.profileimg) {
+        const rs = await this.$delete(`user/profile/${this.user.iuser}/${this.user.profileimg}`);
+        console.log(rs);
+        if(rs.result) {
+          this.user.profileimg = '';
+        }
+        console.log(this.user);
+
+      }
     },
   },
 };

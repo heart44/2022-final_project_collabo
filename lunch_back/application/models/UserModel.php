@@ -45,22 +45,21 @@ class UserModel extends Model {
     }
 
     public function updateUser(&$param) {
-        $sql = "UPDATE user SET 
-        nick = :nick, 
-        birth = :birth, 
-        job = :job, ";
-        if($param['pw'] !== "") {
-            $sql .= "pw = {$param['pw']}, ";
+        $sql = "UPDATE user SET ";
+        if(isset($param['nick']) && isset($param['birth']) && isset($param['job'])){
+           $sql .= "nick = '{$param['nick']}', 
+            birth = '{$param['birth']}', 
+            job = '{$param['job']}', ";
         }
-        if($param['profileimg'] !== "") {
+        if(isset($param['pw']) && $param['pw'] !== "") {
+            $sql .= "pw = '{$param['pw']}', ";
+        }
+        if(isset($param['profileimg']) !== "") {
             $sql .= "profileimg = '{$param['profileimg']}',";
         }
         $sql .= " moddt = NOW() 
         WHERE iuser = :iuser";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':nick', $param["nick"]);
-        $stmt->bindValue(':birth', $param["birth"]);
-        $stmt->bindValue(':job', $param["job"]);
         $stmt->bindValue(':iuser', $param["iuser"]);
         $stmt->execute();
         return $stmt->rowCount();
