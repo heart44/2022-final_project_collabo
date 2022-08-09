@@ -155,7 +155,7 @@ export default {
         this.$store.commit('updateUser', param);
         this.isAlert = false;
         this.alertmsg = '당신의 프로필이 수정되었습니다.';
-
+        this.$refs.profileImg.value = '';
       }
     },
     // 이미지 미리보기
