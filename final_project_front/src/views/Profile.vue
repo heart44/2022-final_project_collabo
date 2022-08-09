@@ -47,12 +47,13 @@
                             </div>
                         </div>
                     </div>
-
+                    
                   </div>
                   <div class="btn-profile can_sub">
                     <span class="cancel"><a href="#">CANCEL</a></span>
                     <span class="submit"><a href="#">SUBMIT</a></span>
                   </div>
+                          
         </div> 
     </div>
  </div>
@@ -61,76 +62,105 @@
 <script>
 export default {
   data() {
-      return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
-      }
+    return {
+      inputUser:{
+        nick: '',
+        pw: '',
+        birthYear: 0,
+        job: 0,
+      },
+      imgSrc: '',
+    };
   },
-  computed:{
-        user() {
-            return this.$store.state.user;
-        },
+  created() {
+    this.$store.commit("year");
+    this.getUserInfo();
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    year() {
+      return this.$store.state.year;
+    },
   },
   methods: {
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
+    getUserInfo() {
+      this.inputUser.nick = this.user.nick;
+      this.inputUser.birthYear = this.user.birth;
+      this.inputUser.job = this.user.job;
+      this.imgSrc = this.user.profileimg ?
+      'static/img/profile/'+this.user.iuser+'/'+this.user.profileimg : '';
+    },
+    async profileMod() {
+      let image = '';
+      if(this.$refs.profileImg.files.length !== 0) {
+        image = await this.$base64(this.$refs.profileImg.files[0]);
+      }
+      const param = {
+        iuser: this.user.iuser,
+        pw: this.inputUser.pw,
+        nick: this.inputUser.nick,
+        birth: this.inputUser.birthYear,
+        job: this.inputUser.job,
+        profileimg: image
+      };
+
+      const userInfo = await this.$post('user/profile', param);
+      if(userInfo.result) {
+        param.pw = null;
+        param.profileimg = userInfo.result.profileimg;
+        this.$store.commit('updateUser', param);
+      }
+    },
+    // 이미지 미리보기
+    previewImage() {
+      let img = this.$refs.profileImg.files[0];
+      this.imgSrc = URL.createObjectURL(img)
+    },
+    async delPreview() {
+      this.imgSrc = "";
+      if(this.user.profileimg) {
+        const rs = await this.$delete(`user/profile/${this.user.iuser}/${this.user.profileimg}`);
+        console.log(rs);
+        if(rs.result) {
+          this.user.profileimg = '';
         }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
+        console.log(this.user);
+
+      }
     },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
-    },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-.file-button{
+.file-button {
   padding: 6px 25px;
-  background-color:#2B3F6B;
+  background-color: #2b3f6b;
   border-radius: 4px;
   color: white;
   cursor: pointer;
 }
-a{
-  text-decoration:none;
+
+button {
+  border: 2px solid #2b3f6b;
+  border-radius: 15px;
+  color: #2b3f6b;
+}
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+.nav {
+  margin: 0 auto;
+}
+.btn {
+  margin-right: 10px;
+}
+.btn{
   margin-right:10px;
 }
-button{
-  border:2px solid #2B3F6B;
-  border-radius:15px;
-  color:#2B3F6B;
-}
-button:focus{
-    outline:none;
-    box-shadow:none;
-}
-.nav{
-  margin:0 auto;
-}
-/* .btn{
-  margin-right:10px;
-} */
 .profile-box{
   margin: 0 auto; 
   margin-top:70px;
@@ -140,74 +170,74 @@ button:focus{
   border-radius: 10px;
   box-shadow: 2px 2px 3px;
 }
-.preview{
-  width:170px;
+.preview {
+  width: 170px;
   height: 170px;
 }
-.submit a{
-  color:#F26C38;
+.submit a {
+  color: #f26c38;
 }
-.p_tag{
-  color:#2B3F6B;
+.p_tag {
+  color: #2b3f6b;
 }
-.my-p{
-  display:flex;
-  height:450px;
-  width:300px;
+.my-p {
+  display: flex;
+  height: 450px;
+  width: 300px;
 }
-.my-nick{
-  text-align:left;
-  padding-left:30px;
-  padding-top:50px;
+.my-nick {
+  text-align: left;
+  padding-left: 30px;
+  padding-top: 50px;
   font-weight: bold;
-  font-size: 25px;
-  width:300px;
+  font-size: 22px;
+  width: 300px;
 }
-.profile-img{
+.profile-img {
   margin: 30px 100px;
 }
-.btn-profile{
-  border-top:1px solid #a6a6a6;
+.btn-profile {
+  border-top: 1px solid #a6a6a6;
 }
-.file-preview-container{
-  padding-top:40px;
+.file-preview-container {
+  padding-top: 40px;
 }
-.image-box{
-  padding-top:25px;
+.image-box {
+  padding-top: 25px;
 }
-.can_sub{
-  padding-top:13px;
+.can_sub {
+  padding-top: 13px;
 }
-.content{
-  display:flex;
-  flex-direction:column;
+.content {
+  display: flex;
+  flex-direction: column;
 }
-input{
-  font-size:17px;
+input, select {
+  font-size: 17px;
   font-weight: 300;
 }
-input[type="text"]{
-  width:150px;
-  height:30px;
-  border:1px solid #2B3F6B;
+input[type="text"], input[type="password"], select {
+  width: 150px;
+  height: 30px;
+  border: 1px solid #2b3f6b;
 }
-input[type="button"]{
-  width:50px;
-  height:30px;
+input[type="button"] {
+  width: 50px;
+  height: 30px;
   margin-left: 10px;
-  background-color:#2B3F6B;
-  color:white;
-  border:1px solid #2B3F6B;
+  background-color: #2b3f6b;
+  color: white;
+  border: 1px solid #2b3f6b;
 }
-.file-close-button img{
-  width:32px;
-  position:relative;
-  left:37%;
-  top:20px;
-  z-index:1;
+.file-close-button img {
+  width: 32px;
+  position: relative;
+  left: 37%;
+  top: 20px;
+  z-index: 1;
   cursor: pointer;
 }
-label{
-  width:100px;
+label {
+  width: 100px;
 }
 </style>

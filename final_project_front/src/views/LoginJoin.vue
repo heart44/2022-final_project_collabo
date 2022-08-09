@@ -84,15 +84,12 @@ export default {
                 birthYear: 0,
                 job: 0,
             },
-            year: [],
             duplication: '',
             emailError: '',
         }
     },
     methods:{
         async signin() {
-            console.log(this.inputUser.email);
-            console.log(this.inputUser.pw);
             if(this.inputUser.email === "") {
                 this.$refs.email.focus();
                 this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
@@ -106,7 +103,6 @@ export default {
             }
             const dbUser = await this.$post('user/signin', param);
             if(dbUser.result) {
-                console.log(dbUser);
                 this.$store.commit('user', dbUser.result);
                 this.$router.push('../');
             } else {
@@ -115,7 +111,6 @@ export default {
         },
         changeLoginBox() {
             const container = this.$refs.container;
-            // const overlayCon = this.$refs.overlayCon;
             const overlayBtn = this.$refs.overlayBtn;
             
             container.classList.toggle('right-panel-active');
@@ -125,14 +120,8 @@ export default {
                 overlayBtn.classList.add('btnScaled');
             });
         },
-        birthYearList(){
-            for(let i = new Date().getFullYear(); i>1899; i--) {
-                this.year.push(i);
-            }
-        },
         async signup(){
             const join = this.inputUser;
-            console.log(join.nick, join.email, join.pw, join.birthYear, join.job);
 
             if(join.email === "") {
                 this.$refs.email.focus();
@@ -151,9 +140,7 @@ export default {
                 birth: this.inputUser.birthYear,
                 job: this.inputUser.job
             }
-            console.log(param);
             const joinUser = await this.$post('user/signup', param);
-            console.log(joinUser);
             if(joinUser.result) {
                 this.$refs.loginBtn.click();
                 this.$swal.fire('회원 가입에 성공했습니다.', '', 'success');
@@ -178,7 +165,6 @@ export default {
         isEmail() {
             const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
             const check = regExp.test(this.inputUser.email);
-            console.log(check);
             if(!check) {
                 this.emailError = '올바른 이메일 형식이 아닙니다.';
             } else {
@@ -187,8 +173,13 @@ export default {
         },
     },
     created(){
-        this.birthYearList();
+        this.$store.commit('year');
     },
+    computed: {
+        year() {
+            return this.$store.state.year;
+        }
+    }
 }
 </script>
 

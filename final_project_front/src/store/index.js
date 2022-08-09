@@ -8,7 +8,8 @@ export default createStore({
       searchList: [],
       searchWord: '',
       currentLoc: {},
-      restList: []
+      restList: [],
+      year: [],
     }
   },
   getters: {
@@ -29,6 +30,11 @@ export default createStore({
     user: (state, data) => {
       state.user = data;
     },
+    updateUser: (state, data) => {
+        for(const value in data) {
+          state.user[value] = data[value];
+        }
+    },
     setSearchList: (state, data) => {
       state.searchList = data
     },
@@ -40,7 +46,14 @@ export default createStore({
     },
     restList: (state, data) => {
       state.restList = data
+    },
+    year: (state) => {
+      state.year = [];
+      for(let i = new Date().getFullYear(); i>1899; i--) {
+        state.year.push(i);
+      }
     }
+
   },
   plugins: [
     createPersistedState({
