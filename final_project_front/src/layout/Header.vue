@@ -7,11 +7,11 @@
             <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
         </div>
         
-        <div class="d-flex">
+        <div>
             <div v-if="user.email === undefined">
                 <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
             </div>
-            <div v-else>
+            <div v-else class="d-flex">
                 <div class="dropdown">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>    
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
