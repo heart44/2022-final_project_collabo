@@ -49,8 +49,26 @@
                 case _POST:
                     $json = getJson();
                     $json["iuser"] = getIuser();
-                    $result = $this->model->updateUser($json);
-                    if($result){
+                    // 이미지 폴더에 업로드
+                    if($json["profileimg"] !== ''){
+                        $image_parts  = explode(";base64", $json["profileimg"]);
+                        $imge_type_aux = explode("image/", $image_parts[0]);
+                        $image_type = $imge_type_aux[1];
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $dirPath = _IMG_PATH . "/profile/" . $json["iuser"];
+                        $path = uniqid() . "." . $image_type;
+                        $filePath = $dirPath . "/" . $path;
+                        if(!is_dir($dirPath)) {
+                            mkdir($dirPath, 0777, true);
+                        }
+                        $result = file_put_contents($filePath, $image_base64);
+                        if($result) {
+                            $json["profileimg"] = $path;
+                        }
+                    }
+                    // 프로필 수정
+                    $rs = $this->model->updateUser($json);
+                    if($rs){
                         return [_RESULT => 1];
                     }
                     return [_RESULT => 0];

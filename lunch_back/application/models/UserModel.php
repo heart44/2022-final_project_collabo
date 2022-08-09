@@ -52,6 +52,9 @@ class UserModel extends Model {
         if($param['pw'] !== "") {
             $sql .= "pw = {$param['pw']}, ";
         }
+        if($param['profileimg'] !== "") {
+            $sql .= "profileimg = '{$param['profileimg']}',";
+        }
         $sql .= " moddt = NOW() 
         WHERE iuser = :iuser";
         $stmt = $this->pdo->prepare($sql);

@@ -51,10 +51,9 @@
           </div>
 
           <div class="profile-img">
-            <div
+            <!-- <div
               v-if="!inputUser.files.length"
-              class="room-file-upload-example-container"
-            >
+              class="room-file-upload-example-container">
               <div class="image-box">
                 <label className="file-button" for="file">업로드</label>
                 <input type="file" ref="files" @change="imageUpload" style="display: none"/>
@@ -69,6 +68,22 @@
                     <img src="../assets/close.png" />
                   </div>
                   <img class="preview" :src="file.preview" />
+                </div>
+              </div>
+            </div> -->
+            <div class="image-box">
+              <label class="file-button" for="img">업로드</label>
+              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
+            </div>
+
+            <div v-if="imgSrc !== ''" class="file-preview-content-container">
+              <div class="file-preview-container">
+                <div class="file-preview-wrapper">
+                  <div class="file-close-button"
+                    @click="delPreview">
+                    <img src="../assets/close.png" />
+                  </div>
+                  <img class="preview" :src="imgSrc" />
                 </div>
               </div>
             </div>
@@ -92,10 +107,8 @@ export default {
         pw: '',
         birthYear: 0,
         job: 0,
-        files: [], //업로드용 파일
       },
-      filesPreview: [],
-      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
+      imgSrc: '',
     };
   },
   created() {
@@ -116,50 +129,31 @@ export default {
       this.inputUser.birthYear = this.user.birth;
       this.inputUser.job = this.user.job;
     },
-    imageUpload() {
-      console.log(this.$refs.files.files);
-      let num = -1;
-      for (let i = 0; i < this.$refs.files.files.length; i++) {
-        this.inputUser.files = [
-          ...this.inputUser.files,
-          //이미지 업로드
-          {
-            //실제 파일
-            file: this.$refs.files.files[i],
-            //이미지 프리뷰
-            preview: URL.createObjectURL(this.$refs.files.files[i]),
-            //삭제및 관리를 위한 number
-            number: i,
-          },
-        ];
-        num = i;
-      }
-      this.uploadImageIndex = num + 1;
-      console.log(this.inputUser.files);
-    },
-    fileDeleteButton(e) {
-      const name = e.target.getAttribute("name");
-      this.inputUser.files = this.inputUser.files.filter((data) => data.number !== Number(name));
-    },
     async profileMod() {
-      console.log(this.inputUser);
+      const image = await this.$base64(this.$refs.profileImg.files[0]);
       const param = {
         pw: this.inputUser.pw,
         nick: this.inputUser.nick,
         birth: this.inputUser.birthYear,
         job: this.inputUser.job,
-        // profileimg: this.inputUser.files
+        profileimg: image
       };
 
       const userInfo = await this.$post('user/profile', param);
       if(userInfo.result) {
         param.pw = null;
         this.$store.commit('updateUser', param);
-        console.log('dddd');
       }
-        console.log(this.user);
-
-
+    },
+    // 이미지 미리보기
+    previewImage() {
+      let img = this.$refs.profileImg.files[0];
+      this.imgSrc = URL.createObjectURL(img)
+      
+      console.log(img);
+    },
+    delPreview() {
+      this.imgSrc = "";
     },
   },
 };
