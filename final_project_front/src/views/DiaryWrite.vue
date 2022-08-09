@@ -7,8 +7,15 @@
             </ul>
         </div>
 
-        <div class="profile-img">
-            <div v-if="!files.length" class="room-file-upload-example-container">
+        <div class="write">
+          <div class="write_ctnt">
+            <div class="date">
+              <label>날짜</label> 
+              <input type="date">
+            </div>
+
+            <div class="profile-img">
+              <div v-if="!files.length" class="room-file-upload-example-container">
                 <div class="image-box">
                   <label className="file-button" for="file" >업로드</label>
                   <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
@@ -25,39 +32,42 @@
                       </div>
                   </div>
               </div>
+            </div>
+
+            <div class="store">
+              <label>가게</label> 
+              <input type="text" name="name" value="">
+            </div>
+
+            <div class="contents">
+              <label class="ctnt">내용</label> 
+              <textarea placeholder=""></textarea>
+            </div>
+          </div>
+            <div class="star">
+              
+                <form class="mb-3" name="myform" id="myform" method="post">
+                  <fieldset>
+                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                      for="rate1">⭐</label>
+                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                      for="rate2">⭐</label>
+                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                      for="rate3">⭐</label>
+                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                      for="rate4">⭐</label>
+                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                      for="rate5">⭐</label>
+                  </fieldset>
+                </form>
+            </div>
+          </div>
+        
+
+        <div class="submit">
+          <router-link to="/Diary"><button class="btn_ok" type="button">등록</button></router-link>
         </div>
 
-        <div class="write">
-          <div class="store">
-            가게 <input type="text" name="name" value="">
-          </div>
-           <div class="content">
-            내용 <input type="text" name="name" value="">
-          </div>
-          <div class="date">
-            날짜 <input type="text" name="name" value="">
-          </div>
-          <div class="star">
-            <p>별점</p> 
-              <form class="mb-3" name="myform" id="myform" method="post">
-                <fieldset>
-                  <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                    for="rate1">⭐</label>
-                  <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                    for="rate2">⭐</label>
-                  <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                    for="rate3">⭐</label>
-                  <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                    for="rate4">⭐</label>
-                  <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                    for="rate5">⭐</label>
-                </fieldset>
-              </form>
-          </div>
-        </div>
-    
-    
-    
     
     
     </div>
@@ -134,14 +144,53 @@ button{
   cursor: pointer;
 }
 .profile-img{
-  margin-top:70px;
+  float:right;
+  position: relative;
+  right:20%;
+  bottom:30px;
 }
 .preview{
   width:170px;
   height: 170px;
 }
+label{
+  margin-right: 20px;
+  font-weight: bold;
+}
+label.ctnt{
+  width: 50px;
+}
+.write_ctnt{
+  padding-left: 55px;
+}
+.contents{
+  display:flex;
+  align-items: center;
+  height:300px;
+}
+textarea{
+  border:2px solid #2B3F6B;
+  border-radius: 5px;
+  width:450px;
+  height:300px;
+  position: relative;
+  right:9px;
+}
 .write{
-  margin-top: 70px;
+  margin: 0 auto;
+  width:600px;
+  text-align: left;
+  margin-top: 50px;
+}
+.write p{
+  text-align:left;
+}
+.write input{
+  border: 2px solid #2B3F6B;
+  border-radius: 5px;
+}
+.write div{
+  margin-bottom: 50px;
 }
 #myform fieldset{
     display: inline-block;
@@ -155,18 +204,21 @@ button{
     display: none;
 }
 #myform label{
-    font-size: 3em;
+    font-size: 2.1em;
     color: transparent;
     text-shadow: 0 0 0 #f0f0f0;
 }
 #myform label:hover{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
 }
 #myform label:hover ~ label{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
 }
 #myform input[type=radio]:checked ~ label{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
+}
+#myform label{
+  margin-right:10px !important; 
 }
 #reviewContents {
     width: 100%;
@@ -183,8 +235,20 @@ fieldset label{
 }
 .star{
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding-left:9.5%;
+  padding-left:0.6%;
+  text-align: center;
+}
+.btn_ok{
+  border:2px solid #2B3F6B;
+  border-radius:5px;
+  color:#2B3F6B;
+  background-color: white;
+  text-align: center;
+}
+.btn_ok:hover{
+  background-color:#2B3F6B;
+  color:white;
 }
 </style>
