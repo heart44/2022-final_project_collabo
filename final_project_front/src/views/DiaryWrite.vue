@@ -8,30 +8,28 @@
         </div>
 
         <div class="write">
-          <div class="write_ctnt">
-            <div class="date">
-              <label>날짜</label> 
-              <input type="date">
-            </div>
+            <div class="write_ctnt">
+              <div class="date">
+                <label>날짜</label> 
+                <input type="date">
+              </div>
 
-            <div class="profile-img">
-              <div v-if="!files.length" class="room-file-upload-example-container">
+              <div class="profile-img">
                 <div class="image-box">
-                  <label className="file-button" for="file" >업로드</label>
-                  <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
+                  <label class="file-button" for="img">업로드</label>
+                  <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
                 </div>
-              </div>
 
-              <div v-else class="file-preview-content-container">
+                <div v-if="imgSrc !== ''" class="file-preview-content-container">
                   <div class="file-preview-container">
-                      <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-                          <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
-                              <img src="../assets/close.png">
-                          </div>
-                          <img class="preview" :src="file.preview" />
+                    <div class="file-preview-wrapper">
+                      <div class="file-close-button" @click="delPreview">
+                        <img src="../assets/close.png" />
                       </div>
+                      <img class="preview" :src="imgSrc"/>
+                    </div>
                   </div>
-              </div>
+                </div>
             </div>
 
             <div class="store">
@@ -61,27 +59,21 @@
                   </fieldset>
                 </form>
             </div>
-          </div>
+        </div>
         
-
         <div class="submit">
           <router-link to="/Diary"><button class="btn_ok" type="button">등록</button></router-link>
         </div>
 
-    
-    
     </div>
 </template>
 
 <script>
 export default {
   data() {
-      return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
-      }
+    return {
+      imgSrc: '',
+    }
   },
   computed:{
         user() {
@@ -89,31 +81,43 @@ export default {
         },
   },
   methods: {
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
+    async profileMod() {
+        let image = '';
+        if(this.$refs.profileImg.files.length !== 0) {
+          image = await this.$base64(this.$refs.profileImg.files[0]);
         }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
+        const param = {
+          iuser: this.user.iuser,
+          pw: this.inputUser.pw,
+          nick: this.inputUser.nick,
+          birth: this.inputUser.birthYear,
+          job: this.inputUser.job,
+          profileimg: image
+        };
+
+        const userInfo = await this.$post('user/profile', param);
+        if(userInfo.result) {
+          param.pw = null;
+          param.profileimg = userInfo.result.profileimg;
+          this.$store.commit('updateUser', param);
+        }
     },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
+     // 이미지 미리보기
+    previewImage() {
+      let img = this.$refs.profileImg.files[0];
+      this.imgSrc = URL.createObjectURL(img)
+    },
+    async delPreview() {
+      this.imgSrc = "";
+      if(this.user.profileimg) {
+        const rs = await this.$delete(`user/profile/${this.user.iuser}/${this.user.profileimg}`);
+        console.log(rs);
+        if(rs.result) {
+          this.user.profileimg = '';
+        }
+        console.log(this.user);
+
+      }
     },
   }
 }
@@ -246,6 +250,7 @@ fieldset label{
   color:#2B3F6B;
   background-color: white;
   text-align: center;
+  margin-bottom: 30px;
 }
 .btn_ok:hover{
   background-color:#2B3F6B;
