@@ -56,7 +56,7 @@
 
         public function insBobF() {
             $json = getJson();
-            print_r($json);
+
             return [_RESULT => $this->model->insBobF($json)];
         }
 

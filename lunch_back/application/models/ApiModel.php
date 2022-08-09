@@ -88,7 +88,7 @@
             $stmt->bindValue(":sido", $param["sido"]);
             $stmt->bindValue(":gugun", $param["gugun"]);
             $stmt->execute();
-            return intval($this->pdo->lastInserId());
+            return intval($this->pdo->lastInsertId());
         }
 
         public function selRestList() {

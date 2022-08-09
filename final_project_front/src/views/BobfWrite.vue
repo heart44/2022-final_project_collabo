@@ -328,6 +328,7 @@ export default {
 
             console.log(this.composition)
             console.log("res: " + res);
+            console.log( res.result)
 
 
             if( res.result ) {
