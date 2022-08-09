@@ -51,6 +51,37 @@
       <div>
         <router-link to="/BobfWrite">글쓰기 테스트 화면</router-link>
       </div>
+        <!-- <div class="main_area con">
+          <div class="con_title">
+            <div class="tab_cont">
+              <div id="main_picl" class="cbp cbp-ready cbp-mode-slider" style="height: 377px">
+                <div class="cbp-wrapper-outer">
+                  <div class="cbp-wrapper" style="width: 7970px; transform: translate3d(0px, 0px, 0px);">
+                    <div class="cbp-item" style="width: 370px; left: 0px; top: 0px;">
+                      <div class="cbp-item-wrapper">
+                        <div class="pick">
+                          <div class="cap">
+                            <div class="pc">
+                              <div class="text_area">
+                                <div class="top_txt">
+                                  <a href=""></a>
+                                <div class="btm_txt">
+                                  <div class="profile"></div>
+                                  <div class="stat"></div>
+                                </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
 
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6" :key="ibobf" v-for="ibobf in BobfList">
@@ -118,12 +149,12 @@ export default {
       aaa:'',
       AreaCate1List: [],
       AreaCate2List: [],
-      // AreaCate3List: [],
+      AreaCate3List: [],
       // AreaCate4List: [],
-      
+
       selectedAreaCate1: '',
       selectedAreaCate2: '',
-      // selectedAreaCate3: '',
+      selectedAreaCate3: '',
       // selectedAreaCate4: '',
     };
   },
@@ -138,23 +169,23 @@ export default {
     
     changeAreaCate1() {
         this.selectedAreaCate2 = '';
-        // this.selectedAreaCate3 = '';
+        this.selectedAreaCate3 = '';
         // this.selectedAreaCate4 = '';
 
         this.Areacate2List = [];
-        // this.Areacate3List = [];
+        this.Areacate3List = [];
 
         this.getAreaCate2List(this.selectedAreaCate1);
         this.getBobfList();
     },
 
-    // changeAreaCate2() {
-    //   this.selectedAreaCate3 = '';
-    //   this.selectedAreaCate4 = '';
-    //   this.AreaCate3List = [];
-    //   this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
-    //   this.getBobfList();
-    // },
+    changeAreaCate2() {
+      this.selectedAreaCate3 = '';
+      this.selectedAreaCate4 = '';
+      this.AreaCate3List = [];
+      this.getAreaCate3List(this.selectedAreaCate1, this.selectedAreaCate2);
+      this.getBobfList();
+    },
     // changeAreaCate3() {
     //   this.selectedAreaCate4 = '';
     //   this.AreaCate4List = [];
@@ -180,24 +211,24 @@ export default {
 
     },
 
-    // async getAreaCate3List(area1, area2_5) {
-    //   const area3 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
+    async getAreaCate3List(area1, area2_5) {
+      const area3 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
       
-    //   area3.forEach(item => {
-    //     if(item.area3 !== '' && item.area3 !== area2_5) {
-    //         this.AreaCate3List.push(item["area3"]);
-    //     } else if(item.area3 !== '' && item.area3 === area2_5 || item.area3 === '' && item.area4 !== '' ){
-    //       this.AreaCate3List.push(item["area4"]);
-    //     }
-    //   })
+      area3.forEach(item => {
+        if(item.area3 !== '' && item.area3 !== area2_5) {
+            this.AreaCate3List.push(item["area3"]);
+        } else if(item.area3 !== '' && item.area3 === area2_5 || item.area3 === '' && item.area4 !== '' ){
+          this.AreaCate3List.push(item["area4"]);
+        }
+      })
 
-    //   if(this.AreaCate3List.length === 0) {
-    //     this.AreaCate3List = []
-    //   } else {
-    //     this.AreaCate3List = new Set(this.AreaCate3List);
-    //   }
+      if(this.AreaCate3List.length === 0) {
+        this.AreaCate3List = []
+      } else {
+        this.AreaCate3List = new Set(this.AreaCate3List);
+      }
 
-    // },
+    },
     // async getAreaCate4List(area1, area2_5) {
     //   const area4 = await this.$get(`api/AreaCate3List/${area1}/${area2_5}`, {});
       
@@ -262,3 +293,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>
