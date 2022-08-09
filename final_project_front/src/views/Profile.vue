@@ -47,13 +47,12 @@
                             </div>
                         </div>
                     </div>
-                    
+
                   </div>
                   <div class="btn-profile can_sub">
                     <span class="cancel"><a href="#">CANCEL</a></span>
                     <span class="submit"><a href="#">SUBMIT</a></span>
                   </div>
-                          
         </div> 
     </div>
  </div>
@@ -129,9 +128,9 @@ button:focus{
 .nav{
   margin:0 auto;
 }
-.btn{
+/* .btn{
   margin-right:10px;
-}
+} */
 .profile-box{
   margin: 0 auto; 
   margin-top:70px;
