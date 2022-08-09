@@ -67,7 +67,7 @@
                   </p>
                   <p class="card-text">
                       <span class="badge bd-dark text-black">
-                        {{ ibobf.rest_address }}
+                        {{ ibobf.sido }} / {{ ibobf.gugun}}
                         </span>
                   </p>
                       <span class="card-text badge bd-dark text-black">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</span>
@@ -120,6 +120,7 @@ export default {
       AreaCate2List: [],
       // AreaCate3List: [],
       // AreaCate4List: [],
+      
       selectedAreaCate1: '',
       selectedAreaCate2: '',
       // selectedAreaCate3: '',
@@ -130,30 +131,23 @@ export default {
     },
   created() {
     //지역
-    this.getRestArea();
     this.getBobfList();
   },
   methods: {
-    async selBobfList() {
-      this.BobfList = await this.$post('api/selBobfList', {});
-    },
 
-    //지역 카테고리
-    async getRestArea() {
-      const Addr = await this.$get('api/selArea', {});
-      // console.log(Addr);
-    },
     
     changeAreaCate1() {
         this.selectedAreaCate2 = '';
         // this.selectedAreaCate3 = '';
         // this.selectedAreaCate4 = '';
+
         this.Areacate2List = [];
         // this.Areacate3List = [];
 
         this.getAreaCate2List(this.selectedAreaCate1);
         this.getBobfList();
     },
+
     // changeAreaCate2() {
     //   this.selectedAreaCate3 = '';
     //   this.selectedAreaCate4 = '';
@@ -217,25 +211,36 @@ export default {
   
 
     async getBobfList() {
-      const select1 = this.AreaCate1[this.selectedAreaCate1];
-      const select2 = this.selectedAreaCate2;
+      // const select1 = this.AreaCate1[this.selectedAreaCate1];
       // const select3 = this.selectedAreaCate3;
       // const select4 = this.selectedAreaCate4;
-      console.log("test[select1]: " + this.AreaCate1[select1]);
+
+      const select1 = this.selectedAreaCate1;
+      const select2 = this.selectedAreaCate2;
+      console.log(this.selectedAreaCate2)
+
       const param = {};
       if(select1 !== '') {
         param.area1 = select1;
-        console.log(param);
       }
       if(select2 !== '') {
         param.area2 = select2;
-        console.log(param);
       }
 
-      
-      this.BobfList = await this.$get('api/selBobfList', param);
-    
+      if(!select1) {
+        this.BobfList = await this.$get('api/selBobfList', param);
+      } else {
+        const test = await this.$get('api/selBobfList', param);
 
+        const sidoListCard = [];
+          test.forEach(item => {
+            if(item.sido === select1) {
+              sidoListCard.push(item);
+            }
+          })
+        this.BobfList = sidoListCard;
+      }
+      
       // test.forEach(item => {
       //   if(item.rest_address.split(' ')[0] === select1 ) {
       //     this.BobfList = [];
@@ -245,6 +250,7 @@ export default {
       // })
       // this.BobfList = await this.$get('api/selBobfList', param);
     },
+
 
     goToDetail(ibobf) {
       const res = ibobf

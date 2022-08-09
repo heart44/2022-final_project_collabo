@@ -2,6 +2,9 @@
     <div>
         {{user}}
         {{bobfDetailInfo}}
+        <div>
+            ^^
+        </div>
     </div>
 </template>
 

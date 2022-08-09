@@ -1,8 +1,6 @@
 <template>
     <main class="">
         <div class="container">
-            <div ><button @click="goBack" type="button">뒤로가기</button></div>
-            
             <h2 class="text-center">~ 글 쓰기 ~</h2>
 
             <div class="">
@@ -103,7 +101,7 @@
 
             <div class="">
                 <div class="">
-                    <button type="button" class="btn" @click="HomeView">취소</button>
+                    <button type="button" class="btn" @click="goBack">취소</button>
                 </div>
                 <div class="">
                     <button type="button" class="btn" @click="insBobF">저장</button>
@@ -221,7 +219,7 @@ export default {
         async selRestList() {
             this.selectAreaArray = [];
             const selectArea = this.AreaCate1[this.selectedAreaCate1];
-            
+
             const selectAreaArray2 = await this.$post('api/selRestList', {});
             selectAreaArray2.forEach( item => {
                 if(item.rest_address.split(' ')[0] === selectArea)
@@ -253,21 +251,17 @@ export default {
                 const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.searchRest}&type=all&searchCoord=128.591585;35.8666565&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);
 
                 const res = result['result']['place']['list']
-                // console.log("Res : ", res);
 
                 const selectArea = this.selectedAreaCate1
-                console.log(selectArea)
                 const ha = [];
                 res.forEach(item => {
                     const searchSido = item.address.split(' ')[0]
                     if(selectArea !== '' && selectArea === searchSido) {
-                        console.log(item.name);
                         ha.push(item)
                     } 
                 })
 
                 this.searchList = ha;
-                console.log(this.searchList);
 
                 this.$store.commit('setSearchWord', this.searchRest);
                 this.searchRest = ''
@@ -278,7 +272,6 @@ export default {
 
             const param = { name : name, addr : addr}
             this.restInfo = param
-            // console.log(this.restInfo)
 
             const sido = addr.split(' ')[0]
             const gugun = addr.split(' ')[1]
@@ -317,19 +310,12 @@ export default {
             this.composition.sido = this.sido
             this.composition.gugun = this.gugun
             this.composition.restname = this.restInfo.name
-            console.log(this.composition)
 
             if(this.selectedAreaCate2 !== '') {
                 this.composition.irest = this.selectedAreaCate2;
-                console.log(this.composition.irest)
             }
             
             const res = await this.$post('api/insBobF', this.composition)
-
-            console.log(this.composition)
-            console.log("res: " + res);
-            console.log( res.result)
-
 
             if( res.result ) {
                 this.$router.push( {path: '/BobfList'} );
