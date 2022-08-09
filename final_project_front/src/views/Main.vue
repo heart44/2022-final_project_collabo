@@ -14,10 +14,6 @@
         </div>
       </div>
 
-      <div>
-        <router-link to="/BobfList">BobfList</router-link>
-      </div>
-
       <div class="card-group text-center">
         <div class="card" v-for="item in menuList" :key="item">
           <img src="">
