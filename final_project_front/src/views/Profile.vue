@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+
+    <!-- alert -->
+    <div class="alert alert-warning">
+      {{ alertmsg }}
+    </div>  
+
     <div class="content">
       <ul class="nav">
         <li>
@@ -51,26 +57,6 @@
           </div>
 
           <div class="profile-img">
-            <!-- <div
-              v-if="!inputUser.files.length"
-              class="room-file-upload-example-container">
-              <div class="image-box">
-                <label className="file-button" for="file">업로드</label>
-                <input type="file" ref="files" @change="imageUpload" style="display: none"/>
-              </div>
-            </div>
-
-            <div v-else class="file-preview-content-container">
-              <div class="file-preview-container">
-                <div class="file-preview-wrapper">
-                  <div class="file-close-button"
-                    @click="fileDeleteButton">
-                    <img src="../assets/close.png" />
-                  </div>
-                  <img class="preview" :src="file.preview" />
-                </div>
-              </div>
-            </div> -->
             <div class="image-box">
               <label class="file-button" for="img">업로드</label>
               <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
