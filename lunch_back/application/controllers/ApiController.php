@@ -46,7 +46,9 @@
         //     return $this->model->AreaCate4List($param);
         // }
 
-        //밥친구 리스트
+
+
+        //밥친구
         public function selBobfList() {
             return $this->model->selBobfList();
 
@@ -54,8 +56,12 @@
 
         public function insBobF() {
             $json = getJson();
-            print_r($json);
+
             return [_RESULT => $this->model->insBobF($json)];
+        }
+
+        public function selRestList() {
+            return $this->model->selRestList();
         }
 
     }
