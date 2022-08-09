@@ -38,12 +38,10 @@ export default {
         }
     },
     created() {
-        // this.insSearchList()
-        // this.getRestList()
         this.restList = this.getRestList
     },
     updated() {
-        // this.restList = restList
+        // this.insSearchList()
     },
     mounted() {
         this.mapContainer()

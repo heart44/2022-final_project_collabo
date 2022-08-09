@@ -2,8 +2,6 @@
   <div id="wrap">
     <Header />
     <router-view/>
-    <router-link to="/BobfList">BobfList</router-link>
-    <router-link to="/Profile">profile</router-link>
     <Footer />
   </div>
 </template>
