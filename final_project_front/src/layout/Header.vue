@@ -2,24 +2,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark main-bg shadows p-3 mb-5 bg-body rounded">
         <div class="container">
         <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
-        <div class="row">
-            <div class="col-auto">
-                <select class="form-select" v-model="maincate" @change="changeCate1">
-                    <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
-                </select>
-            </div>
-            <div class="col-auto" v-if="maincate !== ''">
-                <select class="form-select" v-model="midcate" @change="changeCate2">
-                    <option :key="name" v-for="(value, name) of categoryObj[maincate]">{{ name }}</option>
-                </select>                         <!-- of: 객체, in으로 해도 동작은 함-->
-            </div>
-            <!-- 
-            <div class="col-auto" v-if="midcate !== ''">
-                <select class="form-select" v-model="menu"> -->  <!-- in: 배열-->
-                    <!-- <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[maincate][midcate]">{{ cate.value }}</option>
-                </select>
-            </div>  -->
-        </div>
         <div class="input-group align-items-center">
             <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="오늘은 @@이 많이 검색됐네요~" aria-label="Username" aria-describedby="basic-addon1">
             <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
@@ -68,7 +50,7 @@ export default {
         }
     },
     created() {
-        this.getCategoryList();
+        
     },
     methods: {
         async signout() {
@@ -105,7 +87,7 @@ export default {
                 console.log(rs)
 
                 //여기는 그 뭐냐,,,검색하면 디비에 저장된 내용 가져와서 searchList.vue에 뿌려줄라고
-                const rs2 = await this.$get(`/search/restList/${this.search}`);
+                const rs2 = await this.$get(`/search/restList/${this.search}/${this.getCurrentLoc.lon}/${this.getCurrentLoc.lat}`);
                 console.log(rs2["rs"]);
                 this.$store.commit('restList', rs2["rs"]);  //select 해온 결과 값 store에 저장
                 
@@ -115,38 +97,7 @@ export default {
                 this.search = ''
             }
         },
-        async getCategoryList() {
-            // console.log('ddd')
-            const categoryList = await this.$get('/search/searchCategoryList');
-            console.log(categoryList);
-            let maincate = '';
-            let midcate = '';      
-            categoryList.forEach(item => {
-            if(item.maincate !== maincate) {
-                maincate = item.maincate;
-                this.categoryObj[maincate] = {};
-                midcate = '';          
-            }
-            if(item.midcate !== midcate) {
-                midcate = item.midcate;
-                this.categoryObj[maincate][midcate] = [];
-            }   
-            const obj = {
-                id: item.imenu,
-                value: item.menu
-            };
-            // console.log(obj)
-            this.categoryObj[maincate][midcate].push(obj);
-            // console.log(this.categoryObj)
-            });      
-        },
-        changeCate1() {
-            this.midcate = '';
-            // this.product.category_id = '';
-        },
-        changeCate2() {
-            // this.product.category_id = '';
-        },
+        
     }
 }
 </script>

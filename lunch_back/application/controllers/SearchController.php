@@ -44,9 +44,15 @@
                 }
                 if($item["menu"]) { //메뉴가 있으면 아래 코드 실행
                     $menuList = menuSubstring($item["menu"]);   //메뉴 자르는 함수
-                    foreach($menuList as $list) {   //자른 메뉴 반복해서 DB에 넣음
-                        $params["name"] = $list["name"];
-                        $params["price"] = $list["price"];
+                    if(count($menuList)<=20) {
+                        foreach($menuList as $list) {   //자른 메뉴 반복해서 DB에 넣음
+                            $params["name"] = $list["name"];
+                            $params["price"] = $list["price"];
+                            $rs = $this->model->insSearchMenu($params);
+                        }
+                    } else {
+                        $param["name"] = "";
+                        $param["price"] = "";
                         $rs = $this->model->insSearchMenu($params);
                     }
                 } else { //없으면 걍 null값 넣음^^
@@ -61,10 +67,14 @@
 
         public function restList() {
             $urlPaths = getUrlPaths();
-            if(!isset($urlPaths[2])) {
+            if(!isset($urlPaths[2]) || !isset($urlPaths[3]) || !isset($urlPaths[4])) {
                 exit();
             }
-            $param = [ "search_word" => $urlPaths[2] ];
+            $param = [ 
+                "search_word" => $urlPaths[2], 
+                "lon_x" => $urlPaths[3], 
+                "lat_y" => $urlPaths[4], 
+            ];
             // echo $param;
             $rs = $this->model->getRestList($param);
 
