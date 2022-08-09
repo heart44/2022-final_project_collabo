@@ -8,6 +8,7 @@ export default createStore({
       searchList: [],
       searchWord: '',
       currentLoc: {},
+      restList: [],
       year: [],
     }
   },
@@ -21,6 +22,9 @@ export default createStore({
     getCurrentLoc(state) {
       return state.currentLoc;
     },
+    getRestList(state) {
+      return state.restList;
+    }
   },
   mutations: {
     user: (state, data) => {
@@ -40,12 +44,16 @@ export default createStore({
     currentLoc: (state, data) => {
       state.currentLoc = data
     },
+    restList: (state, data) => {
+      state.restList = data
+    },
     year: (state) => {
       state.year = [];
       for(let i = new Date().getFullYear(); i>1899; i--) {
         state.year.push(i);
       }
     }
+
   },
   plugins: [
     createPersistedState({
