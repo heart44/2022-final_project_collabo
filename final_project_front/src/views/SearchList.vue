@@ -127,10 +127,10 @@ export default {
             // const iwRemoveable = true
             for(let i=0; i<position.length; i++) {
                 // 마커 이미지의 이미지 크기 입니다
-                const imageSize = new kakao.maps.Size(40, 50); 
+                const imageSize = new kakao.maps.Size(30, 50); 
                 
                 // 마커 이미지를 생성합니다    
-                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, {offset: new kakao.maps.Point(27, 69)}); 
+                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
                 
                 // 마커를 생성합니다
                 const marker = new kakao.maps.Marker({
@@ -141,7 +141,7 @@ export default {
                 });
                 marker.setMap(map);
 
-                const content = `<div :class={'d-none': marker}><div style="z-index:3;position:relative;bottom:75px;">` +
+                const content = `<div :class={'d-none': marker}><div style="position:relative;bottom:55px;">` +
                                     `<div style="display:block;text-align:center;border-radius:80px;border:2px solid #2B3F6B;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;">${position[i].title}</div>`+
                                 `</div></div>`;
                 const customOverlay = new kakao.maps.CustomOverlay({
