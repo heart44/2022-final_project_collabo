@@ -33,7 +33,7 @@ function getMaincate($search_word) {
         case "샐러드":
             $maincate = 5;
             break; 
-        case "떡볶이":
+        case "떡볶이": case "빵": case "도넛":
             $maincate = 6;
             break;
         default:
