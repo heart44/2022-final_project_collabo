@@ -87,12 +87,7 @@ export default {
 </script>
 
 <style>
-    .infiniteScroll {
-      overflow: auto;
-      height: 50vh;
-      /* border: 2px solid #dce4ec;
-      border-radius: 5px; */
-    }
+
     .modal-mask {
         position: fixed;
         z-index: 9998;

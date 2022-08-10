@@ -69,7 +69,7 @@
                     ctnt = :ctnt, 
                     total_mem = :total_mem, 
                     cur_mem = :cur_mem, 
-                    img_path = :img_path,
+                    img_path = :img,
                     sido = :sido,
                     gugun = :gugun
                     ";
@@ -81,12 +81,13 @@
             $stmt->bindValue(":ctnt", $param["ctnt"]);
             $stmt->bindValue(":total_mem", $param["total_mem"]);
             $stmt->bindValue(":cur_mem", $param["cur_mem"]);
-            $stmt->bindValue(":img_path", $param["img_path"]);
+            $stmt->bindValue(":img", $param["img"]);
             $stmt->bindValue(":sido", $param["sido"]);
             $stmt->bindValue(":gugun", $param["gugun"]);
             $stmt->execute();
             return intval($this->pdo->lastInsertId());
         }
+
 
         public function selRestList(&$param) {
             $sql = "SELECT * FROM restaurant
@@ -96,5 +97,7 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
+
+
 
     }

@@ -3,6 +3,27 @@
         <div class="container">
             <h2 class="text-center">~ 글 쓰기 ~</h2>
 
+            <div>💛저만의 작고 소중한 테스트 공간입니다💛</div>
+                <div>
+                    <div class="mb-3 row">
+                        <label for="" class="col-md-3 col-form-label">Image</label>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <!-- <div class="col-lg-3 col-md-4 col-sm-2" 
+                                    :key="item.id" v-for="item in productImage.filter( c => c.type === 1)">
+                                    <div class="position-relative">
+                                        <img :src="`static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid">
+                                        <div class="position-absolute top-0 end-0" style="cursor:pointer;"
+                                            @click="deleteImg(item);">X</div>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <input type="file" ref="bobfImg" class="form-control" accept="image/*" >
+
+                        </div>
+                    </div>
+                </div>
+
             <div class="">
                 <label for="" class="form-label">제목</label>
                 <div class="">
@@ -48,7 +69,7 @@
                                                             </a>
                                                         </div>
                                                     <div>
-                                                        <h4>{{ getSearchWord }}</h4>
+                                                        <!-- <h4>{{ getSearchWord }}</h4> -->
                                                     </div>
                                                     <div  v-for="rest of searchList" :key="rest">
                                                         <div @click="getRestInfo(rest.name, rest.address)" style="cursor:pointer;"  data-bs-dismiss="modal">
@@ -140,13 +161,12 @@ export default {
                 partydt: '',
                 total_mem: '',
                 cur_mem: 1,
-                img_path: '',
+                img: '',
                 ctnt: '',
                 sido: '',
                 gugun: '',
             },
             
-
             //가게 검색 모달
             showModal: false,
             searchRest: '',
@@ -155,7 +175,6 @@ export default {
             
             //파티 날자 정하기
             partydate: '',
-
 
             //지역 검색 Object
             AreaCate1: {
@@ -178,7 +197,6 @@ export default {
                 "제주특별자치도": "제주"
             },
 
-
             //지역에 따른 식당 리스트
             RestList: [],
             selectedAreaCate1: '',
@@ -191,13 +209,20 @@ export default {
             sido: '',
             gugun: '',
 
+            //이미지
+
+
         }
     },
     created() {
-        this.selRestList()
+        // this.selRestList()
+
         this.getNowDate()
         this.searchList = this.getSearchList
         this.searchWord = this.getSearchWord
+    },
+    updated() {
+
     },
     methods: {
         //뒤로가기
@@ -210,7 +235,7 @@ export default {
             this.selectedAreaCate2 = ''
             this.getSearchWord == ''
             this.RestList = [];
-            this.selRestList();
+            // this.selRestList();
         },
         
         /*
@@ -266,7 +291,6 @@ export default {
                 this.searchRest = ''
             }
         },
-
         getRestInfo(name, addr) {
 
             const param = { name : name, addr : addr}
@@ -278,6 +302,10 @@ export default {
             this.sido = sido
             this.gugun = gugun
         
+        },
+        showModalEvent() {
+            this.searchRest = ''
+            this.searchList = []
         },
 
 
@@ -295,26 +323,29 @@ export default {
 
         },
 
-        showModalEvent() {
-            this.searchRest = ''
-            this.searchList = []
-        },
-
 
         //글 쓰기
         async insBobF() {
+            const image = await this.$base64(this.$refs.bobfImg.files.files[0]);
+            console.log(image);
+            // let image = '';
+            if(this.$refs.bobfImg.files.length !== 0) {
+            }
 
             this.composition.iuser = this.user.iuser
             this.composition.partydt = this.partydate
             this.composition.sido = this.sido
             this.composition.gugun = this.gugun
             this.composition.restname = this.restInfo.name
+            this.composition.img = image
+
 
             if(this.selectedAreaCate2 !== '') {
                 this.composition.irest = this.selectedAreaCate2;
             }
             
-            const res = await this.$post('api/insBobF', this.composition)
+            // const res = await this.$post('api/insBobF', this.composition)
+            console.log(res)
 
             if( res.result ) {
                 this.$router.push( {path: '/BobfList'} );
@@ -326,10 +357,20 @@ export default {
             }
             
         },
+
+
+        //이미지 업로드
+
+
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.infiniteScroll {
+    overflow: auto;
+    height: 50vh;
+    /* border: 2px solid #dce4ec;
+    border-radius: 5px; */
+}
 </style>

@@ -3,6 +3,7 @@
     use Exception;
 
     class ApiController extends Controller {
+
         //지역 카테고리
         public function selArea() {
             return $this->model->selArea();
@@ -57,11 +58,54 @@
         public function insBobF() {
             $json = getJson();
 
+            if($json["img"] !== '') {
+                $img_parts = explode(";base64,", $json["image"]);
+                $img_type_aux = explode("image/", $img_parts[0]);
+                $img_type = $img_type_aux[1];
+                $img_base64 = base64_decode($img_parts[1]);
+                $dirPath = _IMG_PATH . "/bobf/";
+                $path = uniqid() . "." . $img_type;
+                $filePath = $dirPath . "/" . $path;
+                if(!is_dir($dirPath)) {
+                    mkdir($dirPath, 0777, true);
+                }
+                $result = file_put_contents($filePath, $img_base64);
+
+                if($result) {
+                    $json["img"] = $path;
+                }
+            }
+
+
             return [_RESULT => $this->model->insBobF($json)];
         }
 
         public function selRestList() {
             return $this->model->selRestList();
         }
+
+        // public function uploadBobfImg() {
+        //     // $urlPaths = getUrlPaths();
+        //     // if(!isset($urlPaths[2]) || !isset($urlPaths[3])) {
+        //     //     exit();
+        //     // }
+        //     // $ibobfImg = intval($urlPaths[2]);
+        //     // $type = intval($urlPaths[3]);
+        //     $json = getJson();
+        //     $img_parts = explode(";base64,", $json["image"]);
+        //     $img_type_aux = explode("image/", $img_parts[0]);
+        //     $img_type = $img_type_aux[1];
+        //     $img_base64 = base64_decode($img_parts[1]);
+        //     $dirPath = _IMG_PATH . "/" . $ibobfImg . "/" . $type;
+        //     $path = uniqid() . "." . $img_type;
+        //     $filePath = $dirPath . "/" . $path;
+        //     if(!is_dir($dirPath)) {
+        //         mkdir($dirPath, 0777, true);
+        //     }
+        //     $result = file_put_contents($filePath, $img_base64);
+
+            
+
+        // }
 
     }
