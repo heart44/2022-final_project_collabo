@@ -11,61 +11,58 @@
           <div class="write_ctnt">
             <div class="date">
               <label>날짜</label> 
-              <input type="date">
+              <input type="date" v-model="diary.date">
             </div>
 
-            <div class="profile-img">
-              <div v-if="!files.length" class="room-file-upload-example-container">
-                <div class="image-box">
-                  <label className="file-button" for="file" >업로드</label>
-                  <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
+          <div class="profile-img">
+            <div class="image-box">
+              <label class="file-button" for="img">업로드</label>
+              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
+            </div>
+
+            <div v-if="imgSrc !== ''" class="file-preview-content-container">
+              <div class="file-preview-container">
+                <div class="file-preview-wrapper">
+                  <div class="file-close-button" @click="delPreview">
+                    <img src="../assets/close.png" />
+                  </div>
+                  <img class="preview" :src="imgSrc" />
                 </div>
               </div>
-
-              <div v-else class="file-preview-content-container">
-                  <div class="file-preview-container">
-                      <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-                          <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
-                              <img src="../assets/close.png">
-                          </div>
-                          <img class="preview" :src="file.preview" />
-                      </div>
-                  </div>
-              </div>
             </div>
+          </div>
 
             <div class="store">
               <label>가게</label> 
-              <input type="text" name="name" value="">
+              <input type="text" name="name" v-model="diary.restaurant">
             </div>
 
             <div class="contents">
               <label class="ctnt">내용</label> 
-              <textarea placeholder=""></textarea>
+              <textarea placeholder="" v-model="diary.ctnt"></textarea>
             </div>
           </div>
             <div class="star">
               
                 <form class="mb-3" name="myform" id="myform" method="post">
                   <fieldset>
-                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="5" id="rate1"><label
                       for="rate1">⭐</label>
-                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="4" id="rate2"><label
                       for="rate2">⭐</label>
-                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="3" id="rate3"><label
                       for="rate3">⭐</label>
-                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="2" id="rate4"><label
                       for="rate4">⭐</label>
-                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="1" id="rate5"><label
                       for="rate5">⭐</label>
                   </fieldset>
                 </form>
             </div>
           </div>
         
-
         <div class="submit">
-          <router-link to="/Diary"><button class="btn_ok" type="button">등록</button></router-link>
+          <button class="btn_ok" type="button" @click="diarySubmit()">등록</button>
         </div>
 
     
@@ -77,44 +74,31 @@
 export default {
   data() {
       return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
+        diary: {
+          date: '',
+          restaurant: '',
+          ctnt: '',
+          rating: '0',
+        },
+        imgSrc: '',
       }
   },
   computed:{
-        user() {
-            return this.$store.state.user;
-        },
+    user() {
+        return this.$store.state.user;
+    },
   },
   methods: {
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
-        }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
+    previewImage() {
+      let img = this.$refs.profileImg.files[0];
+      this.imgSrc = URL.createObjectURL(img)
     },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
+    async delPreview() {
+      this.imgSrc = "";
     },
+    async diarySubmit() {
+      console.log(this.diary);
+    }
   }
 }
 </script>

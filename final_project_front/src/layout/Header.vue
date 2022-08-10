@@ -8,14 +8,16 @@
         </div>
         
         <div class="d-flex">
+            <button class="btn btn-secondary"><router-link to="/BobfList" class="login_b">밥친구해용</router-link></button>
             <div v-if="user.email === undefined">
                 <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
             </div>
-            <div v-else>
+            <div v-else class="d-flex">
                 <div class="dropdown">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>    
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><router-link class="" to="/MyPage"><a class="dropdown-item" href="#">마이페이지</a></router-link></li>
+                            <li><router-link class="" to="/Profile"><a class="dropdown-item" href="#">프로필수정</a></router-link></li>
+                            <li><router-link class="" to="/Diary"><a class="dropdown-item" href="#">다이어리</a></router-link></li>
                         </ul>
                 </div>
                 <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
@@ -61,7 +63,7 @@ export default {
             if(this.search.trim() !== '') {
                 const param = { search_word: this.search }
                 console.log(param)
-                // await this.$post('/search/searchLog', param);    //이거 검색기록임~ 나중에 주석 풀겨
+                await this.$post('/search/searchLog', param);    //이거 검색기록임~ 나중에 주석 풀겨
                 // const result = await this.$post('search/menuCrawling', param);
                 //이거는 네이버에서 메뉴 가져오는 거 통신
                 const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.search}&type=all&searchCoord=${this.getCurrentLoc.lon};${this.getCurrentLoc.lat}&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);

@@ -40,6 +40,7 @@
                             <div>카테고리 : {{ rest.menu }}</div>
                             <div>전화번호 : {{ rest.tel }}</div>
                             <div>영업시간 : {{ rest.open_close }}</div>
+                            <div v-if="user.email !== null"></div>
                         </div>
                     </div>
                     <hr>
@@ -67,6 +68,7 @@ export default {
             //     border: '1px solid #ccc',
             //     borderBottom: '2px solid #ddd'
             // }
+            marker: true
         }
     },
     created() {
@@ -79,6 +81,7 @@ export default {
     },
     mounted() {
         this.mapContainer()
+        this.marker = true
     },
     computed: {
         getRestList() {
@@ -89,6 +92,9 @@ export default {
         },
         getCurrentLoc() {
             return this.$store.getters.getCurrentLoc;
+        },
+        user() {
+            return this.$store.state.user;
         },
     },
     methods: {
@@ -108,13 +114,12 @@ export default {
                 center: new kakao.maps.LatLng(this.getCurrentLoc.lat, this.getCurrentLoc.lon),
                 level: 5
             };
-
             const map = new kakao.maps.Map(this.$refs.mapDiv, options);
             // console.log(map)
             
             const position = this.calRestList();
             // console.log('dfjdjfkfj', position);
-            
+
             // // 마커 이미지의 이미지 주소입니다
             const imageSrc = "https://www.svgrepo.com/show/130837/spoon.svg"; 
             // const imageSrc = "http://localhost/static/img/spoon-svgrepo-com.svg"; 
@@ -122,23 +127,23 @@ export default {
             // const iwRemoveable = true
             for(let i=0; i<position.length; i++) {
                 // 마커 이미지의 이미지 크기 입니다
-                const imageSize = new kakao.maps.Size(40, 50); 
+                const imageSize = new kakao.maps.Size(30, 50); 
                 
                 // 마커 이미지를 생성합니다    
-                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, {offset: new kakao.maps.Point(27, 69)}); 
+                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
                 
                 // 마커를 생성합니다
                 const marker = new kakao.maps.Marker({
-                    // map: map, // 마커를 표시할 지도
+                    map: map, // 마커를 표시할 지도
                     position: position[i].latlng, // 마커를 표시할 위치
                     // title : position[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                     image : markerImage // 마커 이미지 
                 });
                 marker.setMap(map);
 
-                const content = `<div style="z-index:3;position:relative;bottom:75px;">` +
+                const content = `<div :class={'d-none': marker}><div style="position:relative;bottom:55px;">` +
                                     `<div style="display:block;text-align:center;border-radius:80px;border:2px solid #2B3F6B;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;">${position[i].title}</div>`+
-                                `</div>`;
+                                `</div></div>`;
                 const customOverlay = new kakao.maps.CustomOverlay({
                     map: map, // 인포윈도우가 표시될 지도
                     position : position[i].latlng, 
@@ -146,13 +151,9 @@ export default {
                     // removable : iwRemoveable
                     // yAnchor: 1 
                 });
-                
-                // infowindow.setMap(map, marker);
-                // customOverlay.setMap(map, marker)
-                // console.log(customOverlay)
             }
-            const aaa = this.$refs.aaa
-            console.log(aaa)
+            // const aaa = this.$refs.aaa
+            // console.log(aaa)
         },
         async getCategoryList() {
             // console.log('ddd')
