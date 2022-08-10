@@ -109,6 +109,22 @@ use application\libs\Application;
 
         public function insDiary() {
             $json = getJson();
+            if($json['path'] !== '') {
+                $image_parts  = explode(";base64", $json["path"]);
+                $imge_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $imge_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $dirPath = _IMG_PATH . "/diary/" . $json["iuser"];
+                $path = uniqid() . "." . $image_type;
+                $filePath = $dirPath . "/" . $path;
+                if(!is_dir($dirPath)) {
+                    mkdir($dirPath, 0777, true);
+                }
+                $result = file_put_contents($filePath, $image_base64);
+                if($result) {
+                    $json["path"] = $path;
+                }
+            }
             $rs = $this->model->insDiary($json);
             return [_RESULT => $rs];
 

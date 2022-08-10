@@ -17,7 +17,7 @@
           <div class="profile-img">
             <div class="image-box">
               <label class="file-button" for="img">업로드</label>
-              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
+              <input type="file" ref="diaryimg" id="img" class="d-none" accept="image/*" @change="previewImage">
             </div>
 
             <div v-if="imgSrc !== ''" class="file-preview-content-container">
@@ -87,6 +87,7 @@ export default {
           rating: '0',
           text: '',
           eatdt: '',
+          path: '',
         },
         imgSrc: '',
         searchRest: '',
@@ -102,13 +103,18 @@ export default {
   },
   methods: {
     previewImage() {
-      let img = this.$refs.profileImg.files[0];
+      let img = this.$refs.diaryimg.files[0];
       this.imgSrc = URL.createObjectURL(img)
     },
     async delPreview() {
       this.imgSrc = "";
     },
     async diarySubmit() {
+      let image = '';
+      if(this.$refs.diaryimg.files.length !== 0) {
+        image = await this.$base64(this.$refs.diaryimg.files[0]);
+      }
+      this.diary.path = image;
       this.diary.iuser = this.user.iuser;
       if(this.diary.irest === 0) {
         this.diary.irest = null;
@@ -116,7 +122,6 @@ export default {
       if(this.diary.rest_name === '' && this.searchRest !== '') {
         this.diary.rest_name = this.searchRest;
       }
-      console.log(this.diary);
       const rs = await this.$post('user/insDiary', this.diary);
       console.log(rs);
     },
@@ -124,7 +129,6 @@ export default {
       const rs = await this.$post('user/selRest', { search_word: this.searchRest });
       if(rs.result) {
         this.restlist = rs.result;
-        console.log(this.restlist);
         this.restSearch = false;
         this.selfinput = this.searchRest;
       }
