@@ -81,11 +81,11 @@ class UserModel extends Model {
     public function insDiary(&$param) {
         $sql = "INSERT INTO user_diary
         (
-            iuser, irest, rest_name, rating, text, eatdt
+            iuser, irest, rest_name, rating, text, eatdt, path
         )
         VALUES
         (
-            :iuser, :irest, :rest_name, :rating, :text, :eatdt
+            :iuser, :irest, :rest_name, :rating, :text, :eatdt, :path
         )";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':iuser', $param["iuser"]);
@@ -94,7 +94,7 @@ class UserModel extends Model {
         $stmt->bindValue(':rating', $param["rating"]);
         $stmt->bindValue(':text', $param["text"]);
         $stmt->bindValue(':eatdt', $param["eatdt"]);
-        // $stmt->bindValue(':path', $param["path"]);
+        $stmt->bindValue(':path', $param["path"]);
         $stmt->execute();
         return intval($this->pdo->lastInsertId());
     }
