@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="content">
-        <ul class="nav">
+        <ul class="mypage_nav">
             <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
             <li><router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link></li>
         </ul>
@@ -13,33 +13,47 @@
         <div class="col-md-3">
 
           <div class="card">
-            <a href="" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
+            <a href="" class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
             
             <div class="card-body">
-              <h5 class="card-title">날짜</h5> <!--{{ user_diary.redgt }}-->
+              <h5 class="card-title">날짜</h5> 
             </div>
+
+            <div class="icon">
+              <div class="icon_image">
+                <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
+                <div class='v-line'></div>
+                <div id="deleteimg" @click="deleteDiary()"><img src="../assets/delete.svg"/></div>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </div>
     </div>
       <!-- 다이어리 상세정보 (모달)-->
       <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
+
         <div class="modal-dialog modal-lg modal-dialog-centered modal">
+
             <div class="modal-content" id="newFeedModalContent">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newFeedModalLabel">Diary</h5>
-                    <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
-                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button>
+                    <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
+                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
                 </div>
+
                 <div class="modal-body" id="id-modal-body">
                   <img src="../assets/dog.jpg">
-                  <div class="contents">
+                  <div class="read_contents">
                     <p>가게 : 어쩌고저쩌고 </p>
-                    <p>내용 : 어쩌고저쩌고 </p>
-                    <p>날짜 : 어쩌고저쩌고 </p>
-                    <p>별점 : ⭐⭐⭐⭐⭐</p>
+                    <!-- <p>내용 : {{ user_diary.text }} </p>
+                    <p>날짜 : {{ user_diary.regdt }} </p>
+                    <p>별점 : {{ user_diary.rating }}</p> -->
                   </div>
                 </div>
+
                   <div class="modal-footer">
                     <button class="btn btn-primary btn_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
                   </div>
@@ -47,55 +61,74 @@
         </div>
       </div>
       <!-- 다이어리 수정 (모달)-->
-      <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
+      <!-- <div class="modal fade" id="updateFeedModal" tabindex="-1" aria-labelledby="updateFeedModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal">
             <div class="modal-content" id="newFeedModalContent">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newFeedModalLabel">수정</h5>
-                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button>
+                     <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> 
                 </div>
                 <div class="modal-body" id="id-modal-body">
-                  <img src="../assets/dog.jpg">
+                 
                   
-                    <div class="mod_store">가게
-                        <div class="my d-flex">
-                          <input type="text" name="name" value="">
-                        </div>
-                    </div>
-                    <div class="mod_ctnt">내용
-                        <div class="my d-flex">
-                          <textarea name="ctnt" placeholder=""></textarea>
-                        </div>
-                    </div>
-                    <div class="mod_date">날짜
-                        <div class="my d-flex">
-                            <input type="date">
-                        </div>
-                    </div>
-                    <div class="mod_star">별점
-                        <form class="mb-3" name="myform" id="myform" method="post">
-                            <fieldset>
-                            <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                for="rate1">⭐</label>
-                            <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                for="rate2">⭐</label>
-                            <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                for="rate3">⭐</label>
-                            <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                for="rate4">⭐</label>
-                            <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                for="rate5">⭐</label>
-                            </fieldset>
-                        </form>   
-                    </div>
-                </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn mod_ok">수정</button>
-                    <button class="btn btn-primary mod_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+        <div class="write">
+          <div class="write_ctnt">
+
+              <div class="profile-img">
+                <div v-if="!files.length" class="room-file-upload-example-container">
+                  <div class="image-box">
+                    <label className="file-button" for="file" >업로드</label>
+                    <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
                   </div>
+              </div>
+
+              <div v-else class="file-preview-content-container">
+                  <div class="file-preview-container">
+                      <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
+                          <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
+                              <img src="../assets/close.png">
+                          </div>
+                          <img class="preview" :src="file.preview" />
+                      </div>
+                  </div>
+              </div>
             </div>
+
+            <div class="store">
+              <label>가게</label> 
+              <input type="text" name="name" value="">
+            </div>
+
+            <div class="contents">
+              <label class="ctnt">내용</label> 
+              <textarea placeholder=""></textarea>
+            </div>
+          </div>
+            <div class="star">
+              <form class="mb-3" name="myform" id="myform" method="post">
+                  <fieldset>
+                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                      for="rate1">⭐</label>
+                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                      for="rate2">⭐</label>
+                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                      for="rate3">⭐</label>
+                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                      for="rate4">⭐</label>
+                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                      for="rate5">⭐</label>
+                  </fieldset>
+              </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn mod_ok" @click="updateBtn">수정</button>
+              <button class="btn btn-primary mod_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+            </div>
+          </div>
         </div>
       </div>
+    </div> -->
   </div>
 </template>
 
@@ -104,9 +137,43 @@
 export default {
 
   data() {
-   
+     return {
+
+          files: [], //업로드용 파일
+          filesPreview: [],
+          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
+      }
   },
   methods: {
+    updateBtn(){
+
+    },
+    imageUpload() {
+        console.log(this.$refs.files.files);
+        let num = -1;
+        for (let i = 0; i < this.$refs.files.files.length; i++) {
+          this.files = [
+              ...this.files,
+              //이미지 업로드
+              {
+                  //실제 파일
+                  file: this.$refs.files.files[i],
+                  //이미지 프리뷰
+                  preview: URL.createObjectURL(this.$refs.files.files[i]),
+                  //삭제및 관리를 위한 number
+                  number: i
+              }
+          ];
+          num = i;
+        }
+        this.uploadImageIndex = num + 1; 
+        console.log(this.files);
+        
+    },
+    fileDeleteButton(e) {
+        const name = e.target.getAttribute('name');
+        this.files = this.files.filter(data => data.number !== Number(name));
+    },
     async deleteDiary(){
       this.$swal.fire({
           title: '정말 삭제 하시겠습니까?',
@@ -122,40 +189,23 @@ export default {
               this.productList.splice(idx, 1);
             }
           }
-        });
+        })
     },
+    
   }
 }
 </script>
 
 <style scoped>
-button{
-  border:2px solid #2B3F6B;
-  border-radius:15px;
-  color:#2B3F6B;
-}
-button:focus{
-    outline:none;
-    box-shadow:none;
-}
-.btn{
-  margin-right:10px;
-  border-radius:15px !important;
-}
-.update_btn{
-  position: relative;
-  bottom:3px;
-  margin-right:10px;
-}
-.nav{
-  display:flex;
-  justify-content: center;
+.v-line {
+  border-left : thin solid rgba(0,0,0,.125);
+  height : 25px;
 }
 .card{
   height:400px;
 }
-.card img{
-  height:360px;
+#btnNewFeedModal img{
+  height:300px;
   object-fit: cover;
 }
 .card:hover{
@@ -165,6 +215,9 @@ button:focus{
 .card-body{
   height:40px;
 }
+.card_img{
+  height:300px;
+}
 .plus_btn img{
   float:right;
   padding-right:13%;
@@ -173,7 +226,7 @@ button:focus{
 .btn_change{
   margin-left:70%;
 }
-.btn_change:hover , .btn_delete:hover{
+.btn_change:hover , .btn_delete:hover , .mod_close:hover , .mod_ok:hover{
   background:#2B3F6B !important;
   border:2px solid #2B3F6B;
   color:white;
@@ -192,12 +245,151 @@ button:focus{
   border:2px solid #2B3F6B;
   color:white;
 }
-.btn_close:focus{
+.btn:focus{
   outline:none;
   box-shadow:none;
 }
 #newFeedModalLabel{
  padding-left:10px;
 }
-
+.icon{
+  display:flex;
+  border-top: 1px solid rgba(0,0,0,.125);
+  background-color:rgba(217, 217, 217, 0.125);
+  height:35px;
+}
+.icon_image{
+  width:60%;
+  margin: 0 auto;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon_image a{
+  height:19px;
+}
+.icon img{
+  width: 22px;
+}
+#updateimg img{
+  height:19px;
+}
+.modal-footer button{
+  background-color:#2B3F6B !important;
+  color: white !important;
+  border: 1px solid #2B3F6B !important;
+}
+.modal-footer button:hover{
+  background-color: white;
+  color: #2B3F6B;
+}
+.file-close-button img{
+  width:32px;
+}
+.preview{
+  width:170px !important;
+  height: 170px;
+}
+.file-button{
+  padding: 6px 25px;
+  background-color:#2B3F6B;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+label{
+  margin-right: 20px;
+  font-weight: bold;
+}
+label.ctnt{
+  width: 50px;
+}
+.write_ctnt{
+  padding-left: 55px;
+}
+.contents{
+  display:flex;
+  align-items: center;
+  height:300px;
+}
+textarea{
+  border:2px solid #2B3F6B;
+  border-radius: 5px;
+  width:450px;
+  height:300px;
+  position: relative;
+  right:8px;
+}
+.write{
+  margin: 0 auto;
+  width:600px;
+  text-align: left;
+  margin-top: 50px;
+}
+.write p{
+  text-align:left;
+}
+.write input{
+  border: 2px solid #2B3F6B;
+  border-radius: 5px;
+}
+.write div{
+  margin-bottom: 50px;
+}
+.read_contents{
+  padding-top:10px;
+}
+#myform fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+#myform fieldset legend{
+    text-align: right;
+}
+#myform input[type=radio]{
+    display: none;
+}
+#myform label{
+    font-size: 2.1em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+#myform label:hover{
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
+}
+#myform label:hover ~ label{
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
+}
+#myform input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(2, 10, 99, 0.99);
+}
+#myform label{
+  margin-right:10px !important; 
+}
+#reviewContents {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 1.5px #D3D3D3;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+}
+fieldset label{
+  cursor: pointer;
+}
+.star{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left:0.6%;
+  text-align: center;
+}
+.profile-img{
+ display:flex;
+ flex-direction: column;
+ justify-content: center;
+}
 </style>

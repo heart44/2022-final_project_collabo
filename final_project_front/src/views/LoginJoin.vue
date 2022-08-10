@@ -59,12 +59,12 @@
                     <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us please login with your personal info</p>
-                        <button @click="changeLoginBox" ref="loginBtn">LOGIN</button>
+                        <button class="btn_login" @click="changeLoginBox" ref="loginBtn">LOGIN</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
                         <p>Enter your personal details and start journey with us</p>
-                        <button class="join" @click="changeLoginBox">JOIN</button>
+                        <button class="btn_join" @click="changeLoginBox">JOIN</button>
                     </div>
                 </div>
                 <button ref="overlayBtn"></button>
@@ -312,6 +312,9 @@ button{
 .form-container button:hover {
     background:#fff;
     color: #2B3F6B;
+}
+.btn_login , .btn_join{
+    border: 2px solid white !important;
 }
 .overlay-container{
     position:absolute;

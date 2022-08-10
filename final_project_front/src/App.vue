@@ -25,8 +25,11 @@ export default{
     font-weight: normal;
     font-style: normal;
 }
-* { box-sizing: border-box; }
-
+* { 
+  box-sizing: border-box; 
+  text-decoration: none;
+  list-style: none;
+}
 html, body {
   margin: 0;
   padding: 0;
@@ -60,5 +63,22 @@ nav a.router-link-exact-active {
 }
 .pointer {
   cursor: pointer;
+}
+.btn{
+  margin-right:10px;
+  border-radius:15px !important;
+}
+.mypage_nav{
+  display :flex;
+  justify-content : center;
+}
+.mypage_nav button{
+  border:2px solid #2B3F6B;
+  border-radius:15px;
+  color:#2B3F6B;
+}
+.mypage_nav button:focus{
+  outline:none;
+  box-shadow:none;
 }
 </style>

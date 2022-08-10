@@ -11,61 +11,65 @@
           <div class="write_ctnt">
             <div class="date">
               <label>날짜</label> 
-              <input type="date">
-            </div>
-
-            <div class="profile-img">
-              <div v-if="!files.length" class="room-file-upload-example-container">
-                <div class="image-box">
-                  <label className="file-button" for="file" >업로드</label>
-                  <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
-                </div>
-              </div>
-
-              <div v-else class="file-preview-content-container">
-                  <div class="file-preview-container">
-                      <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-                          <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
-                              <img src="../assets/close.png">
-                          </div>
-                          <img class="preview" :src="file.preview" />
-                      </div>
-                  </div>
-              </div>
+              <input type="date" v-model="diary.eatdt">
             </div>
 
             <div class="store">
               <label>가게</label> 
-              <input type="text" name="name" value="">
+              <input type="text" name="name" v-model="searchRest" @keyup.enter="getRestList()">
+              <button class="diary_search d_search" @click="getRestList()">검색</button>
+              <div :class="{'d-none':restSearch}" class="searchbox">
+                <ul class="list-group list-group-flush pointer">
+                  <li class="list-group-item list-group-item-action" @click="selRest(selfinput)"><span class="text-sm">직접 입력</span> ' {{ selfinput }} '</li>
+                  <li class="list-group-item list-group-item-action" v-for="item in restlist" :key="item" @click="selRest(item.rest_name, item.irest)">{{ item.rest_name }}</li>
+                </ul>
+              </div>            
             </div>
 
             <div class="contents">
               <label class="ctnt">내용</label> 
-              <textarea placeholder=""></textarea>
+              <textarea placeholder="" v-model="diary.text"></textarea>
             </div>
           </div>
             <div class="star">
               
                 <form class="mb-3" name="myform" id="myform" method="post">
                   <fieldset>
-                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="5" id="rate1"><label
                       for="rate1">⭐</label>
-                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="4" id="rate2"><label
                       for="rate2">⭐</label>
-                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="3" id="rate3"><label
                       for="rate3">⭐</label>
-                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="2" id="rate4"><label
                       for="rate4">⭐</label>
-                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="1" id="rate5"><label
                       for="rate5">⭐</label>
                   </fieldset>
                 </form>
             </div>
           </div>
-        
 
+            <div class="profile-img">
+              <div class="image-box">
+                <label class="file-button" for="img">업로드</label>
+                <input type="file" ref="diaryimg" id="img" class="d-none" accept="image/*" @change="previewImage">
+              </div>
+
+              <div v-if="imgSrc !== ''" class="file-preview-content-container">
+                <div class="file-preview-container">
+                  <div class="file-preview-wrapper">
+                    <div class="file-close-button" @click="delPreview">
+                      <img src="../assets/close.png" />
+                    </div>
+                    <img class="preview" :src="imgSrc" />
+                  </div>
+                </div>
+              </div>
+            </div>
+        
         <div class="submit">
-          <router-link to="/Diary"><button class="btn_ok" type="button">등록</button></router-link>
+          <button class="btn_ok" type="button" @click="diarySubmit()">등록</button>
         </div>
 
     
@@ -77,55 +81,91 @@
 export default {
   data() {
       return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
+        diary: {
+          irest: '',
+          rest_name: '',
+          rating: '0',
+          text: '',
+          eatdt: '',
+          path: '',
+        },
+        imgSrc: '',
+        searchRest: '',
+        selfinput: '',
+        restlist: [],
+        restSearch: true,
       }
   },
   computed:{
-        user() {
-            return this.$store.state.user;
-        },
+    user() {
+        return this.$store.state.user;
+    },
   },
   methods: {
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
-        }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
+    previewImage() {
+      let img = this.$refs.diaryimg.files[0];
+      this.imgSrc = URL.createObjectURL(img)
     },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
+    async delPreview() {
+      this.imgSrc = "";
     },
+    async diarySubmit() {
+      let image = '';
+      if(this.$refs.diaryimg.files.length !== 0) {
+        image = await this.$base64(this.$refs.diaryimg.files[0]);
+      }
+      this.diary.path = image;
+      this.diary.iuser = this.user.iuser;
+      if(this.diary.irest === 0) {
+        this.diary.irest = null;
+      }
+      if(this.diary.rest_name === '' && this.searchRest !== '') {
+        this.diary.rest_name = this.searchRest;
+      }
+      const rs = await this.$post('user/insDiary', this.diary);
+      if(rs.result) {
+        this.$router.push( 'Diary' )
+      }
+      console.log(rs);
+    },
+    async getRestList() {
+      const rs = await this.$post('user/selRest', { search_word: this.searchRest });
+      if(rs.result) {
+        this.restlist = rs.result;
+        this.restSearch = false;
+        this.selfinput = this.searchRest;
+      }
+    },
+    selRest(name, code = 0) {
+      this.searchRest = name;
+      this.diary.rest_name = name;
+      this.diary.irest = code;
+    }
   }
 }
 </script>
 
 <style scoped>
+.container{
+  height:1000px;
+}
+.list-group > ul > li {
+  border: 3px solid #2B3F6B;
+}
+.searchbox {
+  max-height: 10rem;
+  overflow: auto;
+}
+.text-sm {
+  font-size: 0.9rem;
+  color: rgb(77, 77, 77);
+}
 button{
   border:2px solid #2B3F6B;
   border-radius:15px;
   color:#2B3F6B;
 }
- button:focus{
+button:focus{
     outline:none;
     box-shadow:none;
 }
@@ -144,14 +184,14 @@ button{
   cursor: pointer;
 }
 .profile-img{
-  float:right;
-  position: relative;
-  right:20%;
-  bottom:30px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 .preview{
   width:170px;
   height: 170px;
+  
 }
 label{
   margin-right: 20px;
@@ -174,11 +214,11 @@ textarea{
   width:450px;
   height:300px;
   position: relative;
-  right:9px;
+  right:18px;
 }
 .write{
   margin: 0 auto;
-  width:600px;
+  width:700px;
   text-align: left;
   margin-top: 50px;
 }
@@ -250,5 +290,17 @@ fieldset label{
 .btn_ok:hover{
   background-color:#2B3F6B;
   color:white;
+}
+.diary_search{
+  border:2px solid #2B3F6B;
+  border-radius:5px;
+  color:#2B3F6B;
+  background-color: white;
+}
+.d_search{
+  margin-left:10px;
+}
+.submit{
+  margin-top:30px;
 }
 </style>

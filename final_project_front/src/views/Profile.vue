@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="content">
-      <ul class="nav mb-3">
+      <ul class="nav mb-3 mypage_nav">
         <li>
           <router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link>
         </li>
@@ -89,6 +89,9 @@
               </div>
             </div>
           </div>
+
+        
+        
         </div>
         <div class="btn-profile can_sub">
           <span class="cancel m-2 text-info pointer">CANCEL</span>
@@ -127,6 +130,23 @@ export default {
     },
   },
   methods: {
+     chooseImage () {
+      this.$refs.fileInput.click()
+    },
+    onSelectFile () {
+      const input = this.$refs.fileInput
+      const files = input.files
+      if (files && files[0]) {
+        const reader = new FileReader
+        reader.onload = e => {
+          this.imgSrc = e.target.result
+        }
+        reader.readAsDataURL(files[0])
+        this.$emit('input', files[0])
+      }
+    },
+
+
     getUserInfo() {
       this.inputUser.nick = this.user.nick;
       this.inputUser.birthYear = this.user.birth;
@@ -174,11 +194,10 @@ export default {
           this.alertmsg = '당신의 프로필 사진이 삭제되었습니다.';
         }
         console.log(this.user);
-
       }
     },
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
@@ -188,22 +207,6 @@ export default {
   border-radius: 4px;
   color: white;
   cursor: pointer;
-}
-
-button {
-  border: 2px solid #2b3f6b;
-  border-radius: 15px;
-  color: #2b3f6b;
-}
-button:focus {
-  outline: none;
-  box-shadow: none;
-}
-.nav {
-  margin: 0 auto;
-}
-.btn {
-  margin-right: 10px;
 }
 .profile-box {
   margin: 0 auto;
