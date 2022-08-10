@@ -11,7 +11,7 @@
             </div>
 
             <div class="">
-                <label for="" class="form-label">작성자</label>
+                <!-- <label for="" class="form-label"></label> -->
                 <div class="">
                     <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
                 </div>
@@ -108,10 +108,6 @@
                 </div>
             </div>
 
-            <div>
-                테스트 공간 
-                {{  }}
-            </div>
         </div>
     </main>
 </template>
@@ -140,7 +136,7 @@ export default {
             composition: {
                 restname: '',
                 iuser: '',
-                title: '',
+                title: null,
                 partydt: '',
                 total_mem: '',
                 cur_mem: 1,
@@ -216,6 +212,8 @@ export default {
             this.RestList = [];
             this.selRestList();
         },
+        
+        /*
         async selRestList() {
             this.selectAreaArray = [];
             const selectArea = this.AreaCate1[this.selectedAreaCate1];
@@ -230,14 +228,15 @@ export default {
 
         },
 
-        // getRestArea() {
-        //     const restAddr = this.restInfo.addr
+        getRestArea() {
+                const restAddr = this.restInfo.addr
             
-        //     const sido = restAddr.split(' ')[0]
-        //     const gugun = restAddr.split(' ')[1]
-        //     this.sido = sido
-        //     this.gugun = gugun
-        // },
+            const sido = restAddr.split(' ')[0]
+            const gugun = restAddr.split(' ')[1]
+            this.sido = sido
+            this.gugun = gugun
+        },
+        */
         
 
 
@@ -245,8 +244,8 @@ export default {
         async searchArea() {
             if(this.searchRest.trim() !== '') {
 
-                const param = { search_word: this.searchRest }
-                console.log(param)
+                // const param = { search_word: this.searchRest }
+                // console.log(param)
                 // this.searchList = await this.$post('search/menuCrawling', param);
                 const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.searchRest}&type=all&searchCoord=128.591585;35.8666565&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);
 
@@ -319,8 +318,11 @@ export default {
 
             if( res.result ) {
                 this.$router.push( {path: '/BobfList'} );
+            } else if ( this.composition.title === null || this.composition.title === '' ) {
+                this.$refs.title.focus()
+                this.$swal.fire('🥕글쓰기 실패🥕', '제목을 입력해 주세요', 'error')
             } else {
-                this.$swal.fire('글쓰기 실패!', '내용을 입력해 주세요.', 'error');
+                this.$swal.fire('🥕글쓰기 실패🥕', '글쓰기에 실패했습니다!', 'error');
             }
             
         },
