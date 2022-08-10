@@ -8,122 +8,152 @@
         </div>
 
         <div class="write">
-            <div class="write_ctnt">
-              <div class="date">
-                <label>날짜</label> 
-                <input type="date">
-              </div>
-
-              <div class="profile-img">
-                <div class="image-box">
-                  <label class="file-button" for="img">업로드</label>
-                  <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
-                </div>
-
-                <div v-if="imgSrc !== ''" class="file-preview-content-container">
-                  <div class="file-preview-container">
-                    <div class="file-preview-wrapper">
-                      <div class="file-close-button" @click="delPreview">
-                        <img src="../assets/close.png" />
-                      </div>
-                      <img class="preview" :src="imgSrc"/>
-                    </div>
-                  </div>
-                </div>
+          <div class="write_ctnt">
+            <div class="date">
+              <label>날짜</label> 
+              <input type="date" v-model="diary.eatdt">
             </div>
+
+          <div class="profile-img">
+            <div class="image-box">
+              <label class="file-button" for="img">업로드</label>
+              <input type="file" ref="diaryimg" id="img" class="d-none" accept="image/*" @change="previewImage">
+            </div>
+
+            <div v-if="imgSrc !== ''" class="file-preview-content-container">
+              <div class="file-preview-container">
+                <div class="file-preview-wrapper">
+                  <div class="file-close-button" @click="delPreview">
+                    <img src="../assets/close.png" />
+                  </div>
+                  <img class="preview" :src="imgSrc" />
+                </div>
+              </div>
+            </div>
+          </div>
 
             <div class="store">
               <label>가게</label> 
-              <input type="text" name="name" value="">
+              <input type="text" name="name" v-model="searchRest" @keyup.enter="getRestList()">
+              <button @click="getRestList()">검색</button>
+              <div :class="{'d-none':restSearch}" class="searchbox">
+                <ul class="list-group list-group-flush pointer">
+                  <li class="list-group-item list-group-item-action" @click="selRest(selfinput)"><span class="text-sm">직접 입력</span> ' {{ selfinput }} '</li>
+                  <li class="list-group-item list-group-item-action" v-for="item in restlist" :key="item" @click="selRest(item.rest_name, item.irest)">{{ item.rest_name }}</li>
+                </ul>
+              </div>            
             </div>
 
             <div class="contents">
               <label class="ctnt">내용</label> 
-              <textarea placeholder=""></textarea>
+              <textarea placeholder="" v-model="diary.text"></textarea>
             </div>
           </div>
             <div class="star">
               
                 <form class="mb-3" name="myform" id="myform" method="post">
                   <fieldset>
-                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="5" id="rate1"><label
                       for="rate1">⭐</label>
-                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="4" id="rate2"><label
                       for="rate2">⭐</label>
-                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="3" id="rate3"><label
                       for="rate3">⭐</label>
-                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="2" id="rate4"><label
                       for="rate4">⭐</label>
-                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                    <input type="radio"  v-model="diary.rating" name="reviewStar" value="1" id="rate5"><label
                       for="rate5">⭐</label>
                   </fieldset>
                 </form>
             </div>
-        </div>
+          </div>
         
         <div class="submit">
-          <router-link to="/Diary"><button class="btn_ok" type="button">등록</button></router-link>
+          <button class="btn_ok" type="button" @click="diarySubmit()">등록</button>
         </div>
 
+    
+    
     </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      imgSrc: '',
-    }
+      return {
+        diary: {
+          irest: '',
+          rest_name: '',
+          rating: '0',
+          text: '',
+          eatdt: '',
+          path: '',
+        },
+        imgSrc: '',
+        searchRest: '',
+        selfinput: '',
+        restlist: [],
+        restSearch: true,
+      }
   },
   computed:{
-        user() {
-            return this.$store.state.user;
-        },
+    user() {
+        return this.$store.state.user;
+    },
   },
   methods: {
-    async profileMod() {
-        let image = '';
-        if(this.$refs.profileImg.files.length !== 0) {
-          image = await this.$base64(this.$refs.profileImg.files[0]);
-        }
-        const param = {
-          iuser: this.user.iuser,
-          pw: this.inputUser.pw,
-          nick: this.inputUser.nick,
-          birth: this.inputUser.birthYear,
-          job: this.inputUser.job,
-          profileimg: image
-        };
-
-        const userInfo = await this.$post('user/profile', param);
-        if(userInfo.result) {
-          param.pw = null;
-          param.profileimg = userInfo.result.profileimg;
-          this.$store.commit('updateUser', param);
-        }
-    },
-     // 이미지 미리보기
     previewImage() {
-      let img = this.$refs.profileImg.files[0];
+      let img = this.$refs.diaryimg.files[0];
       this.imgSrc = URL.createObjectURL(img)
     },
     async delPreview() {
       this.imgSrc = "";
-      if(this.user.profileimg) {
-        const rs = await this.$delete(`user/profile/${this.user.iuser}/${this.user.profileimg}`);
-        console.log(rs);
-        if(rs.result) {
-          this.user.profileimg = '';
-        }
-        console.log(this.user);
-
+    },
+    async diarySubmit() {
+      let image = '';
+      if(this.$refs.diaryimg.files.length !== 0) {
+        image = await this.$base64(this.$refs.diaryimg.files[0]);
+      }
+      this.diary.path = image;
+      this.diary.iuser = this.user.iuser;
+      if(this.diary.irest === 0) {
+        this.diary.irest = null;
+      }
+      if(this.diary.rest_name === '' && this.searchRest !== '') {
+        this.diary.rest_name = this.searchRest;
+      }
+      const rs = await this.$post('user/insDiary', this.diary);
+      console.log(rs);
+    },
+    async getRestList() {
+      const rs = await this.$post('user/selRest', { search_word: this.searchRest });
+      if(rs.result) {
+        this.restlist = rs.result;
+        this.restSearch = false;
+        this.selfinput = this.searchRest;
       }
     },
+    selRest(name, code = 0) {
+      this.searchRest = name;
+      this.diary.rest_name = name;
+      this.diary.irest = code;
+    }
   }
 }
 </script>
 
 <style scoped>
+.list-group > ul > li {
+  border: 3px solid #2B3F6B;
+}
+.searchbox {
+  max-height: 10rem;
+  overflow: auto;
+}
+.text-sm {
+  font-size: 0.9rem;
+  color: rgb(77, 77, 77);
+}
 button{
   border:2px solid #2B3F6B;
   border-radius:15px;
@@ -250,7 +280,6 @@ fieldset label{
   color:#2B3F6B;
   background-color: white;
   text-align: center;
-  margin-bottom: 30px;
 }
 .btn_ok:hover{
   background-color:#2B3F6B;
