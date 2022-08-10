@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="content">
-        <ul class="nav">
+        <ul class="mypage_nav">
             <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
             <li><router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link></li>
         </ul>
@@ -13,7 +13,7 @@
         <div class="col-md-3">
 
           <div class="card">
-            <a href="" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
+            <a href="" class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
             
             <div class="card-body">
               <h5 class="card-title">날짜</h5> <!--{{ user_diary.redgt }}-->
@@ -43,15 +43,17 @@
                     <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
                     <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
                 </div>
+
                 <div class="modal-body" id="id-modal-body">
                   <img src="../assets/dog.jpg">
                   <div class="read_contents">
                     <p>가게 : 어쩌고저쩌고 </p>
-                    <p>내용 : 어쩌고저쩌고 </p>
-                    <p>날짜 : 어쩌고저쩌고 </p>
-                    <p>별점 : ⭐⭐⭐⭐⭐</p>
+                    <!-- <p>내용 : {{ user_diary.text }} </p>
+                    <p>날짜 : {{ user_diary.regdt }} </p>
+                    <p>별점 : {{ user_diary.rating }}</p> -->
                   </div>
                 </div>
+
                   <div class="modal-footer">
                     <button class="btn btn-primary btn_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
                   </div>
@@ -64,7 +66,7 @@
             <div class="modal-content" id="newFeedModalContent">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newFeedModalLabel">수정</h5>
-                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button>
+                    <!-- <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
                 </div>
                 <div class="modal-body" id="id-modal-body">
                  
@@ -121,7 +123,7 @@
                       </div>
                     </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn mod_ok">수정</button>
+                    <button type="button" class="btn mod_ok" @click="updateBtn">수정</button>
                     <button class="btn btn-primary mod_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
                   </div>
             </div>
@@ -144,6 +146,9 @@ export default {
       }
   },
   methods: {
+    updateBtn(){
+
+    },
     imageUpload() {
         console.log(this.$refs.files.files);
         let num = -1;
@@ -185,8 +190,9 @@ export default {
               this.productList.splice(idx, 1);
             }
           }
-        });
+        })
     },
+    
   }
 }
 </script>
@@ -195,28 +201,6 @@ export default {
 .v-line {
   border-left : thin solid rgba(0,0,0,.125);
   height : 25px;
-}
-button{
-  border:2px solid #2B3F6B;
-  border-radius:15px;
-  color:#2B3F6B;
-}
-button:focus{
-    outline:none;
-    box-shadow:none;
-}
-.btn{
-  margin-right:10px;
-  border-radius:15px !important;
-}
-.update_btn{
-  position: relative;
-  bottom:3px;
-  margin-right:10px;
-}
-.nav{
-  display:flex;
-  justify-content: center;
 }
 .card{
   height:400px;
@@ -231,6 +215,9 @@ button:focus{
 }
 .card-body{
   height:40px;
+}
+.card_img{
+  height:300px;
 }
 .plus_btn img{
   float:right;
@@ -259,7 +246,7 @@ button:focus{
   border:2px solid #2B3F6B;
   color:white;
 }
-.btn_close:focus{
+.btn:focus{
   outline:none;
   box-shadow:none;
 }
@@ -279,14 +266,22 @@ button:focus{
   justify-content: space-between;
   align-items: center;
 }
+.icon_image a{
+  height:19px;
+}
 .icon img{
   width: 22px;
 }
 #updateimg img{
   height:19px;
 }
-.mod_close{
-  background-color:white;
+.modal-footer button{
+  background-color:#2B3F6B !important;
+  color: white !important;
+  border: 1px solid #2B3F6B !important;
+}
+.modal-footer button:hover{
+  background-color: white;
   color: #2B3F6B;
 }
 .file-close-button img{
