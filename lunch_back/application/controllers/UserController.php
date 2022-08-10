@@ -127,6 +127,16 @@ use application\libs\Application;
             }
             $rs = $this->model->insDiary($json);
             return [_RESULT => $rs];
+        }
 
+        public function getDiary() {
+            $urlPaths = getUrlPaths();
+            if(count($urlPaths) !== 3) {
+                exit();
+            }
+            $param = [
+                "iuser" => $urlPaths[2],
+            ];
+            return $this->model->getDiary($param);
         }
     }

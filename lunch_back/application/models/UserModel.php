@@ -98,4 +98,12 @@ class UserModel extends Model {
         $stmt->execute();
         return intval($this->pdo->lastInsertId());
     }
+
+    public function getDiary(&$param) {
+        $sql = " SELECT * FROM user_diary WHERE iuser = :iuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':iuser', $param["iuser"]);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }
