@@ -123,6 +123,9 @@ export default {
         this.diary.rest_name = this.searchRest;
       }
       const rs = await this.$post('user/insDiary', this.diary);
+      if(rs.result) {
+        this.$router.push( 'Diary' )
+      }
       console.log(rs);
     },
     async getRestList() {
