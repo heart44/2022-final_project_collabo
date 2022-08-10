@@ -59,7 +59,7 @@
             $json = getJson();
 
             if($json["img"] !== '') {
-                $img_parts = explode(";base64,", $json["image"]);
+                $img_parts = explode(";base64,", $json["img"]);
                 $img_type_aux = explode("image/", $img_parts[0]);
                 $img_type = $img_type_aux[1];
                 $img_base64 = base64_decode($img_parts[1]);

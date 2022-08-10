@@ -51,45 +51,13 @@
       <div>
         <router-link to="/BobfWrite">글쓰기 테스트 화면</router-link>
       </div>
-        <!-- <div class="main_area con">
-          <div class="con_title">
-            <div class="tab_cont">
-              <div id="main_picl" class="cbp cbp-ready cbp-mode-slider" style="height: 377px">
-                <div class="cbp-wrapper-outer">
-                  <div class="cbp-wrapper" style="width: 7970px; transform: translate3d(0px, 0px, 0px);">
-                    <div class="cbp-item" style="width: 370px; left: 0px; top: 0px;">
-                      <div class="cbp-item-wrapper">
-                        <div class="pick">
-                          <div class="cap">
-                            <div class="pc">
-                              <div class="text_area">
-                                <div class="top_txt">
-                                  <a href=""></a>
-                                <div class="btm_txt">
-                                  <div class="profile"></div>
-                                  <div class="stat"></div>
-                                </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6" :key="ibobf" v-for="ibobf in paginatedData">
           <div class="card" style="width: 18rem;" @click="goDetail">
-            <a @click="goToDetail(ibobf)" style="cursor:pointer;">
+            <a @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
               <a style="cursor:pointer;">
-                  <img
-                      alt="이미지" class="card-img-top">
+                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`">
               </a>
               <div class="card-body">
                   <h5 class="card-title">{{ ibobf.title }}</h5>
@@ -319,9 +287,9 @@ export default {
   //글 상세페이지 이동 메소드
     goToDetail(ibobf) {
       const res = ibobf
-      // console.log("res :", res)
-      this.$store.commit('bobfDetailInfo', res)
-      this.$router.push( {path: '/BobfDetail'} );
+      console.log("res :", res)
+      this.$router.push( {name: 'BobfDetail', params: { ibobf: res }} );
+      // this.$router.push( {path: '/BobfDetail/ibobf'} );
     },
 
     

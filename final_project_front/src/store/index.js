@@ -8,10 +8,8 @@ export default createStore({
       searchList: [],
       searchWord: '',
       currentLoc: {},
-      restInfo: {},
       restList: [],
       year: [],
-      bobfDetailInfo: {}
     }
   },
   getters: {
@@ -48,9 +46,6 @@ export default createStore({
     },
     restList: (state, data) => {
       state.restList = data
-    },
-    bobfDetailInfo: (state, data) => {
-      state.bobfDetailInfo = data
     },
     year: (state) => {
       state.year = [];

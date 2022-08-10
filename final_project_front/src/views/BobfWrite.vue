@@ -326,10 +326,10 @@ export default {
 
         //글 쓰기
         async insBobF() {
-            const image = await this.$base64(this.$refs.bobfImg.files.files[0]);
-            console.log(image);
-            // let image = '';
+            let image = '';
             if(this.$refs.bobfImg.files.length !== 0) {
+                image = await this.$base64(this.$refs.bobfImg.files[0]);
+                console.log(image);
             }
 
             this.composition.iuser = this.user.iuser
@@ -344,7 +344,7 @@ export default {
                 this.composition.irest = this.selectedAreaCate2;
             }
             
-            // const res = await this.$post('api/insBobF', this.composition)
+            const res = await this.$post('api/insBobF', this.composition)
             console.log(res)
 
             if( res.result ) {

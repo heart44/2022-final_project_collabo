@@ -118,6 +118,7 @@ export default {
       }
       console.log(this.diary);
       const rs = await this.$post('user/insDiary', this.diary);
+      
       console.log(rs);
     },
     async getRestList() {

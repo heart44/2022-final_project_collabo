@@ -52,6 +52,7 @@
                     FROM bobf
                         LEFT JOIN user
                         ON bobf.iuser = user.iuser
+                    ORDER BY ibobf DESC
                     ";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
