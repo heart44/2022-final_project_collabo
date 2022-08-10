@@ -82,7 +82,7 @@ export default {
   data() {
       return {
         diary: {
-          irest: '',
+          irest: 0,
           rest_name: '',
           rating: '0',
           text: '',
