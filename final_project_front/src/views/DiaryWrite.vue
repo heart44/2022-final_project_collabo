@@ -11,7 +11,7 @@
           <div class="write_ctnt">
             <div class="date">
               <label>날짜</label> 
-              <input type="date" v-model="diary.date">
+              <input type="date" v-model="diary.eatdt">
             </div>
 
           <div class="profile-img">
@@ -34,12 +34,19 @@
 
             <div class="store">
               <label>가게</label> 
-              <input type="text" name="name" v-model="diary.restaurant">
+              <input type="text" name="name" v-model="searchRest" @keyup.enter="getRestList()">
+              <button @click="getRestList()">검색</button>
+              <div :class="{'d-none':restSearch}" class="searchbox">
+                <ul class="list-group list-group-flush pointer">
+                  <li class="list-group-item list-group-item-action" @click="selRest(selfinput)"><span class="text-sm">직접 입력</span> '{{ selfinput }}'</li>
+                  <li class="list-group-item list-group-item-action" v-for="item in restlist" :key="item" @click="selRest(item.rest_name, item.irest)">{{ item.rest_name }}</li>
+                </ul>
+              </div>            
             </div>
 
             <div class="contents">
               <label class="ctnt">내용</label> 
-              <textarea placeholder="" v-model="diary.ctnt"></textarea>
+              <textarea placeholder="" v-model="diary.text"></textarea>
             </div>
           </div>
             <div class="star">
@@ -75,12 +82,17 @@ export default {
   data() {
       return {
         diary: {
-          date: '',
-          restaurant: '',
-          ctnt: '',
+          irest: '',
+          rest_name: '',
           rating: '0',
+          text: '',
+          eatdt: '',
         },
         imgSrc: '',
+        searchRest: '',
+        selfinput: '',
+        restlist: [],
+        restSearch: true,
       }
   },
   computed:{
@@ -97,13 +109,47 @@ export default {
       this.imgSrc = "";
     },
     async diarySubmit() {
+      this.diary.iuser = this.user.iuser;
+      if(this.diary.irest === 0) {
+        this.diary.irest = null;
+      }
+      if(this.diary.rest_name === '' && this.searchRest !== '') {
+        this.diary.rest_name = this.searchRest;
+      }
       console.log(this.diary);
+      const rs = await this.$post('user/insDiary', this.diary);
+      console.log(rs);
+    },
+    async getRestList() {
+      const rs = await this.$post('user/selRest', { search_word: this.searchRest });
+      if(rs.result) {
+        this.restlist = rs.result;
+        console.log(this.restlist);
+        this.restSearch = false;
+        this.selfinput = this.searchRest;
+      }
+    },
+    selRest(name, code = 0) {
+      this.searchRest = name;
+      this.diary.rest_name = name;
+      this.diary.irest = code;
     }
   }
 }
 </script>
 
 <style scoped>
+.list-group > ul > li {
+  border: 3px solid #2B3F6B;
+}
+.searchbox {
+  max-height: 10rem;
+  overflow: auto;
+}
+.text-sm {
+  font-size: 0.9rem;
+  color: rgb(77, 77, 77);
+}
 button{
   border:2px solid #2B3F6B;
   border-radius:15px;

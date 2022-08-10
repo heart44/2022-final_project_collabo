@@ -64,4 +64,38 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->rowCount();
     }
+
+    public function selRest(&$param) {
+        $sql = " SELECT * FROM restaurant WHERE ";
+        for($i = 0; $i<count($param); $i++) {
+            $sql .= "rest_name LIKE '%{$param[$i]}%' ";
+            if($i !== count($param)-1) {
+                $sql .= "OR ";
+            }
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function insDiary(&$param) {
+        $sql = "INSERT INTO user_diary
+        (
+            iuser, irest, rest_name, rating, text, eatdt
+        )
+        VALUES
+        (
+            :iuser, :irest, :rest_name, :rating, :text, :eatdt
+        )";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':iuser', $param["iuser"]);
+        $stmt->bindValue(':irest', $param["irest"]);
+        $stmt->bindValue(':rest_name', $param["rest_name"]);
+        $stmt->bindValue(':rating', $param["rating"]);
+        $stmt->bindValue(':text', $param["text"]);
+        $stmt->bindValue(':eatdt', $param["eatdt"]);
+        // $stmt->bindValue(':path', $param["path"]);
+        $stmt->execute();
+        return intval($this->pdo->lastInsertId());
+    }
 }

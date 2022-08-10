@@ -1,6 +1,8 @@
 <?php
     namespace application\controllers;
 
+use application\libs\Application;
+
     class UserController extends Controller{
         public function signup(){
             $json = getJson();
@@ -97,5 +99,18 @@
                     }
                     return [_RESULT => 0];
                 }
+        }
+
+        public function selRest() {
+            $json = getJson();
+            $param = explode(' ', $json['search_word']);
+            return [_RESULT => $this->model->selRest($param)];
+        }
+
+        public function insDiary() {
+            $json = getJson();
+            $rs = $this->model->insDiary($json);
+            return [_RESULT => $rs];
+
         }
     }
