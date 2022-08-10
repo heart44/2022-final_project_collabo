@@ -16,12 +16,12 @@
             <a href="" class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
             
             <div class="card-body">
-              <h5 class="card-title">날짜</h5> <!--{{ user_diary.redgt }}-->
+              <h5 class="card-title">날짜</h5> 
             </div>
 
             <div class="icon">
               <div class="icon_image">
-                <a href="" @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><img src="../assets/update.svg" class="" alt=""/></a>
+                <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
                 <div class='v-line'></div>
                 <div id="deleteimg" @click="deleteDiary()"><img src="../assets/delete.svg"/></div>
               </div>
@@ -61,76 +61,75 @@
         </div>
       </div>
       <!-- 다이어리 수정 (모달)-->
-      <div class="modal fade" id="updateFeedModal" tabindex="-1" aria-labelledby="updateFeedModalLabel" aria-hidden="true">
+      <!-- <div class="modal fade" id="updateFeedModal" tabindex="-1" aria-labelledby="updateFeedModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal">
             <div class="modal-content" id="newFeedModalContent">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newFeedModalLabel">수정</h5>
-                    <!-- <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
+                     <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> 
                 </div>
                 <div class="modal-body" id="id-modal-body">
                  
                   
-                     <div class="write">
-                        <div class="write_ctnt">
+        <div class="write">
+          <div class="write_ctnt">
 
-                           <div class="profile-img">
-                              <div v-if="!files.length" class="room-file-upload-example-container">
-                                <div class="image-box">
-                                  <label className="file-button" for="file" >업로드</label>
-                                  <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
-                                </div>
-                            </div>
-
-                            <div v-else class="file-preview-content-container">
-                                <div class="file-preview-container">
-                                    <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-                                        <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
-                                            <img src="../assets/close.png">
-                                        </div>
-                                        <img class="preview" :src="file.preview" />
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-
-                        <div class="store">
-                          <label>가게</label> 
-                          <input type="text" name="name" value="">
-                        </div>
-
-                        <div class="contents">
-                          <label class="ctnt">내용</label> 
-                          <textarea placeholder=""></textarea>
-                        </div>
-                      </div>
-                      <div class="star">
-                        
-                          <form class="mb-3" name="myform" id="myform" method="post">
-                            <fieldset>
-                              <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                for="rate1">⭐</label>
-                              <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                for="rate2">⭐</label>
-                              <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                for="rate3">⭐</label>
-                              <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                for="rate4">⭐</label>
-                              <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                for="rate5">⭐</label>
-                            </fieldset>
-                          </form>
-                      </div>
-                    </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn mod_ok" @click="updateBtn">수정</button>
-                    <button class="btn btn-primary mod_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+              <div class="profile-img">
+                <div v-if="!files.length" class="room-file-upload-example-container">
+                  <div class="image-box">
+                    <label className="file-button" for="file" >업로드</label>
+                    <input type="file" id="file" ref="files" @change="imageUpload" style="display:none;" multiple/>  
                   </div>
+              </div>
+
+              <div v-else class="file-preview-content-container">
+                  <div class="file-preview-container">
+                      <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
+                          <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
+                              <img src="../assets/close.png">
+                          </div>
+                          <img class="preview" :src="file.preview" />
+                      </div>
+                  </div>
+              </div>
             </div>
+
+            <div class="store">
+              <label>가게</label> 
+              <input type="text" name="name" value="">
+            </div>
+
+            <div class="contents">
+              <label class="ctnt">내용</label> 
+              <textarea placeholder=""></textarea>
+            </div>
+          </div>
+            <div class="star">
+              <form class="mb-3" name="myform" id="myform" method="post">
+                  <fieldset>
+                    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                      for="rate1">⭐</label>
+                    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                      for="rate2">⭐</label>
+                    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                      for="rate3">⭐</label>
+                    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                      for="rate4">⭐</label>
+                    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                      for="rate5">⭐</label>
+                  </fieldset>
+              </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn mod_ok" @click="updateBtn">수정</button>
+              <button class="btn btn-primary mod_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+            </div>
+          </div>
         </div>
       </div>
+    </div> -->
   </div>
-</div>
 </template>
 
 <script>
@@ -389,9 +388,8 @@ fieldset label{
   text-align: center;
 }
 .profile-img{
-  float:right;
-  position: relative;
-  right:20%;
-  bottom:30px;
+ display:flex;
+ flex-direction: column;
+ justify-content: center;
 }
 </style>
