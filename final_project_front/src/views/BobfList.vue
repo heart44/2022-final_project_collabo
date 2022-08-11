@@ -55,24 +55,19 @@
 
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6" :key="ibobf" v-for="ibobf in paginatedData">
-          <div class="card" style="width: 18rem;" @click="goDetail">
+          <div class="card h-100" style="width: 20rem;" @click="goDetail">
             <a @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
-              <a style="cursor:pointer;">
-                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`">
-              </a>
+              <div>
+                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 250px; object-fit: cover">
+              </div>
               <div class="card-body">
                   <h5 class="card-title">{{ ibobf.title }}</h5>
                   <p class="card-text">
                       <span class="badge bd-dark text-black me-1">{{ ibobf.nick }}</span>
                   </p>
-                  <p class="card-text">
-                      <span class="badge bd-dark text-black">
-                        {{ ibobf.sido }} / {{ ibobf.gugun}}
-                        </span>
-                  </p>
-                      <span class="card-text badge bd-dark text-black">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</span>
                   <div class="d-flex justify-content-between align-ites-center">
-                      <small class="text-dark">{{  }}</small>
+                      <small class="text-dark">{{ ibobf.sido }} / {{ ibobf.gugun}}</small>
+                      <small class="text-dark">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</small>
                   </div>
               </div>
             </a>
@@ -308,4 +303,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

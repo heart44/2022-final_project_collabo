@@ -91,15 +91,25 @@
 
         //밥친구 디테일
         public function selBobfDetail(&$param) {
-            $sql = "SELECT *, user.* FROM bobf
-                        LEFT JOIN user
-                        ON bobf.iuser = user.iuser
-                    WHERE ibobf = :ibobf";
+            $sql = "SELECT a.*, b.* FROM bobf AS a
+                    LEFT JOIN user AS b
+                    ON a.iuser = b.iuser
+                    WHERE a.ibobf = :ibobf";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":ibobf", $param["ibobf"]);
+            $stmt->execute();
             return $stmt->fetch(PDO::FETCH_OBJ);
         }
 
+        //밥친구 글 삭제
+        public function delBobfDetail(&$param) {
+            $sql = "DELETE FROM bobf
+                    WHERE ibobf = :ibobf";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":ibobf", $param["ibobf"]);
+            $stmt->execute();
+            return $stmt->rowCount();
+        }
 
         
         public function selRestList(&$param) {
@@ -108,8 +118,10 @@
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":rest_name", $param["rest_name"]);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $stmt->rowCount();
         }
+
+        
 
 
 
