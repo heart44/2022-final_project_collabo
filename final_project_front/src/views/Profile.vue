@@ -276,9 +276,8 @@ input[type="button"] {
   border: 1px solid #2b3f6b;
 }
 .file-close-button img {
-  width: 32px;
   position: relative;
-  left: 37%;
+  left: 45%;
   top: 20px;
   z-index: 1;
   cursor: pointer;

@@ -48,9 +48,9 @@
                   <img src="../assets/dog.jpg">
                   <div class="read_contents">
                     <p>가게 : 어쩌고저쩌고 </p>
-                    <!-- <p>내용 : {{ user_diary.text }} </p>
-                    <p>날짜 : {{ user_diary.regdt }} </p>
-                    <p>별점 : {{ user_diary.rating }}</p> -->
+                      <!-- <p>내용 : {{ user_diary.text }} </p>
+                      <p>날짜 : {{ user_diary.regdt }} </p>
+                      <p>별점 : {{ user_diary.rating }}</p> -->
                   </div>
                 </div>
 
@@ -129,6 +129,7 @@
         </div>
       </div>
     </div> -->
+    
   </div>
 </template>
 
