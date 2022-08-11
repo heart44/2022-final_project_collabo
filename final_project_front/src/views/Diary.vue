@@ -21,7 +21,7 @@
 
             <div class="icon">
               <div class="icon_image">
-                <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
+                <div @click="[modDiary(item.idiary)]"><img src="../assets/update.svg"/></div>
                 <div class='v-line'></div>
                 <div id="deleteimg" @click="deleteDiary(item.idiary, user.iuser, item.path, idx)"><img src="../assets/delete.svg"/></div>
               </div>
@@ -176,8 +176,10 @@ export default {
     getCtnt(idx) {
       this.diaryDetail = this.diaryList[idx];
       console.log(this.diaryDetail);
-    }
-    
+    },
+    modDiary(idx) {
+        this.$router.push( {path: '/DiaryWrite', query: {iuser: this.user.iuser, idiary: idx}})
+    }    
   }
 }
 </script>

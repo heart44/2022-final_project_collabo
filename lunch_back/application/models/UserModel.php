@@ -100,7 +100,11 @@ class UserModel extends Model {
     }
 
     public function getDiary(&$param) {
-        $sql = " SELECT * FROM user_diary WHERE iuser = :iuser ORDER BY eatdt";
+        $sql = " SELECT * FROM user_diary WHERE iuser = :iuser ";
+        if(isset($param["idiary"])) {
+            $sql .= "AND idiary = {$param["idiary"]}";
+        }
+        $sql .= " ORDER BY eatdt";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':iuser', $param["iuser"]);
         $stmt->execute();

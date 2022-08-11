@@ -101,6 +101,9 @@ export default {
         return this.$store.state.user;
     },
   },
+  created() {
+    this.modDetail();
+  },
   methods: {
     async previewImage() {
       if(this.$refs.diaryimg.files.length !== 0) {
@@ -124,7 +127,11 @@ export default {
       if(this.diary.rest_name === '' && this.searchRest !== '') {
         this.diary.rest_name = this.searchRest;
       }
-      const rs = await this.$post('user/insDiary', this.diary);
+      if(this.$route.query.idiary) {
+        const rs = await this.$post('user/updateDiary', this.diary);
+      } else {
+        const rs = await this.$post('user/insDiary', this.diary);
+      }
       if(rs.result) {
         this.$router.push( 'Diary' )
       }
@@ -142,6 +149,23 @@ export default {
       this.searchRest = name;
       this.diary.rest_name = name;
       this.diary.irest = code;
+    },
+    async modDetail() {
+      if(this.$route.query.idiary) {
+        const idiary = this.$route.query.idiary;
+        const detail = await this.$get(`user/getDiary/${this.user.iuser}/${idiary}`)
+        console.log(detail);
+        if(detail[0]) {
+          this.diary.irest = detail[0].irest;
+          this.diary.rest_name = detail[0].rest_name;
+          this.diary.rating = detail[0].rating;
+          this.diary.text = detail[0].text;
+          this.diary.eatdt = detail[0].eatdt;
+          this.diary.path = detail[0].path;
+          this.searchRest = detail[0].rest_name;
+          this.imgSrc = '/static/img/diary/'+this.user.iuser+'/'+detail[0].path;
+        }
+      }
     }
   }
 }
