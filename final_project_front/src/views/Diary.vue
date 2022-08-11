@@ -10,7 +10,7 @@
       <div class="row mt-5 justify-content-md-center">   
           <div class="plus_btn"><router-link to="/DiaryWrite"><img src="../assets/plus.png"></router-link></div>
        
-        <div class="col-md-3"  v-for="item in diaryList" :key="item">
+        <div class="col-md-3"  v-for="(item, idx) in diaryList" :key="item">
 
           <div class="card mb-4">
             <div class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
@@ -23,7 +23,7 @@
               <div class="icon_image">
                 <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
                 <div class='v-line'></div>
-                <div id="deleteimg" @click="deleteDiary()"><img src="../assets/delete.svg"/></div>
+                <div id="deleteimg" @click="deleteDiary(item.idiary, user.iuser, item.path, idx)"><img src="../assets/delete.svg"/></div>
               </div>
             </div>
 
@@ -139,7 +139,7 @@ export default {
   data() {
       return {
         diaryList: [],
-
+        diaryDetail: {},
       }
   },
   computed: {
@@ -149,6 +149,8 @@ export default {
   },
   created() {
     this.getDiaryList();
+      console.log(this.diaryList);
+
   },
   methods: {
     async getDiaryList() {
@@ -158,7 +160,7 @@ export default {
     updateBtn(){
 
     },
-    async deleteDiary(){
+    async deleteDiary(pk, id, path, idx){
       this.$swal.fire({
           title: '정말 삭제 하시겠습니까?',
           showCancelButton: true, 
@@ -166,9 +168,11 @@ export default {
           cancelButtonText: '취소'
       }).then(async result => {
           if(result.isConfirmed) {
-              const res = await this.$delete(`api/deleteDiary/`, {});
+              const res = await this.$delete(`user/deleteDiary/${pk}/${id}/${path}`);
+            if(res.result) {
+              this.diaryList.splice(idx, 1);
+              console.log(this.diaryList);
 
-            if(res.result === 1) {
               this.$swal.fire('삭제되었습니다.', '', 'success');
             }
           }

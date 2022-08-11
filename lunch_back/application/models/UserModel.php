@@ -106,4 +106,12 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public function deleteDiary(&$param) {
+        $sql = "DELETE FROM user_diary WHERE idiary = :idiary";
+        $stmt = $this->pdo->prepare($sql);        
+        $stmt->bindValue(":idiary", $param["idiary"]);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }
