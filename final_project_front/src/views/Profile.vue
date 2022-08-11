@@ -193,6 +193,7 @@ export default {
           this.isAlert = false;
           this.alertmsg = '당신의 프로필 사진이 삭제되었습니다.';
         }
+        this.$refs.profileImg.value = '';
         console.log(this.user);
       }
     },

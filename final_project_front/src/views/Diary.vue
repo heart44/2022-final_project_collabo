@@ -10,56 +10,56 @@
       <div class="row mt-5 justify-content-md-center">   
           <div class="plus_btn"><router-link to="/DiaryWrite"><img src="../assets/plus.png"></router-link></div>
        
-        <div class="col-md-3">
+        <div class="col-md-3"  v-for="(item, idx) in diaryList" :key="item">
 
-          <div class="card">
-            <a href="" class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
+          <div class="card mb-4">
+            <div class="card_img" @click="[openModal, getCtnt(idx)]" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
             
             <div class="card-body">
-              <h5 class="card-title">날짜</h5> 
+              <h5 class="card-title">{{ item.eatdt }}</h5> 
             </div>
 
             <div class="icon">
               <div class="icon_image">
-                <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
+                <div @click="[modDiary(item.idiary)]"><img src="../assets/update.svg"/></div>
                 <div class='v-line'></div>
-                <div id="deleteimg" @click="deleteDiary()"><img src="../assets/delete.svg"/></div>
+                <div id="deleteimg" @click="deleteDiary(item.idiary, user.iuser, item.path, idx)"><img src="../assets/delete.svg"/></div>
               </div>
             </div>
 
           </div>
-
         </div>
       </div>
     </div>
-      <!-- 다이어리 상세정보 (모달)-->
-      <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
 
-        <div class="modal-dialog modal-lg modal-dialog-centered modal">
+        <!-- 다이어리 상세정보 (모달)-->
+        <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
 
-            <div class="modal-content" id="newFeedModalContent">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newFeedModalLabel">Diary</h5>
-                    <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
-                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
-                </div>
+          <div class="modal-dialog modal-lg modal-dialog-centered modal">
 
-                <div class="modal-body" id="id-modal-body">
-                  <img src="../assets/dog.jpg">
-                  <div class="read_contents">
-                    <p>가게 : 어쩌고저쩌고 </p>
-                    <!-- <p>내용 : {{ user_diary.text }} </p>
-                    <p>날짜 : {{ user_diary.regdt }} </p>
-                    <p>별점 : {{ user_diary.rating }}</p> -->
+              <div class="modal-content" id="newFeedModalContent">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="newFeedModalLabel">Diary</h5>
+                      <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
+                      <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
                   </div>
-                </div>
 
-                  <div class="modal-footer">
-                    <button class="btn btn-primary btn_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+                  <div class="modal-body" id="id-modal-body">
+                    <img :src="'static/img/diary/'+user.iuser+'/'+diaryDetail.path">
+                    <div class="read_contents">
+                      <p>가게 : {{ diaryDetail.rest_name }} </p>
+                      <p>내용 : {{ diaryDetail.text }} </p>
+                      <p>날짜 : {{ diaryDetail.eatdt }} </p>
+                      <p>별점 : {{ diaryDetail.rating }}</p>
+                    </div>
                   </div>
-            </div>
+
+                    <div class="modal-footer">
+                      <button class="btn btn-primary btn_close" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">닫기</button>
+                    </div>
+              </div>
+          </div>
         </div>
-      </div>
       <!-- 다이어리 수정 (모달)-->
       <!-- <div class="modal fade" id="updateFeedModal" tabindex="-1" aria-labelledby="updateFeedModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal">
@@ -137,44 +137,27 @@
 export default {
 
   data() {
-     return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
+      return {
+        diaryList: [],
+        diaryDetail: {},
       }
   },
+  computed: {
+    user() {
+        return this.$store.state.user;
+    },
+  },
+  created() {
+    this.getDiaryList();
+  },
   methods: {
+    async getDiaryList() {
+      this.diaryList = await this.$get(`user/getDiary/${this.user.iuser}`);
+    },
     updateBtn(){
 
     },
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
-        }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
-    },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
-    },
-    async deleteDiary(){
+    async deleteDiary(pk, id, path, idx){
       this.$swal.fire({
           title: '정말 삭제 하시겠습니까?',
           showCancelButton: true, 
@@ -182,16 +165,21 @@ export default {
           cancelButtonText: '취소'
       }).then(async result => {
           if(result.isConfirmed) {
-              const res = await this.$delete(`api/deleteDiary/${productId}`, {});
-
-          if(res.result === 1) {
+              const res = await this.$delete(`user/deleteDiary/${pk}/${id}/${path}`);
+            if(res.result) {
+              this.diaryList.splice(idx, 1);
               this.$swal.fire('삭제되었습니다.', '', 'success');
-              this.productList.splice(idx, 1);
             }
           }
         })
     },
-    
+    getCtnt(idx) {
+      this.diaryDetail = this.diaryList[idx];
+      console.log(this.diaryDetail);
+    },
+    modDiary(idx) {
+        this.$router.push( {path: '/DiaryWrite', query: {iuser: this.user.iuser, idiary: idx}})
+    }    
   }
 }
 </script>

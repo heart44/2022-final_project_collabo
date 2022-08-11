@@ -82,12 +82,14 @@ export default {
   data() {
       return {
         diary: {
-          irest: '',
+          idiary: 0,
+          irest: 0,
           rest_name: '',
           rating: '0',
           text: '',
           eatdt: '',
           path: '',
+          src: '',
         },
         imgSrc: '',
         searchRest: '',
@@ -101,20 +103,26 @@ export default {
         return this.$store.state.user;
     },
   },
+  created() {
+    this.modDetail();
+  },
   methods: {
-    previewImage() {
-      let img = this.$refs.diaryimg.files[0];
-      this.imgSrc = URL.createObjectURL(img)
+    async previewImage() {
+      if(this.$refs.diaryimg.files.length !== 0) {
+        // 프리뷰
+        let img = this.$refs.diaryimg.files[0];
+        this.imgSrc = URL.createObjectURL(img);
+        // 프리뷰 띄우면서 데이터에도 일단 저장
+        let image = '';
+        image = await this.$base64(img);
+        this.diary.path = image;
+      }
     },
     async delPreview() {
       this.imgSrc = "";
+      this.$refs.diaryimg.value = '';
     },
     async diarySubmit() {
-      let image = '';
-      if(this.$refs.diaryimg.files.length !== 0) {
-        image = await this.$base64(this.$refs.diaryimg.files[0]);
-      }
-      this.diary.path = image;
       this.diary.iuser = this.user.iuser;
       if(this.diary.irest === 0) {
         this.diary.irest = null;
@@ -122,9 +130,15 @@ export default {
       if(this.diary.rest_name === '' && this.searchRest !== '') {
         this.diary.rest_name = this.searchRest;
       }
-      const rs = await this.$post('user/insDiary', this.diary);
+      let rs;
+      if(this.$route.query.idiary) {
+        rs = await this.$post('user/updateDiary', this.diary);
+      } else {
+        rs = await this.$post('user/insDiary', this.diary);
+      }
       if(rs.result) {
-        this.$router.push( 'Diary' )
+        this.$refs.diaryimg.value = '';
+        this.$router.push( 'Diary' );
       }
       console.log(rs);
     },
@@ -140,6 +154,24 @@ export default {
       this.searchRest = name;
       this.diary.rest_name = name;
       this.diary.irest = code;
+    },
+    async modDetail() {
+      if(this.$route.query.idiary) {
+        const idiary = this.$route.query.idiary;
+        const detail = await this.$get(`user/getDiary/${this.user.iuser}/${idiary}`)
+        console.log(detail);
+        if(detail[0]) {
+          this.diary.idiary = idiary;
+          this.diary.irest = detail[0].irest;
+          this.diary.rest_name = detail[0].rest_name;
+          this.diary.rating = detail[0].rating;
+          this.diary.text = detail[0].text;
+          this.diary.eatdt = detail[0].eatdt;
+          this.diary.src = detail[0].path;
+          this.searchRest = detail[0].rest_name;
+          this.imgSrc = '/static/img/diary/'+this.user.iuser+'/'+detail[0].path;
+        }
+      }
     }
   }
 }
