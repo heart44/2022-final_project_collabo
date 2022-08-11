@@ -10,20 +10,20 @@
       <div class="row mt-5 justify-content-md-center">   
           <div class="plus_btn"><router-link to="/DiaryWrite"><img src="../assets/plus.png"></router-link></div>
        
-        <div class="col-md-3">
+        <div class="col-md-3"  v-for="(item, idx) in diaryList" :key="item">
 
-          <div class="card">
-            <a href="" class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img src="../assets/dog.jpg" class="card-img-top" alt="Fissure in Sandstone"/></a>
+          <div class="card mb-4">
+            <div class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
             
             <div class="card-body">
-              <h5 class="card-title">날짜</h5> 
+              <h5 class="card-title">{{ item.eatdt }}</h5> 
             </div>
 
             <div class="icon">
               <div class="icon_image">
                 <div @click="openModal" id="updateimg" data-bs-toggle="modal" data-bs-target="#updateFeedModal"><router-link to="/DiaryWrite"><img src="../assets/update.svg" class="" alt=""/></router-link></div>
                 <div class='v-line'></div>
-                <div id="deleteimg" @click="deleteDiary()"><img src="../assets/delete.svg"/></div>
+                <div id="deleteimg" @click="deleteDiary(item.idiary, user.iuser, item.path, idx)"><img src="../assets/delete.svg"/></div>
               </div>
             </div>
 
@@ -137,44 +137,30 @@
 export default {
 
   data() {
-     return {
-
-          files: [], //업로드용 파일
-          filesPreview: [],
-          uploadImageIndex: 0 // 이미지 업로드를 위한 변수
+      return {
+        diaryList: [],
+        diaryDetail: {},
       }
   },
+  computed: {
+    user() {
+        return this.$store.state.user;
+    },
+  },
+  created() {
+    this.getDiaryList();
+      console.log(this.diaryList);
+
+  },
   methods: {
+    async getDiaryList() {
+      this.diaryList = await this.$get(`user/getDiary/${this.user.iuser}`);
+      console.log(this.diaryList);
+    },
     updateBtn(){
 
     },
-    imageUpload() {
-        console.log(this.$refs.files.files);
-        let num = -1;
-        for (let i = 0; i < this.$refs.files.files.length; i++) {
-          this.files = [
-              ...this.files,
-              //이미지 업로드
-              {
-                  //실제 파일
-                  file: this.$refs.files.files[i],
-                  //이미지 프리뷰
-                  preview: URL.createObjectURL(this.$refs.files.files[i]),
-                  //삭제및 관리를 위한 number
-                  number: i
-              }
-          ];
-          num = i;
-        }
-        this.uploadImageIndex = num + 1; 
-        console.log(this.files);
-        
-    },
-    fileDeleteButton(e) {
-        const name = e.target.getAttribute('name');
-        this.files = this.files.filter(data => data.number !== Number(name));
-    },
-    async deleteDiary(){
+    async deleteDiary(pk, id, path, idx){
       this.$swal.fire({
           title: '정말 삭제 하시겠습니까?',
           showCancelButton: true, 
@@ -182,11 +168,12 @@ export default {
           cancelButtonText: '취소'
       }).then(async result => {
           if(result.isConfirmed) {
-              const res = await this.$delete(`api/deleteDiary/${productId}`, {});
+              const res = await this.$delete(`user/deleteDiary/${pk}/${id}/${path}`);
+            if(res.result) {
+              this.diaryList.splice(idx, 1);
+              console.log(this.diaryList);
 
-          if(res.result === 1) {
               this.$swal.fire('삭제되었습니다.', '', 'success');
-              this.productList.splice(idx, 1);
             }
           }
         })

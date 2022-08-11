@@ -82,7 +82,7 @@ export default {
   data() {
       return {
         diary: {
-          irest: '',
+          irest: 0,
           rest_name: '',
           rating: '0',
           text: '',
@@ -102,19 +102,21 @@ export default {
     },
   },
   methods: {
-    previewImage() {
-      let img = this.$refs.diaryimg.files[0];
-      this.imgSrc = URL.createObjectURL(img)
+    async previewImage() {
+      if(this.$refs.diaryimg.files.length !== 0) {
+        // 프리뷰
+        let img = this.$refs.diaryimg.files[0];
+        this.imgSrc = URL.createObjectURL(img);
+        // 프리뷰 띄우면서 데이터에도 일단 저장
+        let image = '';
+        image = await this.$base64(img);
+        this.diary.path = image;
+      }
     },
     async delPreview() {
       this.imgSrc = "";
     },
     async diarySubmit() {
-      let image = '';
-      if(this.$refs.diaryimg.files.length !== 0) {
-        image = await this.$base64(this.$refs.diaryimg.files[0]);
-      }
-      this.diary.path = image;
       this.diary.iuser = this.user.iuser;
       if(this.diary.irest === 0) {
         this.diary.irest = null;

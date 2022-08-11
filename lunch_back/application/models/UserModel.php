@@ -98,4 +98,20 @@ class UserModel extends Model {
         $stmt->execute();
         return intval($this->pdo->lastInsertId());
     }
+
+    public function getDiary(&$param) {
+        $sql = " SELECT * FROM user_diary WHERE iuser = :iuser ORDER BY eatdt";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':iuser', $param["iuser"]);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function deleteDiary(&$param) {
+        $sql = "DELETE FROM user_diary WHERE idiary = :idiary";
+        $stmt = $this->pdo->prepare($sql);        
+        $stmt->bindValue(":idiary", $param["idiary"]);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }
