@@ -3,7 +3,7 @@
         <div class="container">
         <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
         <div class="input-group align-items-center">
-            <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="오늘은 @@이 많이 검색됐네요~" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="" aria-label="Username" aria-describedby="basic-addon1" ref="holder" >
             <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
         </div>
         
@@ -37,7 +37,8 @@ export default {
             midcate: '',
             menu: '',
             search: '',
-            searchList: {}
+            searchList: {},
+            log: ''
         }
     },
     computed:{
@@ -52,7 +53,13 @@ export default {
         }
     },
     created() {
-        
+
+    },
+    updated() {
+        this.searchLog()
+    },
+    mounted() {
+        this.searchLog()
     },
     methods: {
         async signout() {
@@ -61,9 +68,13 @@ export default {
         },
         async searchMenu() {    //통신부분 개망....완전 일 많이 하는 중,,,근데 나누기.....힘들어요,,,,,,
             if(this.search.trim() !== '') {
-                const param = { search_word: this.search }
+                const param = { 
+                    search_word: this.search,
+                    iuser: this.user.iuser
+                }
                 console.log(param)
-                await this.$post('/search/searchLog', param);    //이거 검색기록임~ 나중에 주석 풀겨
+                const log = await this.$post('/search/searchLog', param);    //이거 검색기록임~ 나중에 주석 풀겨
+                console.log(log)
                 // const result = await this.$post('search/menuCrawling', param);
                 //이거는 네이버에서 메뉴 가져오는 거 통신
                 const result = await this.$get(`https://map.naver.com/v5/api/search?caller=pcweb&query=${this.search}&type=all&searchCoord=${this.getCurrentLoc.lon};${this.getCurrentLoc.lat}&page=1&displayCount=20&isPlaceRecommendationReplace=true&lang=ko`);
@@ -73,7 +84,6 @@ export default {
                     params.push({
                         name: item.name,
                         addr: item.address,
-                        cate2: item.category[0],
                         tel: item.tel,
                         menu: item.menuInfo,
                         open_close: item.bizhourInfo,
@@ -97,8 +107,21 @@ export default {
                 this.$store.commit('setSearchWord', this.search);   //검색어 저장
                 this.$router.push( {path: '/SearchList'} );
                 this.search = ''
+
+                this.getMenuList();
             }
         },
+        async searchLog() {
+            const log = await this.$get('/search/mostSearchLog')
+            const holder = this.$refs.holder;
+            if(log) {
+                holder.placeholder = `오늘은 ${log.rs}이(가) 많이 검색됐네요~` 
+            } 
+        },
+        async getMenuList() {
+            const rs = await this.$get('/search/menuList')
+            console.log(rs)
+        }
         
     }
 }

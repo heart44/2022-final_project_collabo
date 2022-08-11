@@ -3,42 +3,29 @@
     use PDO;
 
     class SearchModel extends Model {
-        //검색카테고리
-        public function getSearchCategoryList() {
-            $sql = "SELECT a.*, b.icate2, b.midcate, c.imenu, c.menu
-                    FROM category1 a, category2 b, menu_cd c
-                    WHERE a.icate1 = b.icate1 and b.icate2 = c.icate2
-                    ORDER BY a.icate1 asc";
-            
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
-    
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
-        }
-
         //메뉴코드 가져오기
         public function getMenuCD(&$param) {
-            $sql = "SELECT imenu FROM menu_cd 
-                    WHERE icate2 = :icate2 AND menu = :menu";
+            $sql = "SELECT imcd FROM menu_cd 
+                    WHERE menucd = :menucd";
     
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":icate2", $param["icate2"]);
-            $stmt->bindValue(":menu", $param["menu"]);
+            $stmt->bindValue(":menucd", $param["search_word"]);
             $stmt->execute();
 
             $rs = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $rs["imenu"];
+            return $rs["imcd"];
         }
 
         //검색 시 음식점 리스트 가져오기
         public function getRestList(&$param) {
-            $sql = "SELECT a.*, d.menu
-                    FROM restaurant a, menu_list b, category2 c, menu_cd d
-                    WHERE a.irest = b.irest AND b.imenu = d.imenu AND d.icate2 = c.icate2 AND d.menu LIKE :menu
-                    GROUP BY a.irest";
+            $sql = "SELECT a.*, c.menucd
+                    FROM restaurant a, menu_list b, menu_cd c
+                    WHERE a.irest = b.irest AND b.imcd = c.imcd AND c.menucd LIKE :menucd
+                    GROUP BY a.irest
+                    ORDER BY a.irest asc";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menu", "%".$param["search_word"]."%");
+            $stmt->bindValue(":menucd", "%".$param["search_word"]."%");
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
@@ -52,53 +39,43 @@
 
         //검색 로그 저장
         public function insSearchLog(&$param) {
-            $sql = "INSERT INTO search_log (search_word)
-                    VALUES (:search_word)";
+            $sql = "INSERT INTO search_log (search_word, iuser)
+                    VALUES (:search_word, :iuser)";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":search_word", $param["search_word"]);
+            $stmt->bindValue(":iuser", $param["iuser"]);
             $stmt->execute();
 
             return $stmt->rowCount();
         }
 
-        //category2 저장
-        public function insMenuCate2(&$param) {
-            $sql = "INSERT INTO category2 (midcate, icate1)
-                    VALUES (:midcate, :icate1)
-                    ON DUPLICATE KEY UPDATE moddt = now()";
+        //검색 로그 가져오기
+        public function getMostSearchLog() {
+            $sql = "SELECT search_word
+                    FROM search_log
+                    GROUP BY search_word
+                    HAVING COUNT(*) = ( SELECT MAX(mycnt)
+                                        FROM ( 
+                                            SELECT search_word, COUNT(*) AS mycnt
+                                            FROM search_log
+                                            WHERE DATE(search_date) = DATE(NOW())
+                                            GROUP BY search_word) AS rs )";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":midcate", $param["midcate"]);
-            $stmt->bindValue(":icate1", $param["icate1"]);
-
             $stmt->execute();
-
-            return intval($this->pdo->lastInsertId());
-        }
-
-        public function selcate2($param) {
-            $sql = "SELECT a.icate2 FROM category2 a, category1 b 
-                    WHERE a.icate1 = b.icate1 and a.midcate = :midcate and a.icate1 = :icate1";
-
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":midcate", $param["midcate"]);
-            $stmt->bindValue(":icate1", $param["icate1"]);
-            $stmt->execute();
-
-            $rs = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $rs["icate2"];
+    
+            return $stmt->fetch(PDO::FETCH_OBJ);
         }
 
         //메뉴 코드 저장
         public function insMenuCD(&$param) {
-            $sql = "INSERT INTO menu_cd (menu, icate2)
-                    VALUES (:menu, :icate2)
+            $sql = "INSERT INTO menu_cd (menucd)
+                    VALUES (:menucd)
                     ON duplicate key update moddt = now()";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menu", $param["menu"]);
-            $stmt->bindValue(":icate2", $param["icate2"]);
+            $stmt->bindValue(":menucd", $param["search_word"]);
             $stmt->execute();
 
             return intval($this->pdo->lastInsertId());
@@ -125,17 +102,29 @@
 
         //메뉴 저장
         public function insSearchMenu(&$param) {
-            $sql = "INSERT INTO menu_list (imenu, menu, price, irest)
-                    VALUES (:imenu, :menu, :price, :irest)
+            $sql = "INSERT INTO menu_list (imcd, menu, price, irest)
+                    VALUES (:imcd, :menu, :price, :irest)
                     ON duplicate key update moddt = now()";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":imenu", $param["imenu"]);
+            $stmt->bindValue(":imcd", $param["imcd"]);
             $stmt->bindValue(":menu", $param["name"]);
             $stmt->bindValue(":price", $param["price"]);
             $stmt->bindValue(":irest", $param["irest"]);
             $stmt->execute();
 
             return $stmt->rowCount();
+        }
+
+        //메뉴 가져오기
+        public function getMenuList() {
+            $sql = "SELECT * FROM menu_list
+                    GROUP BY menu, irest
+                    ORDER BY imenu";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_OBJ); 
         }
     }
