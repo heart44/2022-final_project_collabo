@@ -16,9 +16,9 @@
 
       <div class="card-group text-center">
         <div class="card" v-for="item in menuList" :key="item">
-          <img src="">
-          <div class="card-body">
-            <h5 class="card-title m-0">{{ item.menu }}</h5>
+          <div class="card-body pointer" @click="clickList(item.menucd)">
+            <div class="menuimg"><img :src="item.path"></div>
+            <h5 class="card-title m-0">{{ item.menucd }}</h5>
           </div>
         </div>
       </div>
@@ -170,9 +170,20 @@ export default {
         this.menuList.push(rndMenu);
       }
       console.log(this.menuList)
+    },
+    async clickList(menucd) {
+      const params = await this.naverSearch(menucd, this.lon, this.lat)
+      await this.searchList(params)
+      const restList = await this.getRestList(menucd, this.lon, this.lat)
+      this.$store.commit('restList', restList)
+      this.$store.commit('setSearchWord', menucd);
+      this.$router.push( {path: '/SearchList'} );
     }
   },
   created() {
+    this.askForCoords();
+  },
+  updated(){
     this.askForCoords();
   }
 }
@@ -184,4 +195,6 @@ export default {
   .text-sm { font-size: 0.8rem; }
   .color-gray { color: #ccc; }
   .pointer { cursor: pointer; }
+  .menuimg { width: 250px; height: 270px; }
+  .menuimg > img { width: 100%; height: 100%; object-fit: contain; }
 </style>

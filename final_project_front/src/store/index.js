@@ -11,7 +11,8 @@ export default createStore({
       restInfo: {},
       restList: [],
       year: [],
-      bobfDetailInfo: {}
+      bobfDetailInfo: {},
+      menuList: []
     }
   },
   getters: {
@@ -26,6 +27,9 @@ export default createStore({
     },
     getRestList(state) {
       return state.restList;
+    },
+    getMenuList(state) {
+      return state.menuList;
     }
   },
   mutations: {
@@ -57,6 +61,9 @@ export default createStore({
       for(let i = new Date().getFullYear(); i>1899; i--) {
         state.year.push(i);
       }
+    },
+    setMenuList: (state, data) => {
+      state.menuList = data
     }
   },
   plugins: [
