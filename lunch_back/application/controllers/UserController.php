@@ -129,14 +129,51 @@ use application\libs\Application;
             return [_RESULT => $rs];
         }
 
+        public function updateDiary() {
+            $json = getJson();
+            // DB에 있는 path를 한 번 셀렉 해와서 같으면 밑에 if문 실행 안 하는 걸로 해야할 것 같은데...
+            $param = [
+                "iuser" => $json["iuser"],
+                "idiary" => $json["idiary"]
+            ];
+            $dbPath = $this->model->getDiary($param);
+            if($json['src'] !== $dbPath[0]->path && $json['src'] !== '') {
+                $path = _IMG_PATH . "/diary/" . $json["iuser"] . "/" . $json["src"];
+                unlink($path);
+            }
+            if($json['path'] !== '') {
+                $image_parts  = explode(";base64", $json["path"]);
+                $imge_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $imge_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $dirPath = _IMG_PATH . "/diary/" . $json["iuser"];
+                $path = uniqid() . "." . $image_type;
+                $filePath = $dirPath . "/" . $path;
+                if(!is_dir($dirPath)) {
+                    mkdir($dirPath, 0777, true);
+                }
+                $result = file_put_contents($filePath, $image_base64);
+                if($result) {
+                    $json["path"] = $path;
+                }
+            } else {
+                $json["path"] = $json['src'];
+            }
+            $rs = $this->model->updateDiary($json);
+            return [_RESULT => $rs];
+        }
+
         public function getDiary() {
             $urlPaths = getUrlPaths();
-            if(count($urlPaths) !== 3) {
+            if(count($urlPaths) < 3) {
                 exit();
             }
             $param = [
                 "iuser" => $urlPaths[2],
             ];
+            if(isset($urlPaths[3])) {
+                $param["idiary"] = $urlPaths[3];
+            }
             return $this->model->getDiary($param);
         }
 
