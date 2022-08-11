@@ -131,6 +131,16 @@ use application\libs\Application;
 
         public function updateDiary() {
             $json = getJson();
+            // DB에 있는 path를 한 번 셀렉 해와서 같으면 밑에 if문 실행 안 하는 걸로 해야할 것 같은데...
+            $param = [
+                "iuser" => $json["iuser"],
+                "idiary" => $json["idiary"]
+            ];
+            $dbPath = $this->model->getDiary($param);
+            if($json['src'] !== $dbPath[0]->path && $json['src'] !== '') {
+                $path = _IMG_PATH . "/diary/" . $json["iuser"] . "/" . $json["src"];
+                unlink($path);
+            }
             if($json['path'] !== '') {
                 $image_parts  = explode(";base64", $json["path"]);
                 $imge_type_aux = explode("image/", $image_parts[0]);
@@ -146,8 +156,10 @@ use application\libs\Application;
                 if($result) {
                     $json["path"] = $path;
                 }
+            } else {
+                $json["path"] = $json['src'];
             }
-            $rs = $this->model->insDiary($json);
+            $rs = $this->model->updateDiary($json);
             return [_RESULT => $rs];
         }
 

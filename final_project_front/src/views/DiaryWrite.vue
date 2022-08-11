@@ -82,12 +82,14 @@ export default {
   data() {
       return {
         diary: {
+          idiary: 0,
           irest: 0,
           rest_name: '',
           rating: '0',
           text: '',
           eatdt: '',
           path: '',
+          src: '',
         },
         imgSrc: '',
         searchRest: '',
@@ -127,13 +129,14 @@ export default {
       if(this.diary.rest_name === '' && this.searchRest !== '') {
         this.diary.rest_name = this.searchRest;
       }
+      let rs;
       if(this.$route.query.idiary) {
-        const rs = await this.$post('user/updateDiary', this.diary);
+        rs = await this.$post('user/updateDiary', this.diary);
       } else {
-        const rs = await this.$post('user/insDiary', this.diary);
+        rs = await this.$post('user/insDiary', this.diary);
       }
       if(rs.result) {
-        this.$router.push( 'Diary' )
+        this.$router.push( 'Diary' );
       }
       console.log(rs);
     },
@@ -156,12 +159,13 @@ export default {
         const detail = await this.$get(`user/getDiary/${this.user.iuser}/${idiary}`)
         console.log(detail);
         if(detail[0]) {
+          this.diary.idiary = idiary;
           this.diary.irest = detail[0].irest;
           this.diary.rest_name = detail[0].rest_name;
           this.diary.rating = detail[0].rating;
           this.diary.text = detail[0].text;
           this.diary.eatdt = detail[0].eatdt;
-          this.diary.path = detail[0].path;
+          this.diary.src = detail[0].path;
           this.searchRest = detail[0].rest_name;
           this.imgSrc = '/static/img/diary/'+this.user.iuser+'/'+detail[0].path;
         }

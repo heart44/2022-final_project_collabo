@@ -111,6 +111,29 @@ class UserModel extends Model {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function updateDiary(&$param) {
+        $sql = "UPDATE user_diary SET
+                moddt = NOW(),
+                irest = :irest,
+                rest_name = :rest_name,
+                rating = :rating,
+                text = :text,
+                eatdt = :eatdt,
+                path = :path
+                WHERE iuser = :iuser AND idiary = :idiary";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':iuser', $param["iuser"]);
+        $stmt->bindValue(':idiary', $param["idiary"]);
+        $stmt->bindValue(':irest', $param["irest"]);
+        $stmt->bindValue(':rest_name', $param["rest_name"]);
+        $stmt->bindValue(':rating', $param["rating"]);
+        $stmt->bindValue(':text', $param["text"]);
+        $stmt->bindValue(':eatdt', $param["eatdt"]);
+        $stmt->bindValue(':path', $param["path"]);
+        $stmt->execute();
+        return $stmt->rowCount();        
+    }
+
     public function deleteDiary(&$param) {
         $sql = "DELETE FROM user_diary WHERE idiary = :idiary";
         $stmt = $this->pdo->prepare($sql);        
