@@ -2,24 +2,6 @@
     <main>
         <h3>{{ getSearchWord }}</h3>
         <h3></h3>
-        <div class="row d-flex justify-content-center">
-            <div class="col-auto">
-                <select class="form-select" v-model="maincate" @change="changeCate1">
-                    <option :key="name" v-for="(value, name) of categoryObj">{{ name }}</option>
-                </select>
-            </div>
-            <div class="col-auto" v-if="maincate !== ''">
-                <select class="form-select" v-model="midcate" @change="changeCate2">
-                    <option :key="name" v-for="(value, name) of categoryObj[maincate]">{{ name }}</option>
-                </select>                         <!-- of: 객체, in으로 해도 동작은 함-->
-            </div>
-            <!-- 
-            <div class="col-auto" v-if="midcate !== ''">
-                <select class="form-select" v-model="menu"> -->  <!-- in: 배열-->
-                    <!-- <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[maincate][midcate]">{{ cate.value }}</option>
-                </select>
-            </div>  -->
-        </div>
         <br>
         <div class="d-flex column pb-5">
             <div class="col-4 aaa bbb" style="width:40%;height:500px;">
@@ -37,7 +19,6 @@
                     
                         <div class="ms-4 d-flex flex-column align-items-start justify-content-start">
                             <div>주소 : {{ rest.rest_address }}</div>
-                            <div>카테고리 : {{ rest.menu }}</div>
                             <div>전화번호 : {{ rest.tel }}</div>
                             <div>영업시간 : {{ rest.open_close }}</div>
                             <div v-if="user.email !== null"></div>
@@ -57,23 +38,11 @@ export default {
     data() {
         return {
             restList: [],
-            categoryObj: {},
-            maincate: '',
-            midcate: '',
-            menu: '',
-            // styleObj: {
-            //     position: 'relative',
-            //     bottom: '85px',
-            //     borderRadius:'80px',
-            //     border: '1px solid #ccc',
-            //     borderBottom: '2px solid #ddd'
-            // }
-            marker: true
+            menuList: []
         }
     },
     created() {
         this.restList = this.getRestList
-        this.getCategoryList();
     },
     updated() {
         this.restList = this.getRestList
@@ -81,7 +50,6 @@ export default {
     },
     mounted() {
         this.mapContainer()
-        this.marker = true
     },
     computed: {
         getRestList() {
@@ -98,9 +66,9 @@ export default {
         },
     },
     methods: {
-        calRestList() {
+        calRestList() { //map에 쓸 position 가공
             const position = [];
-            this.getRestList.forEach(item => {
+            this.restList.forEach(item => {
                 let param = {
                     title: item.rest_name,
                     latlng: new kakao.maps.LatLng(item.lat_y, item.lon_x),
@@ -109,83 +77,80 @@ export default {
             })
             return position;
         },
-        mapContainer() {
+        mapContainer() {    //지도 띄우는 곳
             const options = {
                 center: new kakao.maps.LatLng(this.getCurrentLoc.lat, this.getCurrentLoc.lon),
                 level: 5
             };
-            const map = new kakao.maps.Map(this.$refs.mapDiv, options);
-            // console.log(map)
-            
+            const map = new kakao.maps.Map(this.$refs.mapDiv, options);            
             const position = this.calRestList();
-            // console.log('dfjdjfkfj', position);
+            this.displayMarker(position, map);
+        },
+        displayMarker(position, map) {  //마커 띄우기
+            const bounds = new kakao.maps.LatLngBounds();
+            const markers = [];
 
-            // // 마커 이미지의 이미지 주소입니다
-            const imageSrc = "https://www.svgrepo.com/show/130837/spoon.svg"; 
-            // const imageSrc = "http://localhost/static/img/spoon-svgrepo-com.svg"; 
-            
-            // const iwRemoveable = true
             for(let i=0; i<position.length; i++) {
-                // 마커 이미지의 이미지 크기 입니다
-                const imageSize = new kakao.maps.Size(30, 50); 
-                
-                // 마커 이미지를 생성합니다    
-                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-                
-                // 마커를 생성합니다
-                const marker = new kakao.maps.Marker({
-                    map: map, // 마커를 표시할 지도
-                    position: position[i].latlng, // 마커를 표시할 위치
-                    // title : position[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                    image : markerImage // 마커 이미지 
-                });
-                marker.setMap(map);
+                const placePosition = position[i].latlng
+                const marker = this.addMarker(placePosition)
+                const item = this.getListItem(i)
 
-                const content = `<div :class={'d-none': marker}><div style="position:relative;bottom:55px;">` +
-                                    `<div style="display:block;text-align:center;border-radius:80px;border:2px solid #2B3F6B;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;">${position[i].title}</div>`+
-                                `</div></div>`;
-                const customOverlay = new kakao.maps.CustomOverlay({
-                    map: map, // 인포윈도우가 표시될 지도
-                    position : position[i].latlng, 
-                    content : content,
-                    // removable : iwRemoveable
-                    // yAnchor: 1 
-                });
+                bounds.extend(placePosition);
+
+                this.displayInfowindow(marker, position[i].title, item, map);
+                markers.push(marker);
             }
-            // const aaa = this.$refs.aaa
-            // console.log(aaa)
+            const clusterer = new kakao.maps.MarkerClusterer({
+                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+                minLevel: 5 // 클러스터 할 최소 지도 레벨 
+            });
+            clusterer.addMarkers(markers)
         },
-        async getCategoryList() {
-            // console.log('ddd')
-            const categoryList = await this.$get('/search/searchCategoryList');
-            console.log(categoryList);
-            let maincate = '';
-            let midcate = '';      
-            categoryList.forEach(item => {
-                if(item.maincate !== maincate) {
-                    maincate = item.maincate;
-                    this.categoryObj[maincate] = {};
-                    midcate = '';          
-                }
-                if(item.midcate !== midcate) {
-                    midcate = item.midcate;
-                    this.categoryObj[maincate][midcate] = [];
-                }   
-                const obj = {
-                    id: item.imenu,
-                    value: item.menu
-                };
-                // console.log(obj)
-                this.categoryObj[maincate][midcate].push(obj);
-                // console.log(this.categoryObj)
-            });      
+        displayInfowindow(marker, title, item, map) {   //마커 위에 정보창 띄우기
+            const infowindow = new kakao.maps.InfoWindow({
+                content: `<div>${title}</div>`
+            });
+            
+            // const content = `<div style="display:block;text-align:center;border-radius:80px;border:2px solid #2B3F6B;background:#fff;padding:10px 15px;">${title}</div>`;
+            // const overlay = new kakao.maps.CustomOverlay({
+            //     content: content,
+            //     position: marker     
+            // });
+            
+            kakao.maps.event.addListener(marker, 'mouseover', function() {
+                infowindow.open(map, marker)
+            })
+            kakao.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close()
+            })
+
+            item.onmouseover =  function() {
+                infowindow.open(map, marker)
+            };
+            item.onmouseout =  function() {
+                infowindow.close()
+            };
+
         },
-        changeCate1() {
-            this.midcate = '';
-            // this.product.category_id = '';
+        getListItem(idx) {  //리스트 가져오기
+            const list = this.$refs.aaa;
+            const item = list[idx];
+
+            return item
         },
-        changeCate2() {
-            // this.product.category_id = '';
+        addMarker(latlng) {    //지도에 마커 등록
+            const imageSrc = "https://www.svgrepo.com/show/130837/spoon.svg"; 
+            const imageSize = new kakao.maps.Size(30, 50); 
+            const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+
+            const marker = new kakao.maps.Marker({
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+            // marker.setMap(map);
+
+            return marker;
         },
     },
 }
@@ -199,8 +164,4 @@ main { overflow-x: hidden; }
 .bbb { overflow: scroll; overflow-x: hidden; }
 .bold { font-weight: bold; }
 img { border-radius: 10px; border: 1px solid #eee; }
-/* .customoverlay {position:relative;bottom:85px;border-radius:80px;border: 1px solid #ccc;border-bottom:2px solid #ddd;} */
-.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-.customoverlay .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;}
-.customoverlay::after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 </style>
