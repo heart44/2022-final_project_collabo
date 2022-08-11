@@ -127,6 +127,35 @@ use application\libs\Application;
             }
             $rs = $this->model->insDiary($json);
             return [_RESULT => $rs];
+        }
 
+        public function getDiary() {
+            $urlPaths = getUrlPaths();
+            if(count($urlPaths) !== 3) {
+                exit();
+            }
+            $param = [
+                "iuser" => $urlPaths[2],
+            ];
+            return $this->model->getDiary($param);
+        }
+
+        public function deleteDiary() {
+            switch(getMethod()) {
+                case _DELETE:
+                    $urlPaths = getUrlPaths();
+                    if(count($urlPaths) !== 5) {
+                        exit();
+                    }
+                    $param = [
+                        "idiary" => $urlPaths[2]
+                    ];
+                    $rs = $this->model->deleteDiary($param);
+                    if($rs) {
+                        $path = _IMG_PATH . "/diary/" . $urlPaths[3] . "/" . $urlPaths[4];
+                        unlink($path);
+                        return [_RESULT => $rs];
+                    }
+            }
         }
     }
