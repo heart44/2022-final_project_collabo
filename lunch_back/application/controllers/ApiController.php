@@ -80,6 +80,10 @@
             return [_RESULT => $this->model->insBobF($json)];
         }
 
+        public function selBobfDetail() {
+            
+        }
+
         public function selRestList() {
             return $this->model->selRestList();
         }

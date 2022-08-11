@@ -36,14 +36,15 @@
                 {{ item }}
               </option>
             </select> -->
-            <form>
+            
+            <!-- <form>
               <div>
                 <label for="party">밥 먹을 날 선택하기</label>
                 <input id="party" type="date" name="partydate" v-model="date"
                       min="2022-01-01" max="2022-12-31"
                       pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
               </div>
-            </form>
+            </form> -->
           </div>
         </div>
       </div>

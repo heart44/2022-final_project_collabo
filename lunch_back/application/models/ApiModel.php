@@ -89,7 +89,19 @@
             return intval($this->pdo->lastInsertId());
         }
 
+        //밥친구 디테일
+        public function selBobfDetail(&$param) {
+            $sql = "SELECT *, user.* FROM bobf
+                        LEFT JOIN user
+                        ON bobf.iuser = user.iuser
+                    WHERE ibobf = :ibobf";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":ibobf", $param["ibobf"]);
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        }
 
+
+        
         public function selRestList(&$param) {
             $sql = "SELECT * FROM restaurant
                     WHERE rest_name = :rest_name";
