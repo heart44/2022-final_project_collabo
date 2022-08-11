@@ -13,8 +13,6 @@ import PassWord from '../views/PassWord';
 
 import Diary from '../views/Diary';
 import Profile from '../views/Profile';
-import UpdateDiary from '../views/UpdateDiary';
-import MyPage from '../views/MyPage';
 import DiaryWrite from '../views/DiaryWrite';
 
 //네비게이션 가드
@@ -63,11 +61,6 @@ const routes = [
     component: PassWord
   },
   {
-    path:'/MyPage',
-    name: 'MyPage',
-    component: MyPage
-  },
-  {
     path:'/Diary',
     name: 'Diary',
     component:Diary
@@ -82,11 +75,6 @@ const routes = [
     name:'DiaryWrite',
     component: DiaryWrite
   },
-  {
-    path:'/UpdateDiary',
-    name:'UpdateDiary',
-    component: UpdateDiary
-  }
 ];
 
 const router = createRouter({

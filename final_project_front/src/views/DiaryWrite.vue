@@ -14,31 +14,13 @@
               <input type="date" v-model="diary.eatdt">
             </div>
 
-          <div class="profile-img">
-            <div class="image-box">
-              <label class="file-button" for="img">업로드</label>
-              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
-            </div>
-
-            <div v-if="imgSrc !== ''" class="file-preview-content-container">
-              <div class="file-preview-container">
-                <div class="file-preview-wrapper">
-                  <div class="file-close-button" @click="delPreview">
-                    <img src="../assets/close.png" />
-                  </div>
-                  <img class="preview" :src="imgSrc" />
-                </div>
-              </div>
-            </div>
-          </div>
-
             <div class="store">
               <label>가게</label> 
               <input type="text" name="name" v-model="searchRest" @keyup.enter="getRestList()">
-              <button @click="getRestList()">검색</button>
+              <button class="diary_search d_search" @click="getRestList()">검색</button>
               <div :class="{'d-none':restSearch}" class="searchbox">
                 <ul class="list-group list-group-flush pointer">
-                  <li class="list-group-item list-group-item-action" @click="selRest(selfinput)"><span class="text-sm">직접 입력</span> '{{ selfinput }}'</li>
+                  <li class="list-group-item list-group-item-action" @click="selRest(selfinput)"><span class="text-sm">직접 입력</span> ' {{ selfinput }} '</li>
                   <li class="list-group-item list-group-item-action" v-for="item in restlist" :key="item" @click="selRest(item.rest_name, item.irest)">{{ item.rest_name }}</li>
                 </ul>
               </div>            
@@ -67,6 +49,24 @@
                 </form>
             </div>
           </div>
+
+            <div class="profile-img">
+              <div class="image-box">
+                <label class="file-button" for="img">업로드</label>
+                <input type="file" ref="diaryimg" id="img" class="d-none" accept="image/*" @change="previewImage">
+              </div>
+
+              <div v-if="imgSrc !== ''" class="file-preview-content-container">
+                <div class="file-preview-container">
+                  <div class="file-preview-wrapper">
+                    <div class="file-close-button" @click="delPreview">
+                      <img src="../assets/close.png" />
+                    </div>
+                    <img class="preview" :src="imgSrc" />
+                  </div>
+                </div>
+              </div>
+            </div>
         
         <div class="submit">
           <button class="btn_ok" type="button" @click="diarySubmit()">등록</button>
@@ -87,6 +87,7 @@ export default {
           rating: '0',
           text: '',
           eatdt: '',
+          path: '',
         },
         imgSrc: '',
         searchRest: '',
@@ -102,13 +103,18 @@ export default {
   },
   methods: {
     previewImage() {
-      let img = this.$refs.profileImg.files[0];
+      let img = this.$refs.diaryimg.files[0];
       this.imgSrc = URL.createObjectURL(img)
     },
     async delPreview() {
       this.imgSrc = "";
     },
     async diarySubmit() {
+      let image = '';
+      if(this.$refs.diaryimg.files.length !== 0) {
+        image = await this.$base64(this.$refs.diaryimg.files[0]);
+      }
+      this.diary.path = image;
       this.diary.iuser = this.user.iuser;
       if(this.diary.irest === 0) {
         this.diary.irest = null;
@@ -116,16 +122,15 @@ export default {
       if(this.diary.rest_name === '' && this.searchRest !== '') {
         this.diary.rest_name = this.searchRest;
       }
-      console.log(this.diary);
       const rs = await this.$post('user/insDiary', this.diary);
-      
-      console.log(rs);
+      if(rs.result) {
+        this.$router.push( 'Diary' )
+      }
     },
     async getRestList() {
       const rs = await this.$post('user/selRest', { search_word: this.searchRest });
       if(rs.result) {
         this.restlist = rs.result;
-        console.log(this.restlist);
         this.restSearch = false;
         this.selfinput = this.searchRest;
       }
@@ -140,6 +145,9 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  height:1000px;
+}
 .list-group > ul > li {
   border: 3px solid #2B3F6B;
 }
@@ -156,7 +164,7 @@ button{
   border-radius:15px;
   color:#2B3F6B;
 }
- button:focus{
+button:focus{
     outline:none;
     box-shadow:none;
 }
@@ -175,14 +183,14 @@ button{
   cursor: pointer;
 }
 .profile-img{
-  float:right;
-  position: relative;
-  right:20%;
-  bottom:30px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 .preview{
   width:170px;
   height: 170px;
+  
 }
 label{
   margin-right: 20px;
@@ -205,11 +213,11 @@ textarea{
   width:450px;
   height:300px;
   position: relative;
-  right:9px;
+  right:18px;
 }
 .write{
   margin: 0 auto;
-  width:600px;
+  width:700px;
   text-align: left;
   margin-top: 50px;
 }
@@ -281,5 +289,17 @@ fieldset label{
 .btn_ok:hover{
   background-color:#2B3F6B;
   color:white;
+}
+.diary_search{
+  border:2px solid #2B3F6B;
+  border-radius:5px;
+  color:#2B3F6B;
+  background-color: white;
+}
+.d_search{
+  margin-left:10px;
+}
+.submit{
+  margin-top:30px;
 }
 </style>
