@@ -175,6 +175,8 @@ export default {
       const params = await this.naverSearch(menucd, this.lon, this.lat)
       await this.searchList(params)
       const restList = await this.getRestList(menucd, this.lon, this.lat)
+      await this.getMenuList();
+
       this.$store.commit('restList', restList)
       this.$store.commit('setSearchWord', menucd);
       this.$router.push( {path: '/SearchList'} );

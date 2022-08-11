@@ -94,6 +94,11 @@ export default {
          console.log(rs2["rs"]);
          
          return rs2["rs"];
+      },
+      async getMenuList() {
+         const rs = await this.$get('/search/menuList')
+         console.log(rs)
+         this.$store.commit('setMenuList', rs);
       }
    }
 }

@@ -79,12 +79,12 @@ export default {
                 await this.searchList(params)
                 const restList = await this.getRestList(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat)
                 this.$store.commit('restList', restList)
+                await this.getMenuList();
 
                 this.$store.commit('setSearchWord', this.search);   //검색어 저장
                 this.$router.push( {path: '/SearchList'} );
                 this.search = ''
 
-                // this.getMenuList();
             }
         },
         async searchLog() {
@@ -95,13 +95,7 @@ export default {
             } else {
                 holder.placeholder = `메뉴를 입력해보세요!` 
             }
-        },
-        async getMenuList() {
-            const rs = await this.$get('/search/menuList')
-            console.log(rs)
-            this.$store.commit('setMenuList', rs);
-        }
-        
+        },        
     }
 }
 </script>
