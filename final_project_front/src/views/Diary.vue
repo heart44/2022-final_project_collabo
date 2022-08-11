@@ -12,7 +12,7 @@
        
         <div class="col-md-3"  v-for="item in diaryList" :key="item">
 
-          <div class="card">
+          <div class="card mb-4">
             <div class="card_img" @click="openModal" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
             
             <div class="card-body">
