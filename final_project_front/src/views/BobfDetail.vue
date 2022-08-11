@@ -20,7 +20,7 @@ export default {
         }
     },
     created() {
-        this.test()
+        this.getIbobF()
     },
     computed: {
         user() {
@@ -33,9 +33,10 @@ export default {
     component: {
     },
     methods: {
-        test() {
+        getIbobF() {
             console.log(this.$route.params)
         }
+        
     },
 }
 </script>
