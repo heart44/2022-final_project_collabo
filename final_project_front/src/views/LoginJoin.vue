@@ -37,9 +37,9 @@
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
-                        <img class="social" src="../assets/naver.svg">
-                        <img class="social" src="../assets/kakao.svg">
-                        <img class="social" src="../assets/google.svg">
+                        <img @click="NaverLogin()" class="social" src="../assets/naver.svg" role="button">
+                        <img @click="KakaoLogin()" class="social" src="../assets/kakao.svg" role="button">
+                        <img @click="GoogleLogin()" class="social" src="../assets/google.svg" role="button">
                     </div>
                     <div class="infield">
                         <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
@@ -172,6 +172,7 @@ export default {
             }
         },
     },
+
     created(){
         this.$store.commit('year');
     },

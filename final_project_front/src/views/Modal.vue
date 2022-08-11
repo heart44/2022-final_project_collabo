@@ -15,7 +15,6 @@
                 <div class="input-group align-items-center">
                   <div class="infiniteScroll">
 
-
                     <div  v-for="rest of getSearchList" :key="rest">
                         <div style="width:100px;height:100px;">이미지 : <img :src=rest.thumUrl style="width:100%;height:100%;"></div>
                           <div>
@@ -28,7 +27,6 @@
                         <hr>
                     </div>
                     
-                  
                   </div>
                 </div>
               </slot>
