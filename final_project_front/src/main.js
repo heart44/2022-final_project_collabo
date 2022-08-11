@@ -17,3 +17,4 @@ createApp(App).use(store)
 .mount('#app');
 
 
+window.Kakao.init('0e237d2f866c8e83e1f815fa788ed597')
