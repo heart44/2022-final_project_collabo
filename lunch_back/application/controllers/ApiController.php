@@ -96,9 +96,12 @@
                 $result = $this->model->delBobfDetail($json);
                 if($result === 1) {
                     //이미지 삭제
-                    unlink(_IMG_PATH . "/" . "bobf" . "/" .  $json["img_path"]);    
+                    if($json["img_path"] !== ''){
+                        unlink(_IMG_PATH . "/" . "bobf" . "/" .  $json["img_path"]);    
+                    }
                     $this->model->commit();
-                } else {
+                }
+                else {
                     $this->model->rollback();    
                 }
             } catch(Exception $e) {
@@ -108,6 +111,12 @@
             }
 
             return [_RESULT => $result];
+        }
+
+        public function updateBobfDetail() {
+            $json = getJson();
+
+            return [_RESULT => $this->model->updateBobfDetail($json)];
         }
 
 

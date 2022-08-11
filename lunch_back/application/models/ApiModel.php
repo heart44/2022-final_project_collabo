@@ -111,6 +111,35 @@
             return $stmt->rowCount();
         }
 
+        //밥친구 글 수정
+        public function updateBobfDetail(&$param) {
+            $sql = "UPDATE bobf SET
+                        restname = :restname,
+                        title = :title,
+                        partydt = :partydt,
+                        total_mem = :total_mem,
+                        cur_mem = :cur_mem,
+                        img_path = :img,
+                        ctnt = :ctnt,
+                        sido = :sido,
+                        gugun = :gugun
+                        WHERE ibobf = :ibobf AND iuser = :iuser";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":ibobf", $param["ibobf"]);
+            $stmt->bindValue(":title", $param["title"]);
+            $stmt->bindValue(":iuser", $param["iuser"]);
+            $stmt->bindValue(":restname", $param["restname"]);
+            $stmt->bindValue(":partydt", $param["partydt"]);
+            $stmt->bindValue(":ctnt", $param["ctnt"]);
+            $stmt->bindValue(":total_mem", $param["total_mem"]);
+            $stmt->bindValue(":cur_mem", $param["cur_mem"]);
+            $stmt->bindValue(":img", $param["img"]);
+            $stmt->bindValue(":sido", $param["sido"]);
+            $stmt->bindValue(":gugun", $param["gugun"]);
+            $stmt->execute();
+            return $stmt->rowCount();
+        }
+
         
         public function selRestList(&$param) {
             $sql = "SELECT * FROM restaurant

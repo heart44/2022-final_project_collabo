@@ -278,22 +278,12 @@ export default {
         this.BobfList = gugunListCard;
       }
 
-      // const cur_mem = this.BobfList.cur_mem,
-      //       total_mem = this.BobfList.total_mem;
-      
-      //   if(cur_mem === total_mem) {
-      //       this.member = "모집 완료"
-      //   } else if (cur_mem < total_mem) {
-      //       this.member = "모집 중"
-      //   }
-
     },
 
 
   //글 상세페이지 이동
     goToDetail(ibobf) {
       const res = ibobf
-      console.log("res :", res)
       this.$router.push( {name: 'BobfDetail', params: { ibobf: res }} );
       // this.$router.push( {path: '/BobfDetail/ibobf'} );
     },

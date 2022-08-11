@@ -28,16 +28,16 @@
                 </div>
 
                 <div class="col-md-6">
-                    <button @click="updateBobfDetail">🤍🖤🤎💜💙💚💛🧡</button>
+                    <button @click="updateBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">🤍🖤🤎💜💙💚💛🧡</button>
                 </div>
                 <div class="col-md-6">
-                    <button @click="deleteBobfDetail">🤍🖤🤎💜💙💚💛🧡</button>
+                    <button @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">🤍🖤🤎💜💙💚💛🧡</button>
                 </div>
             </div>
         </div>
         <div>
-            💛작고 소중한 테스트 공간💛
-            <div :model="getBobfDetail">{{this.member}}</div>
+            💛작고 소중한 테스트 공간입니다💛
+            <div></div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -55,9 +55,11 @@ export default {
     data() {
         return {
             bobfDetail: '',
+            userInfo: '',
+            img: '',
+            
             date: '',
             time: '',
-            img: '',
             member: '',
         }
     },
@@ -75,6 +77,7 @@ export default {
         async getBobfDetail() {
             const param = { ibobf: this.$route.params.ibobf }
             this.bobfDetail = await this.$post('/api/selBobfDetail', param);
+            this.userInfo = this.bobfDetail.iuser
             this.img = this.bobfDetail.img_path
 
             //시간 (오전 오후 나누기)
@@ -104,18 +107,25 @@ export default {
         async deleteBobfDetail() {
             const param = { ibobf: this.$route.params.ibobf,
                             img_path: this.img }
+            
             const res = await this.$post('/api/delBobfDetail', param);
 
             if(res.result) {
+                // this.$router.push('BobfList');
                 this.$swal.fire('🥕삭제 성공🥕', '글이 삭제되었습니다', 'success')
-                this.$router.push( {path: '/BobfList'} );
+                this.$router.push({path: '/BobfList'});
             } else {
                 this.$swal.fire('🥕삭제 실패🥕', '글이 삭제되지 않았습니다', 'error')
             }
         },
-        async updateBobfDetail() {
-            
-        },
+        updateBobfDetail() {
+            const res = this.$route.params.ibobf
+            console.log("res :", res)
+            this.$router.push( {name: 'BobfWrite', params: { ibobf: res }} );
+            // console.log(this.$route.params.ibobf);
+            // this.$router.push( {path: '/BobfWrite', query: {ibobf: this.$route.params.ibobf}})
+            // // const res = this.$post('/api/updateBobfDetail', param)
+        }
     },
 }
 </script>
