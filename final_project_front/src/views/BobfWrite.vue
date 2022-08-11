@@ -329,7 +329,6 @@ export default {
             let image = '';
             if(this.$refs.bobfImg.files.length !== 0) {
                 image = await this.$base64(this.$refs.bobfImg.files[0]);
-                console.log(image);
             }
 
             this.composition.iuser = this.user.iuser
@@ -348,6 +347,7 @@ export default {
             console.log(res)
 
             if( res.result ) {
+                this.$swal.fire('🥕글쓰기 성공🥕', '글이 등록되었습니다', 'success')
                 this.$router.push( {path: '/BobfList'} );
             } else if ( this.composition.title === null || this.composition.title === '' ) {
                 this.$refs.title.focus()

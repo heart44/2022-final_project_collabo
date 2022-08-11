@@ -58,7 +58,7 @@
           <div class="card h-100" style="width: 20rem;" @click="goDetail">
             <a @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
               <div>
-                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 250px; object-fit: cover">
+                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 250px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
               </div>
               <div class="card-body">
                   <h5 class="card-title">{{ ibobf.title }}</h5>
@@ -67,7 +67,7 @@
                   </p>
                   <div class="d-flex justify-content-between align-ites-center">
                       <small class="text-dark">{{ ibobf.sido }} / {{ ibobf.gugun}}</small>
-                      <small class="text-dark">{{ ibobf.cur_mem }} / {{ ibobf.total_mem }}</small>
+                      <small class="text-dark" v-if="ibobf.cur_mem === ibobf.total_mem ? this.member = '모집완료' : this.member = '모집중'">{{this.member}}</small>
                   </div>
               </div>
             </a>
@@ -125,6 +125,7 @@ export default {
 
       BobfList: [],
       date:'',
+      member: '',
 
     //페이징
       pageNum: 0,
@@ -156,7 +157,7 @@ export default {
   },
   methods: {
 
-  //카테고리 메소드
+  //카테고리
     changeAreaCate1() {
         this.selectedAreaCate2 = '';
         this.selectedAreaCate3 = '';
@@ -233,7 +234,7 @@ export default {
     */
     
 
-  //밥친구 리스트 메소드
+  //밥친구 리스트
     async getBobfList() {
       // const select1 = this.AreaCate1[this.selectedAreaCate1];
       // const select3 = this.selectedAreaCate3;
@@ -275,12 +276,21 @@ export default {
           }
         })
         this.BobfList = gugunListCard;
-      } 
+      }
+
+      // const cur_mem = this.BobfList.cur_mem,
+      //       total_mem = this.BobfList.total_mem;
+      
+      //   if(cur_mem === total_mem) {
+      //       this.member = "모집 완료"
+      //   } else if (cur_mem < total_mem) {
+      //       this.member = "모집 중"
+      //   }
 
     },
 
 
-  //글 상세페이지 이동 메소드
+  //글 상세페이지 이동
     goToDetail(ibobf) {
       const res = ibobf
       console.log("res :", res)

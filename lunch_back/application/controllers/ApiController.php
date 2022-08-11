@@ -96,7 +96,7 @@
                 $result = $this->model->delBobfDetail($json);
                 if($result === 1) {
                     //이미지 삭제
-                    unlink(_IMG_PATH . "/" . "bobf" . $json["img_path"]);    
+                    unlink(_IMG_PATH . "/" . "bobf" . "/" .  $json["img_path"]);    
                     $this->model->commit();
                 } else {
                     $this->model->rollback();    
