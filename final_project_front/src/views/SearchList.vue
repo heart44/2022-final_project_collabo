@@ -2,6 +2,7 @@
     <main>
         <h3>{{ getSearchWord }}</h3>
         <h3></h3>
+         
         <br>
         <div class="d-flex column pb-5">
             <div class="col-4 aaa bbb" style="width:40%;height:500px;">
@@ -16,11 +17,12 @@
                                 <img src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg" style="width:100px;height:100px;">
                             </div>
                         </div>
-                    
+
                         <div class="ms-4 d-flex flex-column align-items-start justify-content-start">
                             <div>주소 : {{ rest.rest_address }}</div>
                             <div>전화번호 : {{ rest.tel }}</div>
-                            <div>영업시간 : {{ rest.open_close }}</div>
+                            <div>영업시간 : {{ rest.open_close }}</div>   
+                            <button type="button" class="btn btn-danger" @click="calMenuList(rest.irest)" data-bs-toggle="popover" data-bs-placement="right" :data-bs-content="calMenuList(rest.irest)">메뉴</button>                         
                             <div v-if="user.email !== null"></div>
                         </div>
                     </div>
@@ -29,10 +31,15 @@
             </div>
             <div ref="mapDiv" class="col-8 aaa" style="width:50%;height:500px;"></div>
         </div>
+            <div class="popover fade show bs-popover-end" role="tooltip" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(258px, 0px);" data-popper-placement="right">            
+        </div>            
     </main>
 </template>
 
 <script>
+
+
+
 export default {
     name: "SearchList",
     data() {
@@ -41,16 +48,27 @@ export default {
             menuList: []
         }
     },
+    
     created() {
         this.restList = this.getRestList
+        // this.menuList = this.getMenuList
     },
     updated() {
         this.restList = this.getRestList
+        // this.menuList = this.getMenuList
         this.mapContainer()
     },
     mounted() {
-        this.mapContainer()
+        this.mapContainer();
+
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        });
+        // const popoverBody2 = document.querySelector('.popover-body');
+        // popoverBody2.innerHTML = `<div>dddd</div>`;
     },
+    
     computed: {
         getRestList() {
             return this.$store.getters.getRestList;
@@ -64,8 +82,25 @@ export default {
         user() {
             return this.$store.state.user;
         },
+        getMenuList() {
+            return this.$store.getters.getMenuList;
+        }
     },
     methods: {
+        calMenuList(irest) {
+            console.log(irest)
+            const menu = []
+            this.getMenuList.forEach(item => {
+                if(item.irest === irest) {
+                    const list = {
+                        menu: item.menu
+                    }
+                    menu.push(list)
+                }
+            })
+            console.log(menu)
+            return menu
+        },
         calRestList() { //map에 쓸 position 가공
             const position = [];
             this.restList.forEach(item => {
@@ -100,10 +135,45 @@ export default {
                 this.displayInfowindow(marker, position[i].title, item, map);
                 markers.push(marker);
             }
+            this.displayClusterer(map, markers);
+        },
+        displayClusterer(map, markers) {    //클러스터 띄우기
             const clusterer = new kakao.maps.MarkerClusterer({
-                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-                minLevel: 5 // 클러스터 할 최소 지도 레벨 
+                map: map, 
+                averageCenter: true, 
+                minLevel: 5,
+                calculator: [10, 30, 50],
+                styles: [
+                    { // calculator 각 사이 값 마다 적용될 스타일을 지정한다
+                            width : '30px', height : '30px',
+                            textAlign:'center',
+                            borderRadius: '50%',
+                            border: '2px solid #2B3F6B',
+                            background: 'rgba(255, 255, 255, 0.795)',
+                            lineHeight: '31px'
+                    },
+                    {
+                        width : '40px', height : '40px',
+                        background: '#f7cab1dc',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        lineHeight: '41px'
+                    },
+                    {
+                        width : '50px', height : '50px',
+                        background: 'rgba(255, 51, 204, .8)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        lineHeight: '51px'
+                    },
+                    {
+                        width : '60px', height : '60px',
+                        background: 'rgba(255, 80, 80, .8)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        lineHeight: '61px'
+                    }
+                ]
             });
             clusterer.addMarkers(markers)
         },
@@ -111,12 +181,6 @@ export default {
             const infowindow = new kakao.maps.InfoWindow({
                 content: `<div>${title}</div>`
             });
-            
-            // const content = `<div style="display:block;text-align:center;border-radius:80px;border:2px solid #2B3F6B;background:#fff;padding:10px 15px;">${title}</div>`;
-            // const overlay = new kakao.maps.CustomOverlay({
-            //     content: content,
-            //     position: marker     
-            // });
             
             kakao.maps.event.addListener(marker, 'mouseover', function() {
                 infowindow.open(map, marker)
@@ -154,9 +218,10 @@ export default {
         },
     },
 }
-    
 
 </script>
+
+
 
 <style scoped>
 main { overflow-x: hidden; }
@@ -164,4 +229,5 @@ main { overflow-x: hidden; }
 .bbb { overflow: scroll; overflow-x: hidden; }
 .bold { font-weight: bold; }
 img { border-radius: 10px; border: 1px solid #eee; }
+.btn-danger { background-color: #2B3F6B; border: 1px solid #2B3F6B; }
 </style>
