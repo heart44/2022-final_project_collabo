@@ -120,6 +120,7 @@ export default {
     },
     async delPreview() {
       this.imgSrc = "";
+      this.$refs.diaryimg.value = '';
     },
     async diarySubmit() {
       this.diary.iuser = this.user.iuser;
@@ -136,6 +137,7 @@ export default {
         rs = await this.$post('user/insDiary', this.diary);
       }
       if(rs.result) {
+        this.$refs.diaryimg.value = '';
         this.$router.push( 'Diary' );
       }
       console.log(rs);
