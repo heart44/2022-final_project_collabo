@@ -7,6 +7,7 @@
             <div class="col-4 aaa bbb" style="width:40%;height:500px;">
                 <div v-for="rest in restList" :key="rest" ref="aaa">
                     <h5 class="bold">{{ rest.rest_name }}</h5>
+                    <span v-if="rest.rating !== null"><router-link to="/Diary">| {{ rest.rating }}점 |</router-link></span>
                     <div class="ms-3 me-3 d-flex column justify-content-start align-items-center">
                         <div>
                             <div v-if="rest.img_path !== null">
@@ -29,7 +30,6 @@
                                     <li class="text-center ccc dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
                                 </ul>
                             </div>
-                            <div v-if="user.email !== null"></div>
                         </div>
                     </div>
                     <hr>
