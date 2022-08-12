@@ -18,14 +18,29 @@
 
         //검색 시 음식점 리스트 가져오기
         public function getRestList(&$param) {
-            $sql = "SELECT a.*, c.menucd
-                    FROM restaurant a, menu_list b, menu_cd c
-                    WHERE a.irest = b.irest AND b.imcd = c.imcd AND c.menucd LIKE :menucd
+            $iuser = $param["iuser"];
+            $menucd = $param["search_word"];
+            if(empty($iuser)) {
+                $iuser = 0;
+            }
+            $sql = "SELECT a.*, c.menucd, z.iuser, z.rating
+                    FROM restaurant a
+                    INNER JOIN menu_list b
+                    ON a.irest = b.irest
+                    INNER JOIN menu_cd c
+                    ON b.imcd = c.imcd
+                    LEFT JOIN ( SELECT d.irest, d.iuser, d.rating FROM user_diary d
+                                INNER JOIN user s
+                                ON d.iuser = s.iuser
+                                WHERE d.iuser = {$iuser} ) as z
+                    ON a.irest = z.irest
+                    WHERE a.irest = b.irest AND b.imcd = c.imcd AND c.menucd LIKE '%$menucd%'
                     GROUP BY a.irest
-                    ORDER BY a.irest asc";
+                    ORDER BY a.irest ASC";
             
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menucd", "%".$param["search_word"]."%");
+            // $stmt->bindValue(":menucd", "%".$param["search_word"]."%");
+            // $stmt->bindValue(":iuser", $iuser);
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
