@@ -2,6 +2,13 @@
   <div>
     <div class="h4">도전ㅠㅠㅠㅠ</div>
     <div>닉네임 : {{user.nick}}</div>
+    <div class="container">
+        <div class="header">
+            <h4 class="title">
+            <button class="btnClose" @click="closeChat"></button>
+            </h4>
+        </div>
+    </div>
     <div>재훈-재훈~ 헬프미~</div>
         <div v-for="(item, idx) in chatList" :key="idx">
           {{ item.name }} : {{ item.msg }}
@@ -37,6 +44,9 @@ export default {
                 msg: this.input,
                 name: this.socketId
             });
+        },
+        closeChat() {
+            
         }
     }
 }
