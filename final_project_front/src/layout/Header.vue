@@ -8,9 +8,9 @@
         </div>
         
         <div class="d-flex">
-            <button class="btn btn-secondary"><router-link to="/BobfList" class="login_b">밥친구해용</router-link></button>
+            <button class="btn btn-secondary bobf"><router-link to="/BobfList" class="login_b"><img src="../assets/fork-set.svg">밥친구해용</router-link></button>
             <div v-if="user.email === undefined">
-                <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger" type="button">로그인</button></router-link>
+                <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger login_btn" type="button">로그인</button></router-link>
             </div>
             <div v-else class="d-flex">
                 <div class="dropdown">
@@ -161,5 +161,14 @@ input:focus {
 }
 .login_b:hover{
     color: white !important;
+}
+.bobf img{
+    width:22px;
+    margin-right: 5px;
+    padding-bottom: 2px;
+}
+.login_btn{
+    background-color:#F26C38;
+    border:1px solid #F26C38;
 }
 </style>

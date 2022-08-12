@@ -178,7 +178,7 @@ export default {
 
 <style scoped>
 .container{
-  height:1000px;
+  overflow: auto;
 }
 .list-group > ul > li {
   border: 3px solid #2B3F6B;
@@ -332,6 +332,6 @@ fieldset label{
   margin-left:10px;
 }
 .submit{
-  margin-top:30px;
+  margin:30px 0px;
 }
 </style>
