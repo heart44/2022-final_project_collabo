@@ -109,7 +109,7 @@ export default {
                     const params = {
                         social_type: 1,
                         email: acc.email,
-                        nickname: acc.profile.nickname,
+                        nick: acc.profile.nickname,
                         profile_img: acc.profile.profile_image_url,
                         thumb_img: acc.profile.thumbnail_image_url
                     }
@@ -122,40 +122,45 @@ export default {
                 }
             });
         },
+        async login(params){
+            const data = await this.$post('/user/signup', params);                       
+            params.iuser = data.result;
+            this.$store.commit('user', params);
+        },
 
 
 
     
 
-        // GoogleLogin(){ 
-        //     var self = this;
-        //     window.gapi.signin2.render('my-signin2', {
-        //         scope:'profile email',
-        //         width: 240,
-        //         height: 50,
-        //         longtitle: true,
-        //         theme: 'dark',
-        //         onsuccess: this.GoogleLoginSuccess,
-        //         onfailure: this.GoogleLoginFailure,
-        //     });
+        GoogleLogin(){ 
+            var self = this;
+            window.gapi.signin2.render('my-signin2', {
+                scope:'profile email',
+                width: 240,
+                height: 50,
+                longtitle: true,
+                theme: 'dark',
+                onsuccess: this.GoogleLoginSuccess,
+                onfailure: this.GoogleLoginFailure,
+            });
 
-        //         setTimeout(function () {
-        //             if (!self.googleLoginCheck) {
-        //             const auth = window.gapi.auth2.getAuthInstance();
-        //             auth.isSignedIn.get();
-        //             document.querySelector('.abcRioButton').click();
-        //             }
-        //         }, 1000)
-        //     },
-        //     async GoogleLoginSuccess(googleUser) {
-        //     const googleEmail = googleUser.getBasicProfile().getEmail();
-        //     if (googleEmail !== 'undefined') {
-        //         console.log(googleEmail);
-        //     }
-        //     },
-        //     GoogleLoginFailure(error) {
-        //         console.log(error);
-        // },
+                setTimeout(function () {
+                    if (!self.googleLoginCheck) {
+                    const auth = window.gapi.auth2.getAuthInstance();
+                    auth.isSignedIn.get();
+                    document.querySelector('.abcRioButton').click();
+                    }
+                }, 1000)
+            },
+            async GoogleLoginSuccess(googleUser) {
+            const googleEmail = googleUser.getBasicProfile().getEmail();
+            if (googleEmail !== 'undefined') {
+                console.log(googleEmail);
+            }
+            },
+            GoogleLoginFailure(error) {
+                console.log(error);
+        },
 
 
 
