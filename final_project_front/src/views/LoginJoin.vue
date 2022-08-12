@@ -90,17 +90,18 @@ export default {
         }
     },
     methods:{
-        KakaoLogin(){
-        
-            window.Kakao.Auth.login({
+        kakaoLogin(){
+           window.Kakao.Auth.login({
                 scope: 'profile_nickname, profile_image, account_email',
                 success: this.getProfile,
                 fail: e => {
                     console.error(e);
                 }
             });
-
-            window.Kakao.API.request({
+        },
+        getProfile(authObj){
+            console.log(authObj);
+             window.Kakao.API.request({
                 url: '/v2/user/me',
                 success: async res => {
                     const acc = res.kakao_account;
@@ -119,8 +120,11 @@ export default {
                 fail: e => {
                     console.error(e);
                 }
-            });  
+            });
         },
+
+
+
     
 
         GoogleLogin(){ 
