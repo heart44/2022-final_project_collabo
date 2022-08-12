@@ -42,8 +42,8 @@ const routes = [
     component: BobfList
   },
   {
-    path: '/BobfDetail',
-    name: '/BobfDetail',
+    path: '/BobfDetail/:ibobf',
+    name: 'BobfDetail',
     component: BobfDetail
   },
   {
