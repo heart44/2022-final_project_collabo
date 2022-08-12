@@ -1,5 +1,5 @@
 <template>
-<main>
+<main class="container">
   <div>
     <div>
       <div>
@@ -303,5 +303,5 @@ export default {
 </script>
 
 <style scoped>
-
+main { overflow-x: hidden; }
 </style>

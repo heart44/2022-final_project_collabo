@@ -21,8 +21,13 @@
                         <div class="col-md-6">
                             <img :src="`/static/img/bobf/${this.bobfDetail.img_path}`" alt="image" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
                         </div>
-                        <div class="col-md-6">
-                            {{this.bobfDetail}}
+                        <div class="row col-md-6">
+                            <div class="h5 col-sm-3">매장 이름 </div>
+                            <div class="h5 col-sm-9">{{this.bobfDetail.restname}}</div>
+                            <div class="h5 col-sm-3">장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소</div>
+                            <div class="col-sm-9">{{this.bobfDetail.sido}} / {{this.bobfDetail.gugun}}</div>
+                            <div class="h5 col-sm-3">내&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;용</div>
+                            <div class="col-sm-9">{{this.bobfDetail.ctnt}}</div>
                         </div>
                     </div>
                 </div>
@@ -37,7 +42,7 @@
         </div>
         <div>
             💛작고 소중한 테스트 공간입니다💛
-            <div></div>
+            <div>Let's Do Chat</div>
         </div>
         <div class="row">
             <div class="col-md-6">
