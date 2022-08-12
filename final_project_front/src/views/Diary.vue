@@ -37,12 +37,12 @@
 
           <div class="modal-dialog modal-lg modal-dialog-centered modal">
 
-              <div class="modal-content" id="newFeedModalContent">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="newFeedModalLabel">Diary</h5>
-                      <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
-                      <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
-                  </div>
+            <div class="modal-content" id="newFeedModalContent">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newFeedModalLabel">Diary</h5>
+                    <!-- <button type="button" class="btn btn_change" @click="updateDiary()">수정</button>
+                    <button type="button" class="btn btn_delete" @click="deleteDiary()">삭제</button> -->
+                </div>
 
                   <div class="modal-body" id="id-modal-body">
                     <img :src="'static/img/diary/'+user.iuser+'/'+diaryDetail.path">
@@ -60,6 +60,7 @@
               </div>
           </div>
         </div>
+        
       <!-- 다이어리 수정 (모달)-->
       <!-- <div class="modal fade" id="updateFeedModal" tabindex="-1" aria-labelledby="updateFeedModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal">
@@ -129,6 +130,7 @@
         </div>
       </div>
     </div> -->
+    
   </div>
 </template>
 
@@ -208,8 +210,8 @@ export default {
 }
 .plus_btn img{
   float:right;
-  padding-right:13%;
-  padding-bottom:30px;
+  margin-right:13%;
+  margin-bottom:30px;
 }
 .btn_change{
   margin-left:70%;

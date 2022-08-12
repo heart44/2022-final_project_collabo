@@ -37,9 +37,10 @@
                     <h1>LOGIN</h1>
                     <span>Social Login</span>
                     <div class="social-container">
-                        <img class="social" src="../assets/naver.svg">
-                        <img class="social" src="../assets/kakao.svg">
-                        <img class="social" src="../assets/google.svg">
+                        <!-- <img @click="NaverLogin()" class="social" src="../assets/naver.svg" role="button"> -->
+                        <img @click="KakaoLogin()" class="social" src="../assets/kakao.svg" role="button">
+                        <img @click="GoogleLogin()" class="social" src="../assets/google.svg" role="button">
+                        <div id="my-signin2" style="display: none"></div>
                     </div>
                     <div class="infield">
                         <input type="email" placeholder="Email" name="email" ref="email" v-model="inputUser.email"/>
@@ -89,6 +90,80 @@ export default {
         }
     },
     methods:{
+        KakaoLogin(){
+           window.Kakao.Auth.login({
+                scope: 'profile_nickname, profile_image, account_email',
+                success: this.getProfile,
+                fail: e => {
+                    console.error(e);
+                }
+            });
+        },
+        getProfile(authObj){
+            console.log(authObj);
+             window.Kakao.API.request({
+                url: '/v2/user/me',
+                success: async res => {
+                    const acc = res.kakao_account;
+                    console.log(acc);
+                    const params = {
+                        social_type: 1,
+                        email: acc.email,
+                        nick: acc.profile.nickname,
+                        profile_img: acc.profile.profile_image_url,
+                        thumb_img: acc.profile.thumbnail_image_url
+                    }
+                    console.log(params);
+                    this.login(params);
+                    
+                },
+                fail: e => {
+                    console.error(e);
+                }
+            });
+        },
+        async login(params){
+            const data = await this.$post('/user/signup', params);                       
+            params.iuser = data.result;
+            this.$store.commit('user', params);
+        },
+
+
+
+    
+
+        GoogleLogin(){ 
+            var self = this;
+            window.gapi.signin2.render('my-signin2', {
+                scope:'profile email',
+                width: 240,
+                height: 50,
+                longtitle: true,
+                theme: 'dark',
+                onsuccess: this.GoogleLoginSuccess,
+                onfailure: this.GoogleLoginFailure,
+            });
+
+                setTimeout(function () {
+                    if (!self.googleLoginCheck) {
+                    const auth = window.gapi.auth2.getAuthInstance();
+                    auth.isSignedIn.get();
+                    document.querySelector('.abcRioButton').click();
+                    }
+                }, 1000)
+            },
+            async GoogleLoginSuccess(googleUser) {
+            const googleEmail = googleUser.getBasicProfile().getEmail();
+            if (googleEmail !== 'undefined') {
+                console.log(googleEmail);
+            }
+            },
+            GoogleLoginFailure(error) {
+                console.log(error);
+        },
+
+
+
         async signin() {
             if(this.inputUser.email === "") {
                 this.$refs.email.focus();
@@ -172,6 +247,7 @@ export default {
             }
         },
     },
+
     created(){
         this.$store.commit('year');
     },
