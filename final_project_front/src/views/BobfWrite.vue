@@ -4,7 +4,7 @@
             <h2 class="text-center">~ 글 쓰기 ~</h2>
 
             <div>💛저만의 작고 소중한 테스트 공간입니다💛</div>
-            <input type="text" v-model="composition.ibobf">
+            <input type="hidden" v-model="composition.ibobf">
                 <div>
                     <div class="mb-3 row">
                         <label for="" class="col-md-3 col-form-label">Image</label>
@@ -223,7 +223,7 @@ export default {
         this.updateBobf()
     },
     updated() {
-        this.updateBobf()
+
     },
     methods: {
         //뒤로가기
@@ -338,7 +338,7 @@ export default {
             this.composition.gugun = this.gugun
             this.composition.restname = this.restInfo.name
             this.composition.img = image
-            this.composition.ibobf = this.$route.params.ibobf
+            this.composition.ibobf =this.$route.params.ibobf
 
 
             if(this.selectedAreaCate2 !== '') {
@@ -349,13 +349,26 @@ export default {
             console.log("ibobf:" , this.$route.params.ibobf)
             if(this.$route.params.ibobf) {
                 res = await this.$post('api/updateBobfDetail', this.composition)
+                if(res.result) {
+                    this.$router.push( {path: '/BobfList'} );
+                    this.$swal.fire('🥕글수정 성공🥕', '글이 수정되었습니다', 'success')
+                }
             } else {        
-                // res = await this.$post('api/insBobF', this.composition)
+                res = await this.$post('api/insBobF', this.composition)
+                if(res.result) {
+                    this.$router.push( {path: '/BobfList'} );
+                    this.$swal.fire('🥕글등록 성공🥕', '글이 등록되었습니다', 'success')
+                } else if ( this.composition.title === null || this.composition.title === '' ) {
+                    this.$refs.title.focus()
+                    this.$swal.fire('🥕글쓰기 실패🥕', '제목을 입력해 주세요', 'error')
+                } else {
+                    this.$swal.fire('🥕글쓰기 실패🥕', '글쓰기에 실패했습니다!', 'error');
+                }
             }
             console.log(res)
 
             // if( res.result ) {
-            //     this.$swal.fire('🥕글쓰기 성공🥕', '글이 등록되었습니다', 'success')
+            //     // this.$swal.fire('🥕글등록 성공🥕', '글이 등록되었습니다', 'success')
             //     this.$router.push( {path: '/BobfList'} );
             // } else if ( this.composition.title === null || this.composition.title === '' ) {
             //     this.$refs.title.focus()
