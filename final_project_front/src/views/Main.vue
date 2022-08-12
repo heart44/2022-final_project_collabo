@@ -186,7 +186,7 @@ export default {
     this.askForCoords();
   },
   updated(){
-    this.askForCoords();
+    // this.askForCoords();
   }
 }
 </script>

@@ -77,7 +77,7 @@ export default {
                 
                 const params = await this.naverSearch(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat)
                 await this.searchList(params)
-                const restList = await this.getRestList(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat)
+                const restList = await this.getRestList(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat, this.user.iuser)
                 this.$store.commit('restList', restList)
                 await this.getMenuList();
 
