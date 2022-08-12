@@ -4,7 +4,6 @@ import store from './store'
 import router from './router'
 import mixins from './mixins';
 import VueSweetalert2 from 'vue-sweetalert2';
-
 import socketPlugin from "./plugins/socketPlugin";
 
 

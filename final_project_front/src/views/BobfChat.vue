@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>도전...!</h1>
-    <div class="chat">
-        <div class="chat_header">
-            <span class="chat_header_greetings">
-                안녕하세요. {{ user.nick }}님!
-            </span>
+    <div class="h4">도전ㅠㅠㅠㅠ</div>
+    <div>닉네임 : {{user.nick}}</div>
+    <div>재훈-재훈~ 헬프미~</div>
+        <div v-for="(item, idx) in chatList" :key="idx">
+          {{ item.name }} : {{ item.msg }}
         </div>
-        <div></div>
+    <div>
+        <input type="text" v-model="input"><button @click="sendMsg">전송</button>
     </div>
   </div>
 </template>
@@ -16,45 +16,32 @@
 export default {
     data() {
         return {
-
+            input: '',
+            chatList: []
         }
-    },
-    components: {
-
     },
     computed: {
         user() {
             return this.$store.state.user;
         },
     },
-    created() {
-
-    },
-    mounted(){
-
+    created() { //백에서 받은 글을 보냄 (단점은, 보안이 좋지 않으므로 소켓io의 room이라는 것을 통해 보안을 올리면 됨다)
+        this.socketId = this.$socket.id 
+        this.$socket.on('msg', data => {
+            this.chatList.push(data);
+        });
     },
     methods: {
-        
-        
+        sendMsg() {
+            this.$socket.emit("msg", {
+                msg: this.input,
+                name: this.socketId
+            });
+        }
     }
 }
 </script>
 
-<style scoped>
-.chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.chat__header {
-  background: #ffffff;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
-  border-radius: 24px 24px 0px 0px;
-  padding: 1.8rem;
-  font-size: 16px;
-  font-weight: 700;
-}
-.chat__header__greetings {
-  color: #292929;
-}
+<style>
+
 </style>

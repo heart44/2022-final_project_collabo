@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate';
+import vue from 'vue';
+
 
 export default createStore({
   state() {
@@ -11,7 +13,7 @@ export default createStore({
       restInfo: {},
       restList: [],
       year: [],
-      menuList: []
+      menuList: [],
     }
   },
   getters: {
@@ -60,11 +62,6 @@ export default createStore({
     },
     setMenuList: (state, data) => {
       state.menuList = data
-    }
+    },
   },
-  plugins: [
-    createPersistedState({
-      paths: ['user'],
-    })
-  ],
 })
