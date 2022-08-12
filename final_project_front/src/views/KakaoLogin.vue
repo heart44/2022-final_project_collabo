@@ -1,9 +1,7 @@
 <template>
   <div>
     <div>{{ iuser }}</div>
-    <a id="custom-login-btn" @click="kakaoLogin">
-    
-    </a>
+    <div @click="kakaoLogin"></div>
   </div>
 </template>
 <script>

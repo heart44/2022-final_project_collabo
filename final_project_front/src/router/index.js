@@ -14,6 +14,7 @@ import PassWord from '../views/PassWord';
 import Diary from '../views/Diary';
 import Profile from '../views/Profile';
 import DiaryWrite from '../views/DiaryWrite';
+import KakaoLogin from '../views/KakaoLogin';
 
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
@@ -75,6 +76,11 @@ const routes = [
     name:'DiaryWrite',
     component: DiaryWrite
   },
+  {
+    path:'/KakaoLogin',
+    name:'KakaoLogin',
+    component: KakaoLogin
+  }
 ];
 
 const router = createRouter({

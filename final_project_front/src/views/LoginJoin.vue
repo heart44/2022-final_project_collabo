@@ -90,7 +90,7 @@ export default {
         }
     },
     methods:{
-        kakaoLogin(){
+        KakaoLogin(){
            window.Kakao.Auth.login({
                 scope: 'profile_nickname, profile_image, account_email',
                 success: this.getProfile,
@@ -127,35 +127,35 @@ export default {
 
     
 
-        GoogleLogin(){ 
-            var self = this;
-            window.gapi.signin2.render('my-signin2', {
-                scope:'profile email',
-                width: 240,
-                height: 50,
-                longtitle: true,
-                theme: 'dark',
-                onsuccess: this.GoogleLoginSuccess,
-                onfailure: this.GoogleLoginFailure,
-            });
+        // GoogleLogin(){ 
+        //     var self = this;
+        //     window.gapi.signin2.render('my-signin2', {
+        //         scope:'profile email',
+        //         width: 240,
+        //         height: 50,
+        //         longtitle: true,
+        //         theme: 'dark',
+        //         onsuccess: this.GoogleLoginSuccess,
+        //         onfailure: this.GoogleLoginFailure,
+        //     });
 
-                setTimeout(function () {
-                    if (!self.googleLoginCheck) {
-                    const auth = window.gapi.auth2.getAuthInstance();
-                    auth.isSignedIn.get();
-                    document.querySelector('.abcRioButton').click();
-                    }
-                }, 1000)
-            },
-            async GoogleLoginSuccess(googleUser) {
-            const googleEmail = googleUser.getBasicProfile().getEmail();
-            if (googleEmail !== 'undefined') {
-                console.log(googleEmail);
-            }
-            },
-            GoogleLoginFailure(error) {
-                console.log(error);
-        },
+        //         setTimeout(function () {
+        //             if (!self.googleLoginCheck) {
+        //             const auth = window.gapi.auth2.getAuthInstance();
+        //             auth.isSignedIn.get();
+        //             document.querySelector('.abcRioButton').click();
+        //             }
+        //         }, 1000)
+        //     },
+        //     async GoogleLoginSuccess(googleUser) {
+        //     const googleEmail = googleUser.getBasicProfile().getEmail();
+        //     if (googleEmail !== 'undefined') {
+        //         console.log(googleEmail);
+        //     }
+        //     },
+        //     GoogleLoginFailure(error) {
+        //         console.log(error);
+        // },
 
 
 

@@ -11,6 +11,20 @@ export default {
       }
    },
    methods: {
+      async $api(url, data){
+         return (await axios({
+            method: 'post',
+            url,
+            data
+         }).catch(e => {
+            console.error(e);
+         })).data;
+      },
+
+
+
+
+      
       async $post(url, data) {
          return (await axios({
             method: 'post',
