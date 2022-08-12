@@ -90,8 +90,6 @@
             </div>
           </div>
 
-        
-        
         </div>
         <div class="btn-profile can_sub">
           <span class="cancel m-2 text-info pointer">CANCEL</span>
@@ -216,6 +214,7 @@ export default {
   border: 1px solid #2b3f6b;
   border-radius: 10px;
   box-shadow: 2px 2px 3px;
+  margin-top:40px;
 }
 .preview {
   width: 170px;
@@ -277,9 +276,8 @@ input[type="button"] {
   border: 1px solid #2b3f6b;
 }
 .file-close-button img {
-  width: 32px;
   position: relative;
-  left: 37%;
+  left: 45%;
   top: 20px;
   z-index: 1;
   cursor: pointer;

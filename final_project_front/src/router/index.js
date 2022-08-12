@@ -16,6 +16,7 @@ import Diary from '../views/Diary';
 import Profile from '../views/Profile';
 import DiaryWrite from '../views/DiaryWrite';
 
+
 //네비게이션 가드
 const requireAuth = () => (to, from, next) => {
   if(store.state.user.iuser === undefined){
@@ -81,6 +82,7 @@ const routes = [
     name:'DiaryWrite',
     component: DiaryWrite
   },
+  
 ];
 
 const router = createRouter({
