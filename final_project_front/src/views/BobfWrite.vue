@@ -4,6 +4,7 @@
             <h2 class="text-center">~ 글 쓰기 ~</h2>
 
             <div>💛저만의 작고 소중한 테스트 공간입니다💛</div>
+            <input type="text" v-model="composition.ibobf">
                 <div>
                     <div class="mb-3 row">
                         <label for="" class="col-md-3 col-form-label">Image</label>
@@ -155,6 +156,7 @@ export default {
         return {
             //insert 요소
             composition: {
+                ibobf: 0,
                 restname: '',
                 iuser: '',
                 title: null,
@@ -167,10 +169,7 @@ export default {
                 gugun: '',
             },
             //수정
-            ibobf: '',
 
-
-            
             //가게 검색 모달
             showModal: false,
             searchRest: '',
@@ -224,7 +223,7 @@ export default {
         this.updateBobf()
     },
     updated() {
-
+        this.updateBobf()
     },
     methods: {
         //뒤로가기
@@ -339,28 +338,31 @@ export default {
             this.composition.gugun = this.gugun
             this.composition.restname = this.restInfo.name
             this.composition.img = image
+            this.composition.ibobf = this.$route.params.ibobf
 
 
             if(this.selectedAreaCate2 !== '') {
                 this.composition.irest = this.selectedAreaCate2;
             }
-
+        
             let res;
+            console.log("ibobf:" , this.$route.params.ibobf)
             if(this.$route.params.ibobf) {
                 res = await this.$post('api/updateBobfDetail', this.composition)
             } else {        
-                res = await this.$post('api/insBobF', this.composition)
+                // res = await this.$post('api/insBobF', this.composition)
             }
+            console.log(res)
 
-            if( res.result ) {
-                this.$swal.fire('🥕글쓰기 성공🥕', '글이 등록되었습니다', 'success')
-                this.$router.push( {path: '/BobfList'} );
-            } else if ( this.composition.title === null || this.composition.title === '' ) {
-                this.$refs.title.focus()
-                this.$swal.fire('🥕글쓰기 실패🥕', '제목을 입력해 주세요', 'error')
-            } else {
-                this.$swal.fire('🥕글쓰기 실패🥕', '글쓰기에 실패했습니다!', 'error');
-            }
+            // if( res.result ) {
+            //     this.$swal.fire('🥕글쓰기 성공🥕', '글이 등록되었습니다', 'success')
+            //     this.$router.push( {path: '/BobfList'} );
+            // } else if ( this.composition.title === null || this.composition.title === '' ) {
+            //     this.$refs.title.focus()
+            //     this.$swal.fire('🥕글쓰기 실패🥕', '제목을 입력해 주세요', 'error')
+            // } else {
+            //     this.$swal.fire('🥕글쓰기 실패🥕', '글쓰기에 실패했습니다!', 'error');
+            // }
             
         },
         async updateBobf() {
@@ -369,7 +371,7 @@ export default {
                 const ibobf = this.$route.params.ibobf;
                 const detail = await this.$post(`api/selBobfDetail/`, { ibobf })
                 if(detail) {
-                    this.ibobf                  = ibobf;
+                    this.composition.ibobf      = ibobf;
                     this.restInfo.name          = detail.restname;
                     this.sido                   = detail.sido;
                     this.gugun                  = detail.gugun;
