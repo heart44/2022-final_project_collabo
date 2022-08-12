@@ -2,12 +2,11 @@
     <main>
         <h3>{{ getSearchWord }}</h3>
         <h3></h3>
-         
         <br>
         <div class="d-flex column pb-5">
             <div class="col-4 aaa bbb" style="width:40%;height:500px;">
                 <div v-for="rest in restList" :key="rest" ref="aaa">
-                    <div class="bold">{{ rest.rest_name }}</div>
+                    <h5 class="bold">{{ rest.rest_name }}</h5>
                     <div class="ms-3 me-3 d-flex column justify-content-start align-items-center">
                         <div>
                             <div v-if="rest.img_path !== null">
@@ -22,7 +21,14 @@
                             <div>주소 : {{ rest.rest_address }}</div>
                             <div>전화번호 : {{ rest.tel }}</div>
                             <div>영업시간 : {{ rest.open_close }}</div>   
-                            <button type="button" class="btn btn-danger" @click="calMenuList(rest.irest)" data-bs-toggle="popover" data-bs-placement="right" :data-bs-content="calMenuList(rest.irest)">메뉴</button>                         
+                            <div class="btn-group dropend">
+                                <button v-if="calMenuList(rest.irest)[0] != null" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    메뉴
+                                </button>
+                                <ul class="dropdown-menu scrollable-menu">
+                                    <li class="text-center ccc dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
+                                </ul>
+                            </div>
                             <div v-if="user.email !== null"></div>
                         </div>
                     </div>
@@ -38,14 +44,13 @@
 
 <script>
 
-
-
 export default {
     name: "SearchList",
     data() {
         return {
             restList: [],
-            menuList: []
+            menuList: [],
+            irest: 0
         }
     },
     
@@ -61,14 +66,11 @@ export default {
     mounted() {
         this.mapContainer();
 
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-        });
-        // const popoverBody2 = document.querySelector('.popover-body');
-        // popoverBody2.innerHTML = `<div>dddd</div>`;
+        // var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        // var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        //     return new bootstrap.Popover(popoverTriggerEl)
+        // });
     },
-    
     computed: {
         getRestList() {
             return this.$store.getters.getRestList;
@@ -92,13 +94,11 @@ export default {
             const menu = []
             this.getMenuList.forEach(item => {
                 if(item.irest === irest) {
-                    const list = {
-                        menu: item.menu
-                    }
-                    menu.push(list)
+                    menu.push(item.menu)
                 }
             })
             console.log(menu)
+            
             return menu
         },
         calRestList() { //map에 쓸 position 가공
@@ -230,4 +230,13 @@ main { overflow-x: hidden; }
 .bold { font-weight: bold; }
 img { border-radius: 10px; border: 1px solid #eee; }
 .btn-danger { background-color: #2B3F6B; border: 1px solid #2B3F6B; }
+.btn-danger:focus{ box-shadow: none; }
+.ccc { border-bottom: 1px solid #eee; }
+.ccc:last-child { border: none; padding-top: 5px; }
+.ccc:not(:first-child) { padding: 5px 0; }
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
 </style>
