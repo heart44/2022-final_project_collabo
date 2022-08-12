@@ -11,7 +11,6 @@ export default createStore({
       restInfo: {},
       restList: [],
       year: [],
-      bobfDetailInfo: {},
       menuList: []
     }
   },
@@ -52,9 +51,6 @@ export default createStore({
     },
     restList: (state, data) => {
       state.restList = data
-    },
-    bobfDetailInfo: (state, data) => {
-      state.bobfDetailInfo = data
     },
     year: (state) => {
       state.year = [];

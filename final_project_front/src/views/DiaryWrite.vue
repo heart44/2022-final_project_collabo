@@ -140,7 +140,6 @@ export default {
         this.$refs.diaryimg.value = '';
         this.$router.push( 'Diary' );
       }
-      console.log(rs);
     },
     async getRestList() {
       const rs = await this.$post('user/selRest', { search_word: this.searchRest });
