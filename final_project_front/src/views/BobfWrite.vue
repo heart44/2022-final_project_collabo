@@ -283,7 +283,9 @@ export default {
                     const searchSido = item.address.split(' ')[0]
                     if(selectArea !== '' && selectArea === searchSido) {
                         ha.push(item)
-                    } 
+                    } else if(selectArea === '') {
+                        ha.push(item)
+                    }
                 })
 
                 this.searchList = ha;
@@ -325,7 +327,7 @@ export default {
         },
 
 
-        //글 쓰기
+        //글 쓰기 & 수정
         async insBobF() {
             let image = '';
             if(this.$refs.bobfImg.files.length !== 0) {
@@ -378,6 +380,7 @@ export default {
             // }
             
         },
+        //수정시 내용 가져오기
         async updateBobf() {
 
             if(this.$route.params.ibobf) {

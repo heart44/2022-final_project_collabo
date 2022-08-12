@@ -28,10 +28,10 @@
                 </div>
 
                 <div class="col-md-6">
-                    <button @click="updateBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">🤍🖤🤎💜💙💚💛🧡</button>
+                    <button @click="updateBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">수정</button>
                 </div>
                 <div class="col-md-6">
-                    <button @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">🤍🖤🤎💜💙💚💛🧡</button>
+                    <button @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">삭제</button>
                 </div>
             </div>
         </div>
