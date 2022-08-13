@@ -35,6 +35,9 @@ html, body {
   padding: 0;
   height: 100%;
 }
+html::-webkit-scrollbar{
+  display: none;
+}
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */

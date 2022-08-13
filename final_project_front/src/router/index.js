@@ -8,6 +8,7 @@ import BobfList from '../views/BobfList'
 import BobfDetail from '../views/BobfDetail'
 import BobfWrite from '../views/BobfWrite'
 import BobfChat from '../views/BobfChat'
+import BobfChatView from '@/components/BobfChatView'
 
 import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
@@ -56,6 +57,11 @@ const routes = [
     path: '/BobfChat',
     name: 'BobfChat',
     component: BobfChat
+  },
+  {
+    path: '/BobfChatView',
+    name: 'BobfChatView',
+    component: BobfChatView
   },
   {
     path: '/LoginJoin',
