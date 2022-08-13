@@ -20,9 +20,6 @@
         public function getRestList(&$param) {
             $iuser = $param["iuser"];
             $menucd = $param["search_word"];
-            if(empty($iuser)) {
-                $iuser = 0;
-            }
             $sql = "SELECT a.*, c.menucd, z.iuser, z.rating
                     FROM restaurant a
                     INNER JOIN menu_list b
@@ -145,5 +142,18 @@
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
+        }
+
+        //메뉴 가져오기
+        public function selMenuList(&$param) {
+            $sql = "SELECT irest FROM menu_list
+                    WHERE irest = :irest 
+                    GROUP BY irest";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":irest", $param["irest"]);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_OBJ); 
         }
     }

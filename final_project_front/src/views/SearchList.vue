@@ -7,27 +7,28 @@
             <div class="col-4 aaa bbb" style="width:40%;height:500px;">
                 <div v-for="rest in restList" :key="rest" ref="aaa">
                     <h5 class="bold">{{ rest.rest_name }}</h5>
-                    <span v-if="rest.rating !== null"><router-link to="/Diary">| {{ rest.rating }}점 |</router-link></span>
-                    <div class="ms-3 me-3 d-flex column justify-content-start align-items-center">
+                    <span v-if="rest.rating !== null"><router-link to="/Diary" class="link"> 나의 별점 | {{ myRating(rest.rating) }} |</router-link></span>
+                    <div class="ms-3 me-3 d-flex column justify-content-start">
                         <div>
                             <div v-if="rest.img_path !== null">
-                                <img :src=rest.img_path style="width:100px;height:100px;">
+                                <img v-if="rest.img_path.indexOf('http://blogfiles.naver.net') !== -1" class="basic" src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg" style="width:100px;height:100px;">
+                                <img v-else class="basic" :src=rest.img_path style="width:100px;height:100px;">
                             </div>
                             <div v-else>
-                                <img src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg" style="width:100px;height:100px;">
+                                <img class="basic" src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg" style="width:100px;height:100px;">
                             </div>
                         </div>
 
-                        <div class="ms-4 d-flex flex-column align-items-start justify-content-start">
-                            <div>주소 : {{ rest.rest_address }}</div>
-                            <div>전화번호 : {{ rest.tel }}</div>
-                            <div>영업시간 : {{ rest.open_close }}</div>   
+                        <div class="ms-4 d-flex flex-column align-items-start">
+                            <div class="d-flex justify-content-start align-items-start mb-2"><img src="../assets/location.png" alt="주소"> <span class="ms-3">{{ rest.rest_address }}</span></div>
+                            <div class="d-flex mb-2"><img src="../assets/phone-call.png" alt="전화번호"> <span class="ms-3">{{ rest.tel }}</span></div>
+                            <div class="d-flex  align-items-start mb-2"><img src="../assets/clock.png" alt="영업시간"> <span class="ms-3">{{ rest.open_close }}</span></div>   
                             <div class="btn-group dropend">
                                 <button v-if="calMenuList(rest.irest)[0] != null" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     메뉴
                                 </button>
                                 <ul class="dropdown-menu scrollable-menu">
-                                    <li class="text-center ccc dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
+                                    <li class="ccc dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -56,20 +57,13 @@ export default {
     
     created() {
         this.restList = this.getRestList
-        // this.menuList = this.getMenuList
     },
     updated() {
         this.restList = this.getRestList
-        // this.menuList = this.getMenuList
         this.mapContainer()
     },
     mounted() {
         this.mapContainer();
-
-        // var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        // var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        //     return new bootstrap.Popover(popoverTriggerEl)
-        // });
     },
     computed: {
         getRestList() {
@@ -89,15 +83,25 @@ export default {
         }
     },
     methods: {
+        myRating(rating) {
+            switch(rating) {
+                case 1: return rating = "⭐"
+                case 2: return rating = "⭐⭐"
+                case 3: return rating = "⭐⭐⭐"
+                case 4: return rating = "⭐⭐⭐⭐"
+                case 5: return rating = "⭐⭐⭐⭐⭐"
+                default: return rating = ""
+            }
+        },
         calMenuList(irest) {
-            console.log(irest)
+            // console.log(irest)
             const menu = []
             this.getMenuList.forEach(item => {
                 if(item.irest === irest) {
                     menu.push(item.menu)
                 }
             })
-            console.log(menu)
+            // console.log(menu)
             
             return menu
         },
@@ -228,15 +232,17 @@ main { overflow-x: hidden; }
 .aaa { margin: 0 auto; }
 .bbb { overflow: scroll; overflow-x: hidden; }
 .bold { font-weight: bold; }
-img { border-radius: 10px; border: 1px solid #eee; }
+.basic { border-radius: 10px; border: 1px solid #eee; }
 .btn-danger { background-color: #2B3F6B; border: 1px solid #2B3F6B; }
 .btn-danger:focus{ box-shadow: none; }
 .ccc { border-bottom: 1px solid #eee; }
 .ccc:last-child { border: none; padding-top: 5px; }
-.ccc:not(:first-child) { padding: 5px 0; }
+/* .ccc:not(:first-child) { padding: 5px 0; } */
 .scrollable-menu {
     height: auto;
     max-height: 200px;
     overflow-x: hidden;
 }
+.link { text-decoration: none; color: #000; }
+.link:hover { color: #000; }
 </style>
