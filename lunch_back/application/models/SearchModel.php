@@ -5,11 +5,12 @@
     class SearchModel extends Model {
         //메뉴코드 가져오기
         public function getMenuCD(&$param) {
+            $menucd = $param["search_word"];
             $sql = "SELECT imcd FROM menu_cd 
-                    WHERE menucd = :menucd";
+                    WHERE '$menucd' LIKE concat('%', menucd, '%')";
     
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":menucd", $param["search_word"]);
+            // $stmt->bindValue(":menucd", "%".$param["search_word"]."%");
             $stmt->execute();
 
             $rs = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -20,7 +21,11 @@
         public function getRestList(&$param) {
             $iuser = $param["iuser"];
             $menucd = $param["search_word"];
-            $sql = "SELECT a.*, c.menucd, z.iuser, z.rating
+            $lon_x = $param["lon_x"];
+            $lat_y = $param["lat_y"];
+            $sql = "SELECT a.*,
+                        (6371*ACOS(COS(RADIANS($lat_y))*COS(RADIANS(a.lat_y))*COS(RADIANS(a.lon_x)-RADIANS($lon_x))+SIN(RADIANS($lat_y))*SIN(RADIANS(a.lat_y)))) AS dis, 
+                        c.menucd, z.iuser, z.rating
                     FROM restaurant a
                     INNER JOIN menu_list b
                     ON a.irest = b.irest
@@ -31,9 +36,10 @@
                                 ON d.iuser = s.iuser
                                 WHERE d.iuser = {$iuser} ) as z
                     ON a.irest = z.irest
-                    WHERE a.irest = b.irest AND b.imcd = c.imcd AND c.menucd LIKE '%$menucd%'
+                    WHERE a.irest = b.irest AND b.imcd = c.imcd AND '$menucd' LIKE concat('%', menucd, '%')
                     GROUP BY a.irest
-                    ORDER BY a.irest ASC";
+                    HAVING dis <= 6
+                    ORDER BY dis";
             
             $stmt = $this->pdo->prepare($sql);
             // $stmt->bindValue(":menucd", "%".$param["search_word"]."%");
@@ -42,11 +48,11 @@
 
             return $stmt->fetchAll(PDO::FETCH_OBJ); 
 
-            //(6371*ACOS(COS(RADIANS(:lat_y))*COS(RADIANS(a.lat_y))*COS(RADIANS(a.lon_x)-RADIANS(:lon_x))+SIN(RADIANS(:lat_y))*SIN(RADIANS(a.lat_y)))) AS dis
+            //
             //$stmt->bindValue(":lat_y", $param["lat_y"]);
             //$stmt->bindValue(":lon_x", $param["lon_x"]);
-            //HAVING dis <= 1
-            //ORDER BY dis
+            //
+            //ORDER BY 
         }
 
         //검색 로그 저장

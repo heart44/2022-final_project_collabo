@@ -29,8 +29,8 @@
                 $irest222 = $this->model->selMenuList($paramIrest);
                 $paramMCD = [ "search_word" => $search_word ];
                 $imcd = $this->model->getMenuCD($paramMCD);     //메뉴 코드 있는지 확인
-                $imcd11 = $this->model->insMenuCD($paramMCD);   //일단 insert
                 if(!$imcd) {   //없으면
+                    $imcd11 = $this->model->insMenuCD($paramMCD);   //일단 insert
                     $imcd = $imcd11; //새로운 키로 바꿈
                     $params = [ "imcd" => $imcd, "irest" => $irest ];
                 } else { //있으면 셀렉해온 키 넣음

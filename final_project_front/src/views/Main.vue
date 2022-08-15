@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="card-group text-center">
+      <div class="card-group text-center mb-5">
         <div class="card" v-for="item in menuList" :key="item">
           <div class="card-body pointer d-flex row justify-content-center" @click="clickList(item.menucd)">
             <div class="menuimg"><img :src="item.path"></div>
@@ -146,7 +146,6 @@ export default {
           lat: lat,
           lon: lon
       }
-      console.log('dkdkdkdk',params)
       this.$store.commit('currentLoc', params);
 
       const data = await this.getWeather(lat, lon);

@@ -77,7 +77,7 @@ export default {
             })
          });
          params.push(search);
-         // console.log('네이버통신', params)
+         console.log('네이버통신', params)
 
          return params;    //네이버 결과 값 저장
       },
@@ -94,13 +94,13 @@ export default {
          console.log(search, lon, lat, iuser)
          //여기는 그 뭐냐,,,검색하면 디비에 저장된 내용 가져와서 searchList.vue에 뿌려줄라고
          const rs2 = await this.$get(`/search/restList/${search}/${lon}/${lat}/${iuser}`);
-         // console.log(rs2["rs"]);
+         console.log(rs2["rs"]);
          
          return rs2["rs"];
       },
       async getMenuList() {
          const rs = await this.$get('/search/menuList')
-         // console.log(rs)
+         console.log(rs)
          this.$store.commit('setMenuList', rs);
       }
    }
