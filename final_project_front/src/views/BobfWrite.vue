@@ -1,51 +1,31 @@
 <template>
     <main class="">
         <div class="container">
-            <h2 class="text-center">~ 글 쓰기 ~</h2>
-
-            <div>💛저만의 작고 소중한 테스트 공간입니다💛</div>
+            <h2 class="text-center mb-5">~ 글 쓰기 ~</h2>
             <input type="hidden" v-model="composition.ibobf">
-                <div>
-                    <div class="mb-3 row">
-                        <label for="" class="col-md-3 col-form-label">Image</label>
-                        <div class="col-md-9">
-                            <div class="row">
-                                <!-- <div class="col-lg-3 col-md-4 col-sm-2" 
-                                    :key="item.id" v-for="item in productImage.filter( c => c.type === 1)">
-                                    <div class="position-relative">
-                                        <img :src="`static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid">
-                                        <div class="position-absolute top-0 end-0" style="cursor:pointer;"
-                                            @click="deleteImg(item);">X</div>
-                                    </div>
-                                </div> -->
-                            </div>
-                            <input type="file" ref="bobfImg" class="form-control" accept="image/*" >
+            <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
 
-                        </div>
-                    </div>
-                </div>
 
-            <div class="">
-                <label for="" class="form-label">제목</label>
-                <div class="">
-                    <input type="text" class="form-control" ref="title" v-model="composition.title">
-                </div>
-            </div>
-
-            <div class="">
-                <!-- <label for="" class="form-label"></label> -->
-                <div class="">
-                    <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
-                </div>
+            <div class="mb-4 row">
+                <label for="" class="col-md-3 col-form-label">제목</label>
+                <span class="col-md-6 input input--minoru">
+					<input type="text" class="form-control input__field input__field--minoru rounded-pill" id="Minoru" ref="title" v-model="composition.title">
+					<label class="input__label input__label--minoru" for="Minoru"></label>
+				</span>
+                <!-- <div class="col-md-6">
+                    <input type="text" class="form-control input__field input__field--minoru" ref="title" v-model="composition.title">
+                </div> -->
             </div>
                 
-                
-            <div class="">
-                <label for="" class="form-label">매장 선택</label>
-                <div>
-                    <button @click="[showModal, showModalEvent()]" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal">모달 열기</button>
+        <!-- 모달 -->
+            <div class="mb-4 row">
+                <label for="" class="col-md-3 col-form-label">매장 선택</label>
+                <div class="d-flex column col-md-6 ms-2">
+                    <button class="v btn" @click="[showModal, showModalEvent()]" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal">
+                        검색
+                    </button>
                         <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centerd modal-xl">
+                            <div class="modal-dialog modal-dialog-centerd modal-lg modal-dialog-scrollable">
                                 <div class="modal-content" id="newFeedModalContent">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="newFeedModalLabel">매장 찾기</h5>
@@ -54,32 +34,34 @@
                                     <div class="modal-body" id="id-modal-body">
                                         <slot name="body">
                                             <div class="input-group align-items-center">
-                                                <div class="infiniteScroll">
-                                                    <div>
-                                                        <select class="form-select" @change="changeAreaCate1" v-model="selectedAreaCate1">
-                                                            <option value="" >시/도 선택</option>
-                                                            <option :value="key" v-for="item, key in AreaCate1" :key="key">
-                                                                {{ key }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                        <div class="input-group align-items-center">
-                                                            <input type="text" class="form-control radious" v-model="searchRest" @keyup.enter="searchArea()" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
+                                                    <div class="input-group align-items-center mb-3">
+                                                        <div>
+                                                            <select class="form-select md-5" @change="changeAreaCate1" v-model="selectedAreaCate1">
+                                                                <option value="" >시/도 선택</option>
+                                                                <option :value="key" v-for="item, key in AreaCate1" :key="key">
+                                                                    {{ key }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                            <input type="text" class="form-control radious ms-3 me-2" v-model="searchRest" @keyup.enter="searchArea()" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
                                                             <a href="#" role="button" @click="searchArea()">
-                                                                <span class="search_icon"><img src="../assets/search.png"></span>
+                                                                <span class="search_icon ms-2"><img src="../assets/search.png"></span>
                                                             </a>
                                                         </div>
-                                                    <div>
-                                                        <!-- <h4>{{ getSearchWord }}</h4> -->
-                                                    </div>
+                                                <!-- 모달 검색 결과 뜨는 부분 -->
+                                                <div class="row">
                                                     <div  v-for="rest of searchList" :key="rest">
-                                                        <div @click="getRestInfo(rest.name, rest.address)" style="cursor:pointer;"  data-bs-dismiss="modal">
-                                                            <div style="width:100px;height:100px;"><img :src=rest.thumUrl style="width:100%;height:100%;"></div>
-                                                            <div>
-                                                                가게 이름 : <input type="hidden" id="name" v-model="rest.name" >{{ rest.name }}
-                                                            </div>
-                                                            <div>
-                                                                가게 주소 : <input type="hidden" v-model="rest.address">{{rest.address}}
+                                                        <div class="" @click="getRestInfo(rest.name, rest.address)" style="cursor:pointer;"  data-bs-dismiss="modal">
+                                                            <div class="d-flex column pb-3">
+                                                                <div class="col-4" style="width:100px;height:100px;"><img :src=rest.thumUrl style="width:100%;height:100%;" class="col-4"></div>
+                                                                <div class="ps-4 d-flex flex-column align-items-start justify-content-center">
+                                                                    <h5 class="mb-1 restName">
+                                                                        <input type="hidden" id="name" v-model="rest.name" >{{ rest.name }}
+                                                                    </h5>
+                                                                    <div class="">
+                                                                        <input type="hidden" v-model="rest.address">{{rest.address}}
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <hr>
                                                         </div>
@@ -89,47 +71,55 @@
                                         </slot>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+                                        <button class="btn" data-bs-dismiss="modal" aria-label="Close">닫기</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <input type="" class="form-control" ref="address" :value="restInfo.name" v-if="getSearchWord !== ''" readonly/>
-                        </div>
+                    <div clas="" style="width: 270px;">
+                        <input type="" class="form-control ms-3" ref="address" :value="restInfo.name" v-if="getSearchWord !== ''" readonly/>
+                    </div>
                 </div>
             </div>
 
-            <div class="">
-                <label for="" class="form-label">날짜 시간</label>
-                <div class="">
-                    <input type="datetime-local" class="form-control" ref="partydt" v-model="this.partydate" >
+            <div class="mb-4 row">
+                <label for="" class="col-md-3 col-form-label">일시 / 인원</label>
+                <span class="d-flex column col-md-6 input input--minoru">
+                    <input type="datetime-local" class="form-control input__field input__field--minoru" id="Minoru" ref="partydt" v-model="this.partydate" >
+                    <input type="number" class="form-control ms-5 input__field input__field--minoru" id="Minoru" ref="total_mem" v-model="composition.total_mem">
+                </span>
+            </div>
+
+            <!-- <div class="mb-4 row">
+                <label for="" class="col-md-4 col-form-label">모집 인원</label>
+                <span class="col-md-6 input input--minoru">
+                    <input type="number" class="form-control input__field input__field--minoru" id="Minoru" ref="total_mem" v-model="composition.total_mem">
+                    <label class="input__label input__label--minoru" for="Minoru"></label>
+                </span>
+            </div> -->
+
+            <div class="mb-4 row">
+                <label for="" class="col-md-3 col-form-label">내용</label>
+                <span class="col-md-6 input input--minoru">
+                    <textarea class="form-control input__field input__field--minoru" rows="10" id="Minoru" ref="ctnt" v-model="composition.ctnt"></textarea>
+                    <label class="input__label input__label--minoru" for="Minoru"></label>
+                </span>
+            </div>
+
+            <div class="mb-4 row">
+                <label for="" class="col-md-3 col-form-label">이미지</label>
+                <div class="col-md-4">
+                    <input type="file" ref="bobfImg" id="img" class="form-control" accept="image/*" >
                 </div>
             </div>
 
-            <div class="">
-                <label for="" class="form-label">내용</label>
+            <div class="mt-5 row">
                 <div class="">
-                    <input type="text" class="form-control" ref="ctnt" v-model="composition.ctnt">
-                </div>
-            </div>
-
-            <div class="">
-                <label for="" class="form-label">총 인원 수</label>
-                <div class="">
-                    <input type="number" class="form-control" ref="total_mem" v-model="composition.total_mem">
-                </div>
-            </div>
-
-            <div class="">
-                <div class="">
+                    <button type="button" class="btn btn-danger" @click="insBobF">저장</button>
                     <button type="button" class="btn" @click="goBack">취소</button>
                 </div>
-                <div class="">
-                    <button type="button" class="btn" @click="insBobF">저장</button>
-                </div>
             </div>
-
+            
         </div>
     </main>
 </template>
@@ -398,22 +388,162 @@ export default {
                     this.composition.img        = detail.img_path;
                     this.composition.total_mem  = detail.total_mem;
                 }
-        }}
+            }
+        },
+
     
-
-
-        //이미지 업로드
-
-
     }
 }
 </script>
 
 <style scoped>
-.infiniteScroll {
-    overflow: auto;
-    height: 50vh;
-    /* border: 2px solid #dce4ec;
-    border-radius: 5px; */
+::-webkit-scrollbar {
+    display: none;
+}
+.btn{
+    border:2px solid #2B3F6B;
+    border-radius:15px;
+    color:#2B3F6B;
+    margin-right:10px;
+}
+.btn-danger{
+    color: white;
+    background-color:#2B3F6B;
+    border:1px solid #2B3F6B;
+}
+button:focus{
+    outline:none;
+    box-shadow:none;
+}
+.restName {
+    color: #2B3F6B
+}
+
+
+.input {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	/* margin: 1em; */
+	max-width: 700px;
+	width: calc(100% - 2em);
+	vertical-align: top;
+}
+
+.input__field {
+	position: relative;
+	display: block;
+	float: right;
+	/* padding: 0.8em; */
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+	width: 60%;
+	/* border: none; */
+	border-color:#eca29b;
+	/* border-radius: 15px; */
+	background: #f0f0f0;
+	color: #aaa;
+	font-weight: bold;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	-webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+	outline: none;
+}
+
+.input__label {
+	display: inline-block;
+	float: right;
+	padding: 0 1em;
+	width: 40%;
+	color: #6a7989;
+	font-weight: bold;
+	font-size: 70.25%;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.input__label-content {
+	position: relative;
+	display: block;
+	padding: 1.6em 0;
+	width: 100%;
+}
+
+.graphic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	fill: none;
+}
+
+.icon {
+	color: #ddd;
+	font-size: 150%;
+}
+.input__field--minoru {
+	width: 100%;
+	background: #fff;
+	box-shadow: 0px 0px 0px 2px transparent;
+	color: #eca29b;
+	-webkit-transition: box-shadow 0.3s;
+	transition: box-shadow 0.3s;
+}
+
+.input__label--minoru {
+	padding: 0;
+	width: 100%;
+	text-align: left;
+}
+
+.input__label--minoru::after {
+	content: '';
+  	position: absolute;
+  	top: 0;
+  	z-index: -1;
+  	width: 94%;
+  	height: 3em;
+	box-shadow: 0px 0px 0px 0px;
+    border-radius: 15px;
+	color: rgba(199,152,157, 0.6);
+}
+
+.input__field--minoru:focus {
+	box-shadow: 0px 0px 0px 2px #eca29b;
+}
+
+.input__field--minoru:focus + .input__label--minoru {
+	pointer-events: none;
+}
+
+/* .input__field--minoru:focus + .input__label--minoru::after {
+	-webkit-animation: anim-shadow 0.3s forwards;
+	animation: anim-shadow 0.3s forwards;
+} */
+
+@-webkit-keyframes anim-shadow {
+	to {
+		box-shadow: 0px 0px 100px 50px;
+    	opacity: 0;
+	}
+}
+
+@keyframes anim-shadow {
+	to {
+		box-shadow: 0px 0px 100px 50px;
+    	opacity: 0;
+	}
+}
+
+.input__label-content--minoru {
+	padding: 0.75em 0.15em;
 }
 </style>
