@@ -43,11 +43,11 @@
                                                                 </option>
                                                             </select>
                                                         </div>
-                                                            <input type="text" class="form-control radious ms-3 me-2" v-model="searchRest" @keyup.enter="searchArea()" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
-                                                            <a href="#" role="button" @click="searchArea()">
-                                                                <span class="search_icon ms-2"><img src="../assets/search.png"></span>
-                                                            </a>
-                                                        </div>
+                                                        <input type="text" class="form-control radious ms-3 me-2" v-model="searchRest" @keyup.enter="searchArea()" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
+                                                        <a href="#" role="button" @click="searchArea()">
+                                                            <span class="search_icon ms-2"><img src="../assets/search.png"></span>
+                                                        </a>
+                                                    </div>
                                                 <!-- 모달 검색 결과 뜨는 부분 -->
                                                 <div class="row">
                                                     <div  v-for="rest of searchList" :key="rest">

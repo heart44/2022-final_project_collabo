@@ -1,87 +1,78 @@
 <template>
 <main class="container">
   <div>
-    <div>
-      <div>
-        <div>
-          <div>
-            <!-- 지역 셀렉트1 -->
-            <select class="form-select" @change="changeAreaCate1" v-model="selectedAreaCate1">
-              <option value="" >시/도 선택</option>
-              <option :value="key" v-for="item, key in AreaCate1" :key="key">
-                {{ key }}
-              </option>
-            </select>
+      <div class="">
+        <h2 class="text-center">~ 리스트 ~</h2>
+        <div class="plus_btn"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
+        <div class="row ">
+          <!-- 지역 셀렉트1 -->
+          <select class="form-select m-3 w-25" @change="changeAreaCate1" v-model="selectedAreaCate1">
+            <option value="" >시/도 선택</option>
+            <option :value="key" v-for="item, key in AreaCate1" :key="key">
+              {{ key }}
+            </option>
+          </select>
 
-            <!-- 지역 셀렉트2 -->
-            <select class="form-select" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
-              <option value="">지역 선택</option>
-              <option :value="item" v-for="item in AreaCate2List" :key="item">
-                {{ item }}
-              </option>
-            </select>
+          <!-- 지역 셀렉트2 -->
+          <select class="form-select m-3 w-25" @change="changeAreaCate2" v-model="selectedAreaCate2" v-if="selectedAreaCate1 !== ''">
+            <option value="">지역 선택</option>
+            <option :value="item" v-for="item in AreaCate2List" :key="item">
+              {{ item }}
+            </option>
+          </select>
 
-            <!-- 지역 셀렉트3 -->
-            <!-- <select class="form-select" @change="changeAreaCate3" v-model="selectedAreaCate3" v-if="selectedAreaCate2 !== '' && AreaCate3List.length !== 0 ">
-              <option value="">지역 선택</option>
-              <option :value="item" v-for="item in AreaCate3List" :key="item">
-                {{ item }}
-              </option>
-            </select> -->
+          <!-- 지역 셀렉트3 -->
+          <!-- <select class="form-select" @change="changeAreaCate3" v-model="selectedAreaCate3" v-if="selectedAreaCate2 !== '' && AreaCate3List.length !== 0 ">
+            <option value="">지역 선택</option>
+            <option :value="item" v-for="item in AreaCate3List" :key="item">
+              {{ item }}
+            </option>
+          </select> -->
 
-            <!-- 지역 셀렉트4 -->
-            <!-- <select class="form-select" @change="getBobfList" v-model="selectedAreaCate4" v-if="selectedAreaCate3 !== ''  && AreaCate4List.length !== 0 ">
-              <option value="">지역 선택</option>
-              <option :value="item" v-for="item in AreaCate4List" :key="item">
-                {{ item }}
-              </option>
-            </select> -->
-            
-            <!-- <form>
-              <div>
-                <label for="party">밥 먹을 날 선택하기</label>
-                <input id="party" type="date" name="partydate" v-model="date"
-                      min="2022-01-01" max="2022-12-31"
-                      pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
-              </div>
-            </form> -->
-          </div>
+          <!-- 지역 셀렉트4 -->
+          <!-- <select class="form-select" @change="getBobfList" v-model="selectedAreaCate4" v-if="selectedAreaCate3 !== ''  && AreaCate4List.length !== 0 ">
+            <option value="">지역 선택</option>
+            <option :value="item" v-for="item in AreaCate4List" :key="item">
+              {{ item }}
+            </option>
+          </select> -->
+          
+          <!-- <form>
+            <div>
+              <label for="party">밥 먹을 날 선택하기</label>
+              <input id="party" type="date" name="partydate" v-model="date"
+                    min="2022-01-01" max="2022-12-31"
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" required>
+            </div>
+          </form> -->
         </div>
-      </div>
-
-      <div>
-        <router-link to="/BobfWrite">글쓰기 테스트 화면</router-link>
       </div>
 
       <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-6" :key="ibobf" v-for="ibobf in paginatedData">
-          <div class="card h-100" style="width: 20rem;" @click="goDetail">
-            <a @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
-              <div>
-                  <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 250px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
-              </div>
-              <div class="card-body">
-                  <h5 class="card-title">{{ ibobf.title }}</h5>
-                  <p class="card-text">
-                      <span class="badge bd-dark text-black me-1">{{ ibobf.nick }}</span>
-                  </p>
-                  <div class="d-flex justify-content-between align-ites-center">
-                      <small class="text-dark">{{ ibobf.sido }} / {{ ibobf.gugun}}</small>
-                      <small class="text-dark" v-if="ibobf.cur_mem === ibobf.total_mem ? this.member = '모집완료' : this.member = '모집중'">{{this.member}}</small>
-                  </div>
-              </div>
-            </a>
-          </div>
+        <div class="card-list col-xl-3" :key="ibobf" v-for="ibobf in paginatedData">
+        <div class="card" style="width: 18rem;" @click="goDetail">
+          <a class="card-image" target="_blank" @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
+            <div>
+              <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 300px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
+            </div>
+          </a>
+          <a class="card-description" target="_blank">
+            <h3 class="card-title title">{{ ibobf.title }}</h3>
+            <div class="d-flex justify-content-between align-ites-center">
+                <small class="text-dark">{{ ibobf.sido }} / {{ ibobf.gugun}}</small>
+                <small class="text-dark" v-if="ibobf.cur_mem === ibobf.total_mem ? this.member = '모집완료' : this.member = '모집중'">{{this.member}}</small>
+            </div>
+          </a>
+        </div>
         </div>
       </div>
 
-      <div class="">
-        <button class="" :disabled="pageNum === 0" @click="prevPage">이전</button>
-        <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
-        <button class="" :disabled="pageNum >= pageCount - 1" @click="nextPage">다음</button>
+      <div class="m-5">
+        <button class="btn" :disabled="pageNum === 0" @click="prevPage">이전</button>
+        <span class="page-count mx-2">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
+        <button class="btn" :disabled="pageNum >= pageCount - 1" @click="nextPage">다음</button>
       </div>
 
-    </div>
   </div>
 </main>
 </template>
@@ -154,6 +145,10 @@ export default {
   created() {
     //지역
     this.getBobfList();
+    
+  },
+  updated() {
+    this.lazyload();
   },
   methods: {
 
@@ -297,6 +292,17 @@ export default {
       this.pageNum -= 1;      
     },
 
+    lazyload() {
+      const card_images = document.querySelectorAll('.card-image');
+
+      card_images.forEach(function(card_image) {
+        let content_image = card_image.querySelector('img');
+        content_image.addEventListener('load', function() {
+          card_image.className = card_image.className + ' is-loaded';
+  		  });
+  
+	    });
+	  }
   }
 
 }
@@ -304,4 +310,87 @@ export default {
 
 <style scoped>
 main { overflow-x: hidden; }
+.title {
+  color: #2B3F6B
+}
+.btn{
+    border:2px solid #2B3F6B;
+    border-radius:15px;
+    color:#2B3F6B;
+    margin-left: 0.5rem;
+}
+.plus_btn img{
+  float:right;
+  margin-right:2%;
+}
+
+/* Lazy Load Styles */
+.card-image {
+	display: block;
+	min-height: 20rem; /* layout hack */
+	background: #fff center center no-repeat;
+	background-size: cover;
+	filter: blur(3px); /* blur the lowres image */
+}
+
+.card-image > img {
+	display: block;
+	width: 100%;
+	opacity: 0; /* visually hide the img element */
+}
+
+.card-image.is-loaded {
+	filter: none; /* remove the blur on fullres image */
+	transition: filter 1s;
+}
+
+/* Layout Styles */
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	font-size: 16px;
+	font-family: sans-serif;
+}
+
+.card-list {
+	display: block;
+	margin: 1.5rem auto;
+	padding: 0;
+	font-size: 0;
+	text-align: center;
+	list-style: none;
+}
+
+.card {
+	display: inline-block;
+	width: 90%;
+	max-width: 20rem;
+	margin: 1rem;
+	font-size: 1rem;
+	text-decoration: none;
+	overflow: hidden;
+	box-shadow: 0 0 2rem -1rem rgba(0,0,0,0.5);
+	transition: transform 0.1s ease-in-out, box-shadow 0.1s;
+}
+
+.card:hover {
+	transform: translateY(-0.5rem) scale(1.0125);
+	box-shadow: 0 0.5em 2rem -1rem rgba(0,0,0,0.5);
+}
+
+.card-description {
+	display: block;
+	padding: 1em 0.5em;
+	color: #515151;
+	text-decoration: none;
+}
+
+.card-description > h2 {
+	margin: 0 0 0.5em;
+}
+
+.card-description > p {
+	margin: 0;
+}
 </style>
