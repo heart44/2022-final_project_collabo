@@ -66,7 +66,7 @@ export default createStore({
   },
   plugins: [
     createPersistedState({
-      paths: ['user.iuser', 'user.email', 'user.nick', 'user.profileimg'],
+      paths: ['user.iuser', 'user.email', 'user.nick', 'user.profileimg', 'user.birth'],
       storage: window.sessionStorage,
     })
   ],

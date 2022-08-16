@@ -16,7 +16,7 @@
                 <input type="email" v-model="email" class="form-control form-control-lg" @keyup.enter="checkEmail()"/>
             </div>
 
-            <button type="button" class="btn btn-lg btn-block" @click="checkEmail()">
+            <button type="button" class="btn btn-lg btn-block submit" @click="checkEmail()">
                 전송
             </button>
             </form>
@@ -38,7 +38,7 @@ export default {
             const rs = await this.$get(`/user/checkEmail/${this.email}`)
             console.log(rs)
             if(rs['result'].cnt === 1) {
-                this.$router.push( {path: '/ResetPassWord'} );
+                this.$router.push( {name: 'ResetPassWord', params: {'email': this.email}} );
             } else {
                 this.isAlert = false;
                 this.alertmsg = '등록된 회원정보가 없습니다.';
@@ -94,7 +94,7 @@ export default {
     .btn:focus{
         box-shadow: none;
     }
-    button[type="button"]{
+    .submit{
         margin-top: 30px;
     }
     .form-group{
