@@ -44,6 +44,17 @@ class UserModel extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //비밀번호 찾기위해 이메일 있는지 체크
+    public function checkEmail(&$param) {
+        $sql = " SELECT COUNT(*) as cnt FROM user WHERE email = :email and social_type = 0 ";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':email', $param["email"]);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
     public function updateUser(&$param) {
         $sql = "UPDATE user SET ";
         if(isset($param['nick']) && isset($param['birth']) && isset($param['job'])){

@@ -2,23 +2,19 @@
     <main>
         <div class="vue-tempalte">
             <a href="#" class="back"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
-            <form onsubmit="return false">
-                <div class="d-flex justify-content-center" :class="{'d-none' : isAlert}">
-                    <div class="alert alert-warning d-flex justify-content-between" style="width: 30%;" role="alert">
-                        {{ alertmsg }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+            <form>
+                <h1>비밀번호 재설정</h1>
+
+                <div class="form-group">
+                    <label>새로운 비밀번호를 입력하세요</label>
+                    <input ref="pw" type="password" v-model="pw" class="form-control form-control-lg mb-3" placeholder="비밀번호" @input="isSame()" />
+                    <input ref="pw2" type="password" v-model="pw2" class="form-control form-control-lg" placeholder="비밀번호 재확인" @input="isSame()" />
+                    <label ref="same"></label>
                 </div>
-            <h1>비밀번호 찾기</h1>
 
-            <div class="form-group">
-                <label>Email을 입력하세요.</label>
-                <input type="email" v-model="email" class="form-control form-control-lg" @keyup.enter="checkEmail()"/>
-            </div>
-
-            <button type="button" class="btn btn-lg btn-block" @click="checkEmail()">
-                전송
-            </button>
+                <button type="button" class="btn btn-lg btn-block" @click="checkEmail()">
+                    전송
+                </button>
             </form>
         </div>
     </main>
@@ -28,20 +24,25 @@
 export default {
     data(){
         return {
-            email: '',
+            pw: '',
+            pw2: '',
             alertmsg: '',
             isAlert: true,
         };
     },
     methods: {
-        async checkEmail() {
-            const rs = await this.$get(`/user/checkEmail/${this.email}`)
-            console.log(rs)
-            if(rs['result'].cnt === 1) {
-                this.$router.push( {path: '/ResetPassWord'} );
-            } else {
-                this.isAlert = false;
-                this.alertmsg = '등록된 회원정보가 없습니다.';
+        isSame() {
+            const pw = this.pw;
+            const pw2 = this.pw2;
+            
+            if(pw != '' && pw2 != '') {
+                if(pw === pw2) {
+                    this.$refs.same.innerHTML='비밀번호가 일치합니다.';
+                    this.$refs.same.style.color='blue';
+                } else {
+                    this.$refs.same.innerHTML='비밀번호가 일치하지 않습니다.';
+                    this.$refs.same.style.color='red';
+                }
             }
         }
     }
@@ -83,11 +84,16 @@ export default {
     label{
         font-weight: bold;
         color:#333333;
-        padding-right: 185px;
+        /* padding-right: 123px; */
         letter-spacing: 1px;
-        padding-bottom: 5px;
+        padding: 5px;
     }
-    input[type="email"]{
+    /* .check {
+        font-weight: bold;
+        letter-spacing: 1px;
+        padding-top: 5px;
+    } */
+    input[type="password"]{
         margin: 0 auto;
         border:2px solid #333333;
     }
