@@ -1,8 +1,8 @@
 <template>
-<main class="container">
+<main class="container mt-5">
   <div>
       <div class="">
-        <div class="h1 fl">밥 친구 구하기</div>
+        <h1 class="fl">밥 친구 구하기</h1>
         <div class="plus_btn" v-if="user.iuser !== undefined"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
         <div class="row ">
           <!-- 지역 셀렉트1 -->
@@ -331,7 +331,12 @@ main { overflow-x: hidden; }
   padding-left: 13px;
   padding-bottom: 10px;
   color: #2B3F6B;
-  border-bottom: 0.2rem solid #2B3F6B;
+}
+h1 {
+  font-family: 'Cafe24Ssurround';
+  font-weight: bold;
+  font-size: 50px;
+  letter-spacing: 1px;
 }
 
 /* Lazy Load Styles */

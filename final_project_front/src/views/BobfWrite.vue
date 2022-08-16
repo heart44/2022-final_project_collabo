@@ -1,6 +1,7 @@
 <template>
     <main class="">
-        <div class="container">
+        <div class="container mt-5">
+            <h1 class="fl">글 등록</h1>
             <input type="hidden" v-model="composition.ibobf">
             <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
 
@@ -416,6 +417,18 @@ button:focus{
 }
 .restName {
     color: #2B3F6B
+}
+.fl {
+  text-align: left;
+  padding-left: 8%;
+  padding-bottom: 15px;
+  color: #2B3F6B;
+}
+h1 {
+  font-family: 'Cafe24Ssurround';
+  font-weight: bold;
+  font-size: 50px;
+  letter-spacing: 1px;
 }
 
 
