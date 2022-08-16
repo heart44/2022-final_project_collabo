@@ -85,12 +85,15 @@ export default {
          // console.log(params)
          //여기는 db에 검색해서 나온 내용 저장쓰
          const rs = await this.$post('/search/searchList', params);
-         console.log('aa', rs)
+         // console.log('aa', rs)
       },
-      async getRestList(search, lon, lat) {
-         console.log(search)
+      async getRestList(search, lon, lat, iuser) {
+         if(iuser === undefined) {
+            iuser = 0
+         }
+         console.log(search, lon, lat, iuser)
          //여기는 그 뭐냐,,,검색하면 디비에 저장된 내용 가져와서 searchList.vue에 뿌려줄라고
-         const rs2 = await this.$get(`/search/restList/${search}/${lon}/${lat}`);
+         const rs2 = await this.$get(`/search/restList/${search}/${lon}/${lat}/${iuser}`);
          console.log(rs2["rs"]);
          
          return rs2["rs"];

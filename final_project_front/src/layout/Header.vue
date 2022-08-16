@@ -1,28 +1,28 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark main-bg shadows p-3 mb-5 bg-body rounded">
         <div class="container">
-        <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
-        <div class="input-group align-items-center">
-            <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="" aria-label="Username" aria-describedby="basic-addon1" ref="holder" >
-            <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
-        </div>
-        
-        <div class="d-flex">
-            <button class="btn btn-secondary bobf"><router-link to="/BobfList" class="login_b"><img src="../assets/fork-set.svg">밥친구해용</router-link></button>
-            <div v-if="user.email === undefined">
-                <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger login_btn" type="button">로그인</button></router-link>
+            <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
+            <div class="input-group align-items-center">
+                <input type="text" class="form-control radious" v-model="search" @keyup.enter="searchMenu()" placeholder="" aria-label="Username" aria-describedby="basic-addon1" ref="holder" >
+                <a href="#" role="button" @click="searchMenu()"><span class="search_icon"><img src="../assets/search.png"></span></a>
             </div>
-            <div v-else class="d-flex">
-                <div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>    
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><router-link class="" to="/Profile"><a class="dropdown-item" href="#">프로필수정</a></router-link></li>
-                            <li><router-link class="" to="/Diary"><a class="dropdown-item" href="#">다이어리</a></router-link></li>
-                        </ul>
+            
+            <div class="d-flex">
+                <button class="btn btn-secondary bobf"><router-link to="/BobfList" class="login_b"><img src="../assets/fork-set.svg">밥친구해용</router-link></button>
+                <div v-if="user.email === undefined">
+                    <router-link class="login_b" @click="Login" to="/LoginJoin"><button class="btn btn-danger login_btn" type="button">로그인</button></router-link>
                 </div>
-                <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
+                <div v-else class="d-flex">
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>    
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><router-link class="" to="/Profile"><a class="dropdown-item" href="#">프로필수정</a></router-link></li>
+                                <li><router-link class="" to="/Diary"><a class="dropdown-item" href="#">다이어리</a></router-link></li>
+                            </ul>
+                    </div>
+                    <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
+                </div>
             </div>
-        </div>
         </div>
     </nav>
 </template>
@@ -77,7 +77,7 @@ export default {
                 
                 const params = await this.naverSearch(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat)
                 await this.searchList(params)
-                const restList = await this.getRestList(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat)
+                const restList = await this.getRestList(this.search, this.getCurrentLoc.lon, this.getCurrentLoc.lat, this.user.iuser)
                 this.$store.commit('restList', restList)
                 await this.getMenuList();
 

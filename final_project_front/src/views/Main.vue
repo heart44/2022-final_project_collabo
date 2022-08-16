@@ -15,9 +15,9 @@
         </div>
       </div>
 
-      <div class="card-group text-center">
+      <div class="card-group text-center mb-5">
         <div class="card" v-for="item in menuList" :key="item">
-          <div class="card-body pointer" @click="clickList(item.menucd)">
+          <div class="card-body pointer d-flex row justify-content-center" @click="clickList(item.menucd)">
             <div class="menuimg"><img :src="item.path"></div>
             <h5 class="card-title m-0">{{ item.menucd }}</h5>
           </div>
@@ -121,7 +121,10 @@ export default {
   computed: {
     getCurrentLoc() {
       return this.$store.getters.currentLoc;
-    }
+    },
+    user() {
+      return this.$store.state.user;
+    },
   },
   methods: {
     //검색리스트에 뽀려가욘~@--
@@ -145,7 +148,6 @@ export default {
           lat: lat,
           lon: lon
       }
-      console.log('dkdkdkdk',params)
       this.$store.commit('currentLoc', params);
 
       const data = await this.getWeather(lat, lon);
@@ -176,7 +178,7 @@ export default {
     async clickList(menucd) {
       const params = await this.naverSearch(menucd, this.lon, this.lat)
       await this.searchList(params)
-      const restList = await this.getRestList(menucd, this.lon, this.lat)
+      const restList = await this.getRestList(menucd, this.lon, this.lat, this.user.iuser)
       await this.getMenuList();
 
       this.$store.commit('restList', restList)
@@ -188,7 +190,7 @@ export default {
     this.askForCoords();
   },
   updated(){
-    this.askForCoords();
+    // this.askForCoords();
   }
 }
 </script>
@@ -199,6 +201,6 @@ export default {
   .text-sm { font-size: 0.8rem; }
   .color-gray { color: #ccc; }
   .pointer { cursor: pointer; }
-  .menuimg { width: 250px; height: 270px; }
+  .menuimg { width: 270px; height: 290px; }
   .menuimg > img { width: 100%; height: 100%; object-fit: contain; }
 </style>

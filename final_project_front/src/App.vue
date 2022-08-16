@@ -34,10 +34,11 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow-x: hidden;
 }
-html::-webkit-scrollbar{
-  display: none;
-}
+body::-webkit-scrollbar { width: 15px;  /* 스크롤바의 너비 */ }
+body::-webkit-scrollbar-thumb { background: #2B3F6B; /* 스크롤바의 색상 */ border-radius: 100px; }
+body::-webkit-scrollbar-track { background: #f26d383c;  /*스크롤바 뒷 배경 색상*/ border-radius: 100px; }
 #app {
   font-family: 'GmarketSansMedium';
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */

@@ -1,21 +1,28 @@
 <?php
 function menuSubstring($menuList) {
-    $menuList = explode("|", $menuList);
-    $menu_price = [];
-
-    foreach($menuList as $item) {
-        $item = trim($item);
-        $priceEnd = substr($item, -4);
-        if(preg_match('/\d+/', $item, $match)) {
-            $priceStart = $match[0];
-        }
+    $menu_price = explode(" | ", $menuList);
+    $aaa = [];
+    foreach($menu_price as $item) {
         $list = [
-            "name" => preg_split('/\d/', $item, 2)[0],
-            "price" => $priceStart . $priceEnd
+            "name" => $item,
         ];
-        array_push($menu_price, $list);
+        array_push($aaa, $list);
     }
-    return $menu_price;
+    // $menu_price = [];
+
+    // foreach($menuList as $item) {
+    //     $item = trim($item);
+    //     $priceEnd = substr($item, -4);
+    //     if(preg_match('/\d+/', $item, $match)) {
+    //         $priceStart = $match[0];
+    //     }
+    //     $list = [
+    //         "name" => preg_split('/\d/', $item, 2)[0],
+    //         "price" => $priceStart . $priceEnd
+    //     ];
+    //     array_push($menu_price, $list);
+    // }
+    return $aaa;
 }
 
 function getRandomFileNm($fileName) {

@@ -45,6 +45,17 @@ use application\libs\Application;
             return [_RESULT => 0];
         }
 
+        public function checkEmail() {
+            $urlPaths = getUrlPaths();
+            if(!isset($urlPaths[2])) {
+                exit();
+            }
+            $param = [ "email" => $urlPaths[2] ];
+            $rs = $this->model->checkEmail($param);
+
+            return [ _RESULT => $rs ];
+        }
+
         public function profile() {
             switch(getMethod()) {
                 case _DELETE:

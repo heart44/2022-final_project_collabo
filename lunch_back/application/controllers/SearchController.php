@@ -24,33 +24,37 @@
 
             array_pop($json);                           //마지막 메뉴 이름 삭제
             foreach($json as $item) {                   //음식점 반복문
-                $cateId = $this->model->insSearchRest($item);   //레스토랑 insert (pk)
+                $irest = $this->model->insSearchRest($item);   //레스토랑 insert (pk)
+                $paramIrest = [ "irest" => $irest ]; 
+                $irest222 = $this->model->selMenuList($paramIrest);
                 $paramMCD = [ "search_word" => $search_word ];
                 $imcd = $this->model->getMenuCD($paramMCD);     //메뉴 코드 있는지 확인
-                $imcd11 = $this->model->insMenuCD($paramMCD);   //일단 insert
                 if(!$imcd) {   //없으면
+                    $imcd11 = $this->model->insMenuCD($paramMCD);   //일단 insert
                     $imcd = $imcd11; //새로운 키로 바꿈
-                    $params = [ "imcd" => $imcd, "irest" => $cateId ];
+                    $params = [ "imcd" => $imcd, "irest" => $irest ];
                 } else { //있으면 셀렉해온 키 넣음
-                    $params = [ "imcd" => $imcd, "irest" => $cateId ];
+                    $params = [ "imcd" => $imcd, "irest" => $irest ];
                 }
-                if($item["menu"]) { //메뉴가 있으면 아래 코드 실행
-                    $menuList = menuSubstring($item["menu"]);   //메뉴 자르는 함수
-                    if(count($menuList)<=20) {
-                        foreach($menuList as $list) {   //자른 메뉴 반복해서 DB에 넣음
-                            $params["name"] = $list["name"];
-                            $params["price"] = $list["price"];
+                if(empty($irest222)) {
+                    if($item["menu"]) { //메뉴가 있으면 아래 코드 실행
+                        $menuList = menuSubstring($item["menu"]);   //메뉴 자르는 함수
+                        if(count($menuList)<=20) {
+                            foreach($menuList as $list) {   //자른 메뉴 반복해서 DB에 넣음
+                                $params["name"] = $list["name"];
+                                $params["price"] = "";
+                                $rs = $this->model->insSearchMenu($params);
+                            }
+                        } else {
+                            $param["name"] = "";
+                            $param["price"] = "";
                             $rs = $this->model->insSearchMenu($params);
                         }
-                    } else {
+                    } else { //없으면 걍 null값 넣음^^
                         $param["name"] = "";
                         $param["price"] = "";
                         $rs = $this->model->insSearchMenu($params);
                     }
-                } else { //없으면 걍 null값 넣음^^
-                    $param["name"] = "";
-                    $param["price"] = "";
-                    $rs = $this->model->insSearchMenu($params);
                 }
             }
 
@@ -66,10 +70,11 @@
                 "search_word" => $urlPaths[2], 
                 "lon_x" => $urlPaths[3], 
                 "lat_y" => $urlPaths[4], 
+                "iuser" => $urlPaths[5]
             ];
             // echo $param;
             $rs = $this->model->getRestList($param);
-
+            // echo $rs;
             return ["rs" => $rs];
         }
 
