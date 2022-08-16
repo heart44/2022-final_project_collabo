@@ -57,12 +57,15 @@
 
         //검색 로그 저장
         public function insSearchLog(&$param) {
+            $iuser = $param["iuser"];
             $sql = "INSERT INTO search_log (search_word, iuser)
                     VALUES (:search_word, :iuser)";
-            
+            if(empty($iuser)) {
+                $iuser = 0;
+            }
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":search_word", $param["search_word"]);
-            $stmt->bindValue(":iuser", $param["iuser"]);
+            $stmt->bindValue(":iuser", $iuser);
             $stmt->execute();
 
             return $stmt->rowCount();
@@ -72,7 +75,7 @@
         public function getMostSearchLog() {
             $sql = "SELECT search_word
                     FROM search_log
-                    WHERE DATE(search_date) = date(NOW())
+                    WHERE DATE(search_date) = DATE(NOW())
                     GROUP BY search_word
                     HAVING COUNT(*) = ( SELECT MAX(mycnt)
                                         FROM ( 

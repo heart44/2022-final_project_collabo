@@ -12,7 +12,7 @@
         }
 
         //검색 로그 가져오기
-        public function mostSearchLog() {
+        public function getMostSearchLog() {
             $rs = $this->model->getMostSearchLog();
             return [ "rs" => $rs->search_word ];
         }

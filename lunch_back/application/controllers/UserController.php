@@ -7,7 +7,7 @@ use application\libs\Application;
         public function signup(){
             $json = getJson();
             // 비밀번호 암호화
-            // $json["pw"] = password_hash($json["pw"], PASSWORD_BCRYPT);
+            $json["pw"] = password_hash($json["pw"], PASSWORD_BCRYPT);
             $result = $this->model->signup($json);
             if($result){
                 return [_RESULT => $result];
@@ -20,7 +20,7 @@ use application\libs\Application;
             $pw = $json['pw'];
             $dbUser = $this->model->signin($json);
             // if(!$dbUser || !password_verify($pw, $dbUser->pw)) { 비밀번호암호화하고나면이걸로
-            if(!$dbUser || $pw !== $dbUser->pw) {
+            if(!$dbUser || !password_verify($pw, $dbUser->pw)) {
                 return [_RESULT => 0];
             }
             $dbUser->pw = null;
@@ -45,6 +45,7 @@ use application\libs\Application;
             return [_RESULT => 0];
         }
 
+        //비번 찾기에 필요한 이메일 체크
         public function checkEmail() {
             $urlPaths = getUrlPaths();
             if(!isset($urlPaths[2])) {
@@ -52,6 +53,15 @@ use application\libs\Application;
             }
             $param = [ "email" => $urlPaths[2] ];
             $rs = $this->model->checkEmail($param);
+
+            return [ _RESULT => $rs ];
+        }
+
+        //재설정된 비번 insert
+        public function updPassword() {
+            $json = getJson();
+            $json["pw"] = password_hash($json["pw"], PASSWORD_BCRYPT);
+            $rs = $this->model->updPassword($json);
 
             return [ _RESULT => $rs ];
         }
