@@ -4,6 +4,7 @@ import store from './store'
 import router from './router'
 import mixins from './mixins';
 import VueSweetalert2 from 'vue-sweetalert2';
+import socketPlugin from "./plugins/socketPlugin";
 
 
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -14,6 +15,7 @@ createApp(App).use(store).use(store)
 .use(router)
 .use(store)
 .use(VueSweetalert2)
+.use(socketPlugin)
 .mount('#app');
 
 

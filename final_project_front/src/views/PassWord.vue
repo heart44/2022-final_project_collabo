@@ -2,15 +2,21 @@
     <main>
         <div class="vue-tempalte">
             <a href="#" class="back"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
-            <form>
+            <form onsubmit="return false">
+                <div class="d-flex justify-content-center" :class="{'d-none' : isAlert}">
+                    <div class="alert alert-warning d-flex justify-content-between" style="width: 30%;" role="alert">
+                        {{ alertmsg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
             <h1>비밀번호 찾기</h1>
 
             <div class="form-group">
                 <label>Email을 입력하세요.</label>
-                <input type="email" class="form-control form-control-lg"/>
+                <input type="email" v-model="email" class="form-control form-control-lg" @keyup.enter="checkEmail()"/>
             </div>
 
-            <button type="submit" class="btn btn-lg btn-block">
+            <button type="button" class="btn btn-lg btn-block" @click="checkEmail()">
                 전송
             </button>
             </form>
@@ -21,8 +27,24 @@
 <script>
 export default {
     data(){
-        return {};
+        return {
+            email: '',
+            alertmsg: '',
+            isAlert: true,
+        };
     },
+    methods: {
+        async checkEmail() {
+            const rs = await this.$get(`/user/checkEmail/${this.email}`)
+            console.log(rs)
+            if(rs['result'].cnt === 1) {
+                this.$router.push( {path: '/ResetPassWord'} );
+            } else {
+                this.isAlert = false;
+                this.alertmsg = '등록된 회원정보가 없습니다.';
+            }
+        }
+    }
 };
 </script>
 
@@ -72,7 +94,7 @@ export default {
     .btn:focus{
         box-shadow: none;
     }
-    button[type="submit"]{
+    button[type="button"]{
         margin-top: 30px;
     }
     .form-group{
