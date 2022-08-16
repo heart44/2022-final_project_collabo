@@ -1,4 +1,5 @@
 <template>
+<div>
   <main>
     <div class="container">    
       <div class="today_weather mt-5">
