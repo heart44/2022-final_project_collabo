@@ -36,14 +36,7 @@ export default {
             const pw = this.pw;
             const pw2 = this.pw2;
 
-            const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
-            const check = regExp.test(this.pw);
-
-            if(!check) {
-                this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
-            } else {
-                this.pwError = '';
-            }
+            this.checkPassword(pw)
             
             if(pw != '' && pw2 != '') {
                 if(pw === pw2) {
@@ -55,7 +48,27 @@ export default {
                 }
             }
         },
+        checkPassword(pw) {
+            const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+            const check = regExp.test(pw);
+
+            if(!check) {
+                this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+            } else {
+                this.pwError = '';
+            }
+        },
         async updPassword() {
+            if(this.pw === "") {
+                this.$refs.pw.focus();
+                this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+                exit();
+            } else {
+                this.$refs.pw.focus();
+                this.checkPassword(this.pw)
+                exit();
+            }
+            
             const param = { 
                 email: this.$route.params.email,
                 pw: this.pw 

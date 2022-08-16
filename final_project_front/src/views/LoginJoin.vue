@@ -208,6 +208,10 @@ export default {
                 this.$refs.pw.focus();
                 this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
                 return;
+            } else {
+                this.$refs.pw.focus();
+                this.isPW()
+                exit();
             }
             const param = {
                 social_type: 0,

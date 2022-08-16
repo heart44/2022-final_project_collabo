@@ -3,7 +3,7 @@
     <div class="content">
       <ul class="nav mb-3 mypage_nav">
         <li>
-          <router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link>
+          <router-link to="/Profile"><button class="btn profile_btn" type="button">프로필 수정</button></router-link>
         </li>
         <li>
           <router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link>
@@ -200,6 +200,10 @@ export default {
 </script>
 
 <style scoped>
+.profile_btn {
+  background-color: #2B3F6B;
+  color: white;
+}
 .file-button {
   padding: 6px 25px;
   background-color: #2b3f6b;
