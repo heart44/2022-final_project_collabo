@@ -390,6 +390,8 @@ export default {
                 }
             }
         },
+
+    
     }
 }
 </script>
@@ -416,6 +418,8 @@ button:focus{
 .restName {
     color: #2B3F6B
 }
+
+
 .input {
 	position: relative;
 	z-index: 1;
@@ -425,6 +429,7 @@ button:focus{
 	width: calc(100% - 2em);
 	vertical-align: top;
 }
+
 .input__field {
 	position: relative;
 	display: block;
@@ -443,9 +448,11 @@ button:focus{
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 }
+
 .input__field:focus {
 	outline: none;
 }
+
 .input__label {
 	display: inline-block;
 	float: right;
@@ -463,18 +470,21 @@ button:focus{
 	-ms-user-select: none;
 	user-select: none;
 }
+
 .input__label-content {
 	position: relative;
 	display: block;
 	padding: 1.6em 0;
 	width: 100%;
 }
+
 .graphic {
 	position: absolute;
 	top: 0;
 	left: 0;
 	fill: none;
 }
+
 .icon {
 	color: #ddd;
 	font-size: 150%;
@@ -487,11 +497,13 @@ button:focus{
 	-webkit-transition: box-shadow 0.3s;
 	transition: box-shadow 0.3s;
 }
+
 .input__label--minoru {
 	padding: 0;
 	width: 100%;
 	text-align: left;
 }
+
 .input__label--minoru::after {
 	content: '';
   	position: absolute;
@@ -503,28 +515,34 @@ button:focus{
     border-radius: 15px;
 	color: rgba(199,152,157, 0.6);
 }
+
 .input__field--minoru:focus {
 	box-shadow: 0px 0px 0px 2px #eca29b;
 }
+
 .input__field--minoru:focus + .input__label--minoru {
 	pointer-events: none;
 }
+
 /* .input__field--minoru:focus + .input__label--minoru::after {
 	-webkit-animation: anim-shadow 0.3s forwards;
 	animation: anim-shadow 0.3s forwards;
 } */
+
 @-webkit-keyframes anim-shadow {
 	to {
 		box-shadow: 0px 0px 100px 50px;
     	opacity: 0;
 	}
 }
+
 @keyframes anim-shadow {
 	to {
 		box-shadow: 0px 0px 100px 50px;
     	opacity: 0;
 	}
 }
+
 .input__label-content--minoru {
 	padding: 0.75em 0.15em;
 }
