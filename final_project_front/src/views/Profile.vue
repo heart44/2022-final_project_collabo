@@ -149,6 +149,7 @@ export default {
       this.inputUser.nick = this.user.nick;
       this.inputUser.birthYear = this.user.birth;
       this.inputUser.job = this.user.job;
+      console.log(this.inputUser)
       this.imgSrc = this.user.profileimg ?
       'static/img/profile/'+this.user.iuser+'/'+this.user.profileimg : '';
     },

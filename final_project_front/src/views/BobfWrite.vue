@@ -1,12 +1,11 @@
 <template>
     <main class="">
         <div class="container">
-            <div class="h2 fl mb-5"> 글 쓰기 </div>
             <input type="hidden" v-model="composition.ibobf">
             <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
 
 
-            <div class="mb-4 row">
+            <div class="mt-3 mb-4 row">
                 <label for="" class="col-md-3 col-form-label">제목</label>
                 <span class="col-md-6 input input--minoru">
 					<input type="text" class="form-control input__field input__field--minoru rounded-pill" id="Minoru" ref="title" v-model="composition.title">
@@ -114,7 +113,7 @@
             </div>
 
             <div class="mt-5 row">
-                <div class="mb-5">
+                <div class="mb-3">
                     <button type="button" class="btn btn-danger" @click="insBobF">저장</button>
                     <button type="button" class="btn" @click="goBack">취소</button>
                 </div>
@@ -417,13 +416,6 @@ button:focus{
 }
 .restName {
     color: #2B3F6B
-}
-.fl {
-  text-align: left;
-  padding-left: 13px;
-  padding-bottom: 10px;
-  color: #2B3F6B;
-  border-bottom: 0.2rem solid #2B3F6B;
 }
 
 

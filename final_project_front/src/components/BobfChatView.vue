@@ -187,6 +187,7 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 1.4rem;
+    margin-bottom: 10px;
     background: #ffffff;
     border-radius: 30px 30px 24px 24px;
     box-shadow: 0px -5px 30px rgba(0, 0, 0, 0.05);

@@ -3,7 +3,7 @@
   <div>
       <div class="">
         <div class="h1 fl">밥 친구 구하기</div>
-        <div class="plus_btn"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
+        <div class="plus_btn" v-if="user.iuser !== undefined"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
         <div class="row ">
           <!-- 지역 셀렉트1 -->
           <select class="form-select m-3 w-25" @change="changeAreaCate1" v-model="selectedAreaCate1">
@@ -50,8 +50,8 @@
 
       <div class="row">
         <div class="card-list col-xl-3" :key="ibobf" v-for="ibobf in paginatedData">
-        <div class="card" style="width: 18rem;" @click="goDetail">
-          <a class="card-image" target="_blank" @click="goToDetail(ibobf.ibobf)" style="cursor:pointer;">
+        <div class="card" style="width: 18rem; cursor:pointer;" @click="goToDetail(ibobf.ibobf)">
+          <a class="card-image" target="_blank">
             <div>
               <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 300px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
             </div>
@@ -126,6 +126,9 @@ export default {
   props: {
   },
   computed: {
+    user() {
+        return this.$store.state.user;
+    },
   //페이징
     pageCount() {
       let listLeng = this.BobfList.length,
@@ -274,7 +277,6 @@ export default {
       }
 
     },
-
 
   //글 상세페이지 이동
     goToDetail(ibobf) {
