@@ -10,6 +10,7 @@ import BobfWrite from '../views/BobfWrite'
 
 import LoginJoin from '../views/LoginJoin';
 import PassWord from '../views/PassWord';
+import ResetPassWord from '../views/ResetPassWord'
 
 import Diary from '../views/Diary';
 import Profile from '../views/Profile';
@@ -60,6 +61,11 @@ const routes = [
     path: '/PassWord',
     name: 'PassWord',
     component: PassWord
+  },
+  {
+    path: '/ResetPassWord',
+    name: 'ResetPassWord',
+    component: ResetPassWord
   },
   {
     path:'/Diary',
