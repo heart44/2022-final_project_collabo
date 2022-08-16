@@ -37,7 +37,7 @@
                     <button class="btn btn-danger" @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">삭제</button>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-danger" v-if="this.bobfDetail.iuser !== user.iuser">채팅하기</button>
+                    <button class="btn btn-danger" @click="goToChat(user.iuser)" v-if="this.bobfDetail.iuser !== user.iuser">채팅하기</button>
                 </div>
             </div>
         </div>
@@ -119,6 +119,16 @@ export default {
             // console.log(this.$route.params.ibobf);
             // this.$router.push( {path: '/BobfWrite', query: {ibobf: this.$route.params.ibobf}})
             // // const res = this.$post('/api/updateBobfDetail', param)
+        },
+        goToChat(iuser) {
+            const res = this.bobfDetail.iuser
+            console.log("res :", res)
+            if(iuser !== undefined) {
+                this.$router.push( {name: 'BobfChat', params: { iuser: res }} );
+            } else {
+                this.$swal.fire('🥕채팅 불가🥕', '로그인이 필요한 서비스입니다', 'warning')
+                return false
+            }
         }
     },
 }
