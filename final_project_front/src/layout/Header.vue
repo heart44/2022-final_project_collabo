@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark main-bg shadows p-3 mb-5 bg-body rounded">
+    <nav class="navbar navbar-expand-lg navbar-dark main-bg shadows p-3 bg-body">
         <div class="container">
             <router-link to="/"><a class="logo" href="#"><img src="../assets/logo.svg" alt="logo"></a></router-link>
             <div class="input-group align-items-center">
