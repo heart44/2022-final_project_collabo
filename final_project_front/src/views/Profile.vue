@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-5">
     <div class="content">
       <ul class="nav mb-3 mypage_nav">
         <li>

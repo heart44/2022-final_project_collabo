@@ -263,6 +263,7 @@ export default {
   }
   .today_weather span , .bob_list span{
     color:#F26C38;
+    font-weight: bold;
   }
   #weatherIcon img{
     animation: move 3s infinite;

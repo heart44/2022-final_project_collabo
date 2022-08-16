@@ -1,6 +1,6 @@
 <template>
     <main class="">
-        <div class="container">
+        <div class="container mt-5">
             <h2 class="text-center mb-5">~ 글 쓰기 ~</h2>
             <input type="hidden" v-model="composition.ibobf">
             <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
@@ -418,8 +418,6 @@ button:focus{
 .restName {
     color: #2B3F6B
 }
-
-
 .input {
 	position: relative;
 	z-index: 1;
@@ -444,8 +442,7 @@ button:focus{
 	/* border-radius: 15px; */
 	background: #f0f0f0;
 	color: #aaa;
-	font-weight: bold;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 }
 

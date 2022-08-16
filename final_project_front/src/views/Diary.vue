@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-5">
     <div class="content">
         <ul class="mypage_nav">
             <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
