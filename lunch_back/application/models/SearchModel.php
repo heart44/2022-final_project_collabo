@@ -79,10 +79,10 @@
                     GROUP BY search_word
                     HAVING COUNT(*) = ( SELECT MAX(mycnt)
                                         FROM ( 
-                                            SELECT search_word, COUNT(*) AS mycnt
-                                            FROM search_log
-                                            WHERE DATE(search_date) = DATE(NOW())
-                                            GROUP BY search_word) AS rs )";
+                                        SELECT search_word, COUNT(*) AS mycnt
+                                        FROM search_log
+                                        WHERE DATE(search_date) = DATE(NOW())
+                                        GROUP BY search_word) AS rs )";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();

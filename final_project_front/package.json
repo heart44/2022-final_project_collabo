@@ -24,6 +24,7 @@
     "vue-geolocation-api": "^0.1.21",
     "vue-router": "^4.0.3",
     "vue-sweetalert2": "^5.0.5",
+    "vue3-google-oauth2": "^1.0.6",
     "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.1.0"
   },
