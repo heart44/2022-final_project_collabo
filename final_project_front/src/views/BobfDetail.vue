@@ -23,7 +23,9 @@
                                 {{this.bobfDetail.ctnt}}
                             </div>
                         </div>
-                        <img :src="`/static/img/bobf/${this.bobfDetail.img_path}`" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'" />
+                        <div>
+                            <img style="" :src="`/static/img/bobf/${this.bobfDetail.img_path}`" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'" />
+                        </div>
                     </div>
                 </section> 
                 </div>
@@ -35,7 +37,7 @@
                     <button class="btn btn-danger" @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">삭제</button>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-danger" v-if="this.bobfDetail.iuser !== user.iuser"><router-link to="/BobfChat">채팅하기</router-link></button>
+                    <button class="btn btn-danger" v-if="this.bobfDetail.iuser !== user.iuser">채팅하기</button>
                 </div>
             </div>
         </div>
