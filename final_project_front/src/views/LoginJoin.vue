@@ -126,10 +126,8 @@ export default {
             const data = await this.$post('/user/signup', params);                       
             params.iuser = data.result;
             this.$store.commit('user', params);
+            window.location.href = "http://localhost:8080/";
         },
-
-    
-
         async signin() {
             if(this.inputUser.email === "") {
                 this.$refs.email.focus();
