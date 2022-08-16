@@ -2,7 +2,7 @@
 <main class="container">
   <div>
       <div class="">
-        <h2 class="text-center">~ 리스트 ~</h2>
+        <div class="h1 fl">밥 친구 구하기</div>
         <div class="plus_btn"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
         <div class="row ">
           <!-- 지역 셀렉트1 -->
@@ -322,6 +322,14 @@ main { overflow-x: hidden; }
 .plus_btn img{
   float:right;
   margin-right:2%;
+  margin-top: 1%;
+}
+.fl {
+  text-align: left;
+  padding-left: 13px;
+  padding-bottom: 10px;
+  color: #2B3F6B;
+  border-bottom: 0.2rem solid #2B3F6B;
 }
 
 /* Lazy Load Styles */
