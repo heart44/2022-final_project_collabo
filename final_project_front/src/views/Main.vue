@@ -1,6 +1,6 @@
 <template>
 <div>
-  <main>
+  <main class="weather">
     <div class="container">    
       <div class="today_weather mt-5">
         <h1>오늘의 <span>날씨</span></h1>
