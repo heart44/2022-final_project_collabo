@@ -42,9 +42,11 @@ export default {
                 if(pw === pw2) {
                     this.$refs.same.innerHTML='비밀번호가 일치합니다.';
                     this.$refs.same.style.color='#486cbb';
+                    return true;
                 } else {
                     this.$refs.same.innerHTML='비밀번호가 일치하지 않습니다.';
                     this.$refs.same.style.color='#f78b60';
+                    return false;
                 }
             }
         },
@@ -66,21 +68,20 @@ export default {
             } else if(this.pw2 === "") {
                 this.$refs.same.innerHTML='비밀번호가 일치하지 않습니다.';
                 return;
-            } else {
-                this.$refs.pw.focus();
-                this.checkPassword(this.pw)
-            }
-            
-            const param = { 
+            } else if(this.isSame()) {
+                const param = { 
                 email: this.$route.params.email,
                 pw: this.pw 
+                }
+                console.log(param);
+                const rs = await this.$post('/user/updPassword', param);
+                console.log(rs)
+                if(rs['result']) {
+                    this.$router.push( {path: '/LoginJoin'} );
+                }
             }
-            console.log(param);
-            const rs = await this.$post('/user/updPassword', param);
-            console.log(rs)
-            if(rs['result']) {
-                this.$router.push( {path: '/LoginJoin'} );
-            }
+            
+            
         }
     }
 };
