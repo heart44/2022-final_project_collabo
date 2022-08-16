@@ -116,24 +116,6 @@
         public function updateBobfDetail() {
             $json = getJson();
 
-            if($json["img"] !== '') {
-                $img_parts = explode(";base64,", $json["img"]);
-                $img_type_aux = explode("image/", $img_parts[0]);
-                $img_type = $img_type_aux[1];
-                $img_base64 = base64_decode($img_parts[1]);
-                $dirPath = _IMG_PATH . "/bobf/";
-                $path = uniqid() . "." . $img_type;
-                $filePath = $dirPath . "/" . $path;
-                if(!is_dir($dirPath)) {
-                    mkdir($dirPath, 0777, true);
-                }
-                $result = file_put_contents($filePath, $img_base64);
-
-                if($result) {
-                    $json["img"] = $path;
-                }
-            }
-
             return [_RESULT => $this->model->updateBobfDetail($json)];
         }
 
