@@ -64,6 +64,7 @@ export default {
         async signout() {
             this.$store.commit('user', {});
             await this.$post('user/signout');
+            this.$router.push( {path: '/'} );
         },
         async searchMenu() {    //통신부분 개망....완전 일 많이 하는 중,,,근데 나누기.....힘들어요,,,,,,
             if(this.search.trim() !== '') {

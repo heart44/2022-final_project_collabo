@@ -62,11 +62,13 @@ export default {
             if(this.pw === "") {
                 this.$refs.pw.focus();
                 this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
-                exit();
+                return;
+            } else if(this.pw2 === "") {
+                this.$refs.same.innerHTML='비밀번호가 일치하지 않습니다.';
+                return;
             } else {
                 this.$refs.pw.focus();
                 this.checkPassword(this.pw)
-                exit();
             }
             
             const param = { 

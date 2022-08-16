@@ -66,8 +66,9 @@
 
             <div class="p_tag">
               비밀번호 변경
-              <div class="my d-flex">
-                <input type="password" v-model="inputUser.pw" />
+              <div class="my">
+                <input type="password" v-model="inputUser.pw"  />
+                <!-- <div class="erorr">{{ pwError }}</div> -->
               </div>
             </div>
           </div>
@@ -113,6 +114,7 @@ export default {
       imgSrc: '',
       alertmsg: '',
       isAlert: true,
+      pwError: ''
     };
   },
   created() {
@@ -193,6 +195,16 @@ export default {
         }
         this.$refs.profileImg.value = '';
         console.log(this.user);
+      }
+    },
+    isSame() {
+      const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+      const check = regExp.test(this.inputUser.pw);
+
+      if(!check && this.inputUser.pw != null) {
+        this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+      } else {
+        this.pwError = '';
       }
     },
   }
@@ -288,5 +300,9 @@ input[type="button"] {
 }
 label {
   width: 100px;
+}
+.erorr {
+  font-size: 0.7rem;
+  color: #f78b60;
 }
 </style>
