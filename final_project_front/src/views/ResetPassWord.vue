@@ -1,7 +1,8 @@
 <template>
     <main>
         <div class="vue-tempalte">
-            <a href="#" class="back"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
+            <a href="#" class="back" v-if="$route.params.url == 0"><router-link to="/LoginJoin"><img src="../assets/arrow-left.png"></router-link></a>
+            <a href="#" class="back" v-else-if="$route.params.url == 1"><router-link to="/Profile"><img src="../assets/arrow-left.png"></router-link></a>
             <form>
                 <h1>비밀번호 재설정</h1>
 
@@ -73,13 +74,14 @@ export default {
                 return;
             } else if(this.isSame()) {
                 const param = { 
-                email: this.$route.params.email,
-                pw: this.pw 
+                    email: this.$route.params.email,
+                    pw: this.pw 
                 }
                 console.log(param);
                 const rs = await this.$post('/user/updPassword', param);
                 console.log(rs)
                 if(rs['result']) {
+                    // this.$swal.fire('비밀번호가 정상적으로 변경되었습니다.', '', 'success');
                     this.$router.push( {path: '/LoginJoin'} );
                 }
             }

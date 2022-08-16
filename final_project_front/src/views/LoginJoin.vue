@@ -88,7 +88,6 @@ export default {
             },
             duplication: '',
             emailError: '',
-            pwError: ''
         }
     },
     methods:{
@@ -168,15 +167,13 @@ export default {
                 this.$refs.email.focus();
                 this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
                 return;
-            } else if(this.inputUser.pw === "") {
+            } else if(join.pw === "") {
                 this.$refs.pw.focus();
                 this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
                 return;
             } else if(this.isPW()) {
                 this.$refs.pw.focus();
                 return;
-                // this.isPW()
-                // exit();
             }
             const param = {
                 social_type: 0,

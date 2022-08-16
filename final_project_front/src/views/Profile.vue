@@ -66,9 +66,8 @@
 
             <div class="p_tag">
               비밀번호 변경
-              <div class="d-flex row justify-content-center">
-                <input ref="pw" type="password" v-model="inputUser.pw" @input="isPw()" />
-                <div class="erorr" ref="chkpw"></div>
+              <div class="d-flex justify-content-center">
+                <router-link :to="{ name: 'ResetPassWord', params:{'email': user.email, 'url': 1} }"><button type="button" class="btn profile_btn chg_btn">재설정가즈아</button></router-link>
               </div>
             </div>
           </div>
@@ -221,6 +220,7 @@ export default {
   background-color: #2B3F6B;
   color: white;
 }
+.chg_btn{ border-radius: 4px !important; }
 .file-button {
   padding: 6px 25px;
   background-color: #2b3f6b;
