@@ -1,6 +1,5 @@
 <template>
   <main>
-    <router-link to="/BobfChat">채팅 잠시 실례합니다</router-link>
     <div class="container">    
       <div class="mb-3 d-flex justify-content-end" v-if="weatherOk === true">
         <div class="d-flex flex-column justify-content-center align-items-end">
@@ -28,6 +27,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return{
