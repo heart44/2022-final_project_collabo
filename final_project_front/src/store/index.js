@@ -62,6 +62,12 @@ export default createStore({
     },
     setMenuList: (state, data) => {
       state.menuList = data
-    },
+    }
   },
+  plugins: [
+    createPersistedState({
+      paths: ['user.iuser', 'user.email', 'user.nick', 'user.profileimg'],
+      storage: window.sessionStorage,
+    })
+  ],
 })
