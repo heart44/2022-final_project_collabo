@@ -1,44 +1,46 @@
 <template>
-    <main>
-        <h3>{{ getSearchWord }}</h3>
-        <h3></h3>
-        <br>
-        <div class="d-flex column pb-5">
-            <div class="col-4 rlist scroll" style="width:40%;height:500px;">
-                <div v-for="rest in restList" :key="rest" ref="aaa">
-                    <h5 class="bold">{{ rest.rest_name }}</h5>
-                    <span v-if="rest.rating !== null"><router-link to="/Diary" class="link"> 나의 별점 {{ myRating(rest.rating) }}</router-link></span>
-                    <div class="ms-3 me-3 d-flex column justify-content-start">
-                        <div>
-                            <div v-if="(rest.img_path === null) || (rest.img_path !== null && rest.img_path.indexOf('http://blogfiles.naver.net') !== -1)">
-                                <img class="basic" src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg">
+    <main class="mt-5">
+        <div class="container">
+            <h3>{{ getSearchWord }}</h3>
+            <h3></h3>
+            <br>
+            <div class="d-flex column pb-5">
+                <div class="col-4 rlist scroll" style="width:40%;height:500px;">
+                    <div v-for="rest in restList" :key="rest" ref="aaa">
+                        <h5 class="bold">{{ rest.rest_name }}</h5>
+                        <span v-if="rest.rating !== null"><router-link to="/Diary" class="link"> 나의 별점 {{ myRating(rest.rating) }}</router-link></span>
+                        <div class="ms-3 me-3 d-flex column justify-content-start">
+                            <div class="mt-3">
+                                <div v-if="(rest.img_path === null) || (rest.img_path !== null && rest.img_path.indexOf('http://blogfiles.naver.net') !== -1)">
+                                    <img class="basic" src="https://cdn.pixabay.com/photo/2015/09/13/21/13/dishes-938747_960_720.jpg">
+                                </div>
+                                <div v-else>
+                                    <img class="basic" :src=rest.img_path>
+                                </div>
                             </div>
-                            <div v-else>
-                                <img class="basic" :src=rest.img_path>
+    
+                            <div class="ms-4 d-flex flex-column justify-content-center align-items-start">
+                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/location.png" alt="주소"> <span class="ms-3">{{ rest.rest_address }}</span></div>
+                                <div class="d-flex justify-content-start align-items-start "><img src="../assets/phone-call.png" alt="전화번호"> <span class="ms-3">{{ rest.tel }}</span></div>
+                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/clock.png" alt="영업시간"> <span class="ms-3">{{ rest.open_close }}</span></div>   
+                                <div class="btn-group">
+                                    <button v-if="calMenuList(rest.irest)[0] != null" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        메뉴
+                                    </button>
+                                    <ul class="dropdown-menu scrollable-menu scroll">
+                                        <li class="menulist dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="ms-4 d-flex flex-column align-items-start">
-                            <div class="d-flex justify-content-start align-items-start mb-2"><img src="../assets/location.png" alt="주소"> <span class="ms-3">{{ rest.rest_address }}</span></div>
-                            <div class="d-flex mb-2"><img src="../assets/phone-call.png" alt="전화번호"> <span class="ms-3">{{ rest.tel }}</span></div>
-                            <div class="d-flex  align-items-start mb-2"><img src="../assets/clock.png" alt="영업시간"> <span class="ms-3">{{ rest.open_close }}</span></div>   
-                            <div class="btn-group">
-                                <button v-if="calMenuList(rest.irest)[0] != null" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    메뉴
-                                </button>
-                                <ul class="dropdown-menu scrollable-menu scroll">
-                                    <li class="menulist dropdown-item disabled" v-for="menu in calMenuList(rest.irest)" :key="menu">{{ menu }}</li>
-                                </ul>
-                            </div>
-                        </div>
+                        <hr>
                     </div>
-                    <hr>
                 </div>
+                <div ref="mapDiv" class="col-8 aaa" style="width:50%;height:500px;"></div>
             </div>
-            <div ref="mapDiv" class="col-8 aaa" style="width:50%;height:500px;"></div>
+                <div class="popover fade show bs-popover-end" role="tooltip" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(258px, 0px);" data-popper-placement="right">            
+            </div>            
         </div>
-            <div class="popover fade show bs-popover-end" role="tooltip" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(258px, 0px);" data-popper-placement="right">            
-        </div>            
     </main>
 </template>
 

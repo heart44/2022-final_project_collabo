@@ -92,6 +92,7 @@ export default {
             iuser = 0
          }
          console.log(search, lon, lat, iuser)
+         console.log(iuser)
          //여기는 그 뭐냐,,,검색하면 디비에 저장된 내용 가져와서 searchList.vue에 뿌려줄라고
          const rs2 = await this.$get(`/search/restList/${search}/${lon}/${lat}/${iuser}`);
          console.log(rs2["rs"]);

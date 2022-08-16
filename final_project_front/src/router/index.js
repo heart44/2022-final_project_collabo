@@ -77,7 +77,8 @@ const routes = [
   {
     path: '/ResetPassWord',
     name: 'ResetPassWord',
-    component: ResetPassWord
+    component: ResetPassWord,
+    props: true
   },
   {
     path:'/Diary',
