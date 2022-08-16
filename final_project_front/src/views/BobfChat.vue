@@ -1,4 +1,4 @@
-<template>
+<template>    
     <div class="container">
         <div class="chat">
             <div class="chat__header">
@@ -23,14 +23,15 @@ export default {
             return this.$store.state.user;
         },
     },
+
     created() {
         this.getBobfUser()
-    },
+    },    
     methods: {
         getBobfUser() {
             const param = { bobfUser: this.$route.params.iuser }
             console.log(param)
-        }
+        }    
     },
 }
 </script>

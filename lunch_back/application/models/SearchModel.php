@@ -72,6 +72,7 @@
         public function getMostSearchLog() {
             $sql = "SELECT search_word
                     FROM search_log
+                    WHERE DATE(search_date) = date(NOW())
                     GROUP BY search_word
                     HAVING COUNT(*) = ( SELECT MAX(mycnt)
                                         FROM ( 

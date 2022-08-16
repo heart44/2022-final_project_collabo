@@ -35,7 +35,7 @@
                     <hr>
                 </div>
             </div>
-            <div ref="mapDiv" class="col-8 aaa" style="width:50%;height:500px;"></div>
+            <div ref="mapDiv" class="col-8 rlist" style="width:50%;height:500px;"></div>
         </div>
             <div class="popover fade show bs-popover-end" role="tooltip" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(258px, 0px);" data-popper-placement="right">            
         </div>            

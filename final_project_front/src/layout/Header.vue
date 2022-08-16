@@ -88,7 +88,7 @@ export default {
             }
         },
         async searchLog() {
-            const log = await this.$get('/search/getMostSearchLog')
+            const log = await this.$get('/search/mostSearchLog')
             const holder = this.$refs.holder;
             if(log["rs"] != null) {
                 holder.placeholder = `오늘은 ${log.rs}이(가) 많이 검색됐네요~` 
