@@ -1,5 +1,5 @@
 <template>    
-    <div class="container">
+    <div class="container mt-5">
         <div class="chat">
             <div class="chat__header">
                 <span class="chat__header__greetings">
