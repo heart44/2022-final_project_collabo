@@ -38,7 +38,7 @@ export default {
             const rs = await this.$get(`/user/checkEmail/${this.email}`)
             console.log(rs)
             if(rs['result'].cnt === 1) {
-                this.$router.push( {name: 'ResetPassWord', params: {'email': this.email}} );
+                this.$router.push( {name: 'ResetPassWord', params: {'email': this.email, 'url': 0}} );
             } else {
                 this.isAlert = false;
                 this.alertmsg = '등록된 회원정보가 없습니다.';

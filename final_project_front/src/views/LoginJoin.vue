@@ -18,7 +18,7 @@
                         <input type="password" placeholder="Password" ref="pw" v-model="inputUser.pw" @input="isPW()" />
                         <label></label>
                     </div>
-                    <span class="errormsg">{{ pwError }}</span>
+                    <span class="errormsg" ref="chkpw"></span>
                     <div class="d-flex flex-row infield">
                         <select class="mt-2 mb-2 me-1" :key="i" v-model="inputUser.birthYear">
                             <option value="0">birthYear</option>
@@ -88,7 +88,6 @@ export default {
             },
             duplication: '',
             emailError: '',
-            pwError: ''
         }
     },
     methods:{
@@ -168,9 +167,12 @@ export default {
                 this.$refs.email.focus();
                 this.$swal.fire('이메일을 입력해주세요.', '', 'warning');
                 return;
-            } else if(this.inputUser.pw === "") {
+            } else if(join.pw === "") {
                 this.$refs.pw.focus();
                 this.$swal.fire('비밀번호를 입력해주세요.', '', 'warning');
+                return;
+            } else if(this.isPW()) {
+                this.$refs.pw.focus();
                 return;
             }
             const param = {
@@ -215,13 +217,15 @@ export default {
         isPW() {
             const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
             const check = regExp.test(this.inputUser.pw);
-
-            if(!check) {
-                this.pwError = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+            
+            if(!check && this.inputUser.pw !== '') {
+                this.$refs.chkpw.innerHTML = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+                return true;
             } else {
-                this.pwError = '';
+                this.$refs.chkpw.innerHTML = '';
             }
-        }
+            
+        },
     },
 
     created(){

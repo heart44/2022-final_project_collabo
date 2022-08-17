@@ -20,9 +20,9 @@
                             </div>
     
                             <div class="ms-4 d-flex flex-column justify-content-center align-items-start">
-                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/location.png" alt="주소"> <span class="ms-3">{{ rest.rest_address }}</span></div>
-                                <div class="d-flex justify-content-start align-items-start "><img src="../assets/phone-call.png" alt="전화번호"> <span class="ms-3">{{ rest.tel }}</span></div>
-                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/clock.png" alt="영업시간"> <span class="ms-3">{{ rest.open_close }}</span></div>   
+                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/location.png" alt="주소"> <span class="ms-3 text-start">{{ rest.rest_address }}</span></div>
+                                <div class="d-flex justify-content-start align-items-start "><img src="../assets/phone-call.png" alt="전화번호"> <span class="ms-3 text-start">{{ rest.tel }}</span></div>
+                                <div class="d-flex justify-content-start align-items-start mt-3 mb-3"><img src="../assets/clock.png" alt="영업시간"> <span class="ms-3 text-start">{{ rest.open_close }}</span></div>   
                                 <div class="btn-group">
                                     <button v-if="calMenuList(rest.irest)[0] != null" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         메뉴
