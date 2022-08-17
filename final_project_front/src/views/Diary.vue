@@ -10,7 +10,7 @@
       <div class="row mt-5 justify-content-md-center">   
           <div class="plus_btn"><router-link to="/DiaryWrite"><img src="../assets/plus.png"></router-link></div>
        
-        <div class="col-md-3" :key="item" v-for="item in paginatedData">
+        <div class="col-md-3" :key="item" v-for="(item, idx) in paginatedData">
 
           <div class="card mb-4">
             <div class="card_img" @click="[openModal, getCtnt(idx)]" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
