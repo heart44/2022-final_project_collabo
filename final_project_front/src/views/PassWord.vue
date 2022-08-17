@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-center" :class="{'d-none' : isAlert}">
                     <div class="alert alert-warning d-flex justify-content-between" style="width: 30%;" role="alert">
                         {{ alertmsg }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" @click="close()"></button>
                     </div>
                 </div>
             <h1>비밀번호 찾기</h1>
@@ -41,8 +41,13 @@ export default {
                 this.$router.push( {name: 'ResetPassWord', params: {'email': this.email, 'url': 0}} );
             } else {
                 this.isAlert = false;
-                this.alertmsg = '등록된 회원정보가 없습니다.';
+                this.alertmsg = '등록된 회원정보가 없습니다.'
+                this.email = ''
             }
+        },
+        close() {
+            this.alertmsg = ''
+            this.isAlert = true
         }
     }
 };
