@@ -1,7 +1,7 @@
 <template>
 <main class="container mt-5">
   <div>
-      <div class="">
+       <div class="">
         <h1 class="fl"><span class="point_title">밥</span> 친구 구하기</h1>
         <div class="plus_btn" v-if="user.iuser !== undefined"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
         <div class="row ">
@@ -57,7 +57,7 @@
             </div>
           </a>
           <a class="card-description" target="_blank">
-            <h3 class="card-title title">{{ ibobf.title }}</h3>
+            <h5 class="card-title title">{{ ibobf.title }}</h5>
             <div class="d-flex justify-content-between align-ites-center">
                 <small class="text-dark">{{ ibobf.sido }} / {{ ibobf.gugun}}</small>
                 <small class="text-dark" v-if="ibobf.cur_mem === ibobf.total_mem ? this.member = '모집완료' : this.member = '모집중'">{{this.member}}</small>

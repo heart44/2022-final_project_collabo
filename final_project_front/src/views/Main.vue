@@ -32,7 +32,7 @@
   </main>
   
   <main>
-    <div class="container">
+    <div class="container mt-5">
        <div class="bob_list pt-5 mb-4">
           <h5><span>밥</span> 같이 먹을 사람 <span>구함</span>!!</h5>
           <h1><span>밥</span>친 구하기<img src="../assets/smile.svg"></h1>
@@ -275,6 +275,7 @@ export default {
   }
   .today_weather span , .bob_list span{
     color:#F26C38;
+    font-weight: bold;
   }
   #weatherIcon img{
     animation: move 3s infinite;

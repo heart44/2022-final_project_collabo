@@ -39,6 +39,7 @@
                     <span>Social Login</span>
                     <div class="social-container">
                         <!-- <img @click="NaverLogin()" class="social" src="../assets/naver.svg" role="button"> -->
+                       
                         <img @click="KakaoLogin()" class="social" src="../assets/kakao.svg" role="button">
                         <img @click="GoogleLogin()" class="social" src="../assets/google.svg" role="button">
                         <div id="my-signin2" style="display: none"></div>
@@ -91,6 +92,7 @@ export default {
         }
     },
     methods:{
+        
         KakaoLogin(){
            window.Kakao.Auth.login({
                 scope: 'profile_nickname, profile_image, account_email',
@@ -253,6 +255,7 @@ main{
     display:grid;
     place-content: center;
 }
+#naverIdLogin_loginButton img { border-radius:50% !important }
 .container {
     position: relative;
     width:850px;
