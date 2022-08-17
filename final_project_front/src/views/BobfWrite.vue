@@ -1,6 +1,6 @@
 <template>
     <main class="">
-        <div class="container mt-5">
+         <div class="container mt-5">
             <h1 class="fl">글 등록</h1>
             <input type="hidden" v-model="composition.ibobf">
             <input type="hidden" class="form-control" ref="iuser" v-model="user.nick">
@@ -418,18 +418,6 @@ button:focus{
 .restName {
     color: #2B3F6B
 }
-.fl {
-  text-align: left;
-  padding-left: 8%;
-  padding-bottom: 15px;
-  color: #2B3F6B;
-}
-h1 {
-  font-family: 'Cafe24Ssurround';
-  font-weight: bold;
-  font-size: 50px;
-  letter-spacing: 1px;
-}
 
 
 .input {
@@ -456,8 +444,7 @@ h1 {
 	/* border-radius: 15px; */
 	background: #f0f0f0;
 	color: #aaa;
-	font-weight: bold;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 }
 
@@ -557,5 +544,17 @@ h1 {
 
 .input__label-content--minoru {
 	padding: 0.75em 0.15em;
+}
+.fl {
+  text-align: left;
+  padding-left: 8%;
+  padding-bottom: 15px;
+  color: #2B3F6B;
+}
+h1 {
+  font-family: 'Cafe24Ssurround';
+  font-weight: bold;
+  font-size: 50px;
+  letter-spacing: 1px;
 }
 </style>
