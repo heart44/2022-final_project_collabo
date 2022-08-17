@@ -129,7 +129,7 @@ class UserModel extends Model {
         if(isset($param["idiary"])) {
             $sql .= "AND idiary = {$param["idiary"]}";
         }
-        $sql .= " ORDER BY eatdt";
+        $sql .= " ORDER BY eatdt desc";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':iuser', $param["iuser"]);
         $stmt->execute();
