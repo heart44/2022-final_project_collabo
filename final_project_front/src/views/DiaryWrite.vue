@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
+    <div class="container mt-5 mb-5">
         <div class="content">
             <ul class="nav">
                 <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
-                <li><router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link></li>
+                <li><router-link to="/Diary"><button class="btn diary_btn" type="button">다이어리</button></router-link></li>
             </ul>
         </div>
 
@@ -179,6 +179,10 @@ export default {
 <style scoped>
 .container{
   overflow: auto;
+}
+.diary_btn {
+  background-color: #2B3F6B;
+  color: white;
 }
 .list-group > ul > li {
   border: 3px solid #2B3F6B;

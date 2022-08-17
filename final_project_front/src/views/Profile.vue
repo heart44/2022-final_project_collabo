@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container mt-5 mb-5">
     <div class="content">
       <ul class="nav mb-3 mypage_nav">
         <li>
-          <router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link>
+          <router-link to="/Profile"><button class="btn profile_btn" type="button">프로필 수정</button></router-link>
         </li>
         <li>
           <router-link to="/Diary"><button class="btn" type="button">다이어리</button></router-link>
@@ -40,13 +40,13 @@
           <div class="my-nick">
             <div class="p_tag">
               닉네임
-              <div class="my d-flex">
+              <div class="my d-flex mb-2">
                 <input type="text" name="name" v-model="inputUser.nick" />
               </div>
             </div>
             <div class="p_tag">
               나이
-              <div class="my d-flex">
+              <div class="my d-flex mb-2">
                 <select :key="i" v-model="inputUser.birthYear" :disabled="user.birth !== 0">
                   <option value="0">birthYear</option>
                   <option v-for="i in year" :key="i" :value="i">{{ new Date().getFullYear() - i + 1 }}</option>
@@ -55,7 +55,7 @@
             </div>
             <div class="p_tag">
               직업
-              <div class="my d-flex">
+              <div class="my d-flex mb-2">
                 <select v-model="inputUser.job">
                   <option value="0">선택 안 함</option>
                   <option value="1">직장인</option>
@@ -66,8 +66,8 @@
 
             <div class="p_tag">
               비밀번호 변경
-              <div class="my d-flex">
-                <input type="password" v-model="inputUser.pw" />
+              <div class="d-flex justify-content-center">
+                <router-link :to="{ name: 'ResetPassWord', params:{'email': user.email, 'url': 1} }"><button type="button" class="btn profile_btn chg_btn">재설정가즈아</button></router-link>
               </div>
             </div>
           </div>
@@ -113,6 +113,7 @@ export default {
       imgSrc: '',
       alertmsg: '',
       isAlert: true,
+      pwError: ''
     };
   },
   created() {
@@ -157,6 +158,10 @@ export default {
       if(this.$refs.profileImg.files.length !== 0) {
         image = await this.$base64(this.$refs.profileImg.files[0]);
       }
+      if(this.isPw()) {
+        this.$refs.pw.focus();
+        return;
+      }
       const param = {
         iuser: this.user.iuser,
         pw: this.inputUser.pw,
@@ -195,11 +200,27 @@ export default {
         console.log(this.user);
       }
     },
+    isPw() {
+      const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+      const check = regExp.test(this.inputUser.pw);
+
+      if(!check && this.inputUser.pw != '') {
+        this.$refs.chkpw.innerHTML = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+        return true;
+      } else {
+        this.$refs.chkpw.innerHTML = '';
+      }
+    },
   }
 }
 </script>
 
 <style scoped>
+.profile_btn {
+  background-color: #2B3F6B;
+  color: white;
+}
+.chg_btn{ border-radius: 4px !important; }
 .file-button {
   padding: 6px 25px;
   background-color: #2b3f6b;
@@ -284,5 +305,9 @@ input[type="button"] {
 }
 label {
   width: 100px;
+}
+.erorr {
+  font-size: 0.7rem;
+  color: #f78b60;
 }
 </style>

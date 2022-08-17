@@ -111,6 +111,7 @@ use application\libs\Application;
                         }
                     }
                     // 프로필 수정
+                    $json["pw"] = password_hash($json["pw"], PASSWORD_BCRYPT);
                     $rs = $this->model->updateUser($json);
                     if($rs){
                         foreach($json as $key => $val){

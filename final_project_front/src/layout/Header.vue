@@ -14,10 +14,11 @@
                 </div>
                 <div v-else class="d-flex">
                     <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">My Page</a>    
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>    
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><router-link class="" to="/Profile"><a class="dropdown-item" href="#">프로필수정</a></router-link></li>
                                 <li><router-link class="" to="/Diary"><a class="dropdown-item" href="#">다이어리</a></router-link></li>
+                                <li><router-link class="" to="/BobfChat"><a class="dropdown-item" href="#">채팅</a></router-link></li>
                             </ul>
                     </div>
                     <button class="btn btn-danger" type="button" @click="signout">로그아웃</button>
@@ -64,6 +65,7 @@ export default {
         async signout() {
             this.$store.commit('user', {});
             await this.$post('user/signout');
+            this.$router.push( {path: '/'} );
         },
         async searchMenu() {    //통신부분 개망....완전 일 많이 하는 중,,,근데 나누기.....힘들어요,,,,,,
             if(this.search.trim() !== '') {
