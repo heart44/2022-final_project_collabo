@@ -1,5 +1,5 @@
-<template>
-    <div class="container">
+<template>    
+    <div class="container mt-5">
         <div class="chat">
             <div class="chat__header">
                 <span class="chat__header__greetings">
@@ -23,14 +23,15 @@ export default {
             return this.$store.state.user;
         },
     },
+
     created() {
         this.getBobfUser()
-    },
+    },    
     methods: {
         getBobfUser() {
             const param = { bobfUser: this.$route.params.iuser }
             console.log(param)
-        }
+        }    
     },
 }
 </script>
