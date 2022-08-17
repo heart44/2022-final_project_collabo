@@ -38,16 +38,15 @@
           <h1><span>밥</span>친 구하기<img src="../assets/smile.svg"></h1>
        </div>
        
-       <div class="mt-3 bob_write">
-           <div class="card-group text-center mb-5">
-             <div class="card" v-for="bob in bobf" :key="bob">
-                <div class="card-body pointer d-flex row justify-content-center" @click="bobList(bob.bobf)">
-                <div class="menuimg"><img :src="bob.img_path">
-             </div>
-             <h5 class="card-title m-0">{{ bob.bobf }}</h5>
-           </div>
+       <div class="mt-4 bob_write">
+           <div class="d-flex text-center mb-5" :v-model="this.BobfList">
+             <div class="flex-row card" style="width: 19rem;" v-for="ibobf in this.BobfList" :key="ibobf">
+                <div class="card-body pointer d-flex row justify-content-center" @click="goToDetail(ibobf.ibobf)">
+                <img :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 250px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
+                <h5 class="card-title mt-3">{{ ibobf.title }}</h5>
+              </div>
+            </div>
           </div>
-        </div>
        </div>
     
     </div>
@@ -144,6 +143,7 @@ export default {
         962: '허리케인'
       },
       menuList: [],
+      BobfList: []
     }
   },
   computed: {
@@ -213,12 +213,24 @@ export default {
       this.$store.commit('setSearchWord', menucd);
       this.$router.push( {path: '/SearchList'} );
     },
-    async bobList(bobf){
-      
-    }
+
+    //밥친 리스트 
+    async bobList(){
+      const idx = this.BobfList.length
+      const items = await this.$get(`api/selBobfList/${idx}`, {});
+      items.length = 4
+
+      this.BobfList = this.BobfList.concat(items);
+    },
+        
+    goToDetail(ibobf) {
+      const res = ibobf
+      this.$router.push( {name: 'BobfDetail', params: { ibobf: res }} );
+    },
   },
   created() {
     this.askForCoords();
+    this.bobList();
   },
   updated(){
     // this.askForCoords();
