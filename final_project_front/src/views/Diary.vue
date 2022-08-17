@@ -10,7 +10,7 @@
       <div class="row mt-5 justify-content-md-center">   
           <div class="plus_btn"><router-link to="/DiaryWrite"><img src="../assets/plus.png"></router-link></div>
        
-        <div class="col-md-3"  v-for="(item, idx) in diaryList" :key="item">
+        <div class="col-md-3" :key="item" v-for="item in paginatedData">
 
           <div class="card mb-4">
             <div class="card_img" @click="[openModal, getCtnt(idx)]" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#newFeedModal"><img :src="'static/img/diary/'+user.iuser+'/'+item.path" class="card-img-top"/></div>
@@ -30,6 +30,12 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="m-5">
+      <button class="btn paging_btn" :disabled="pageNum === 0" @click="prevPage">이전</button>
+      <span class="page-count mx-2">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
+      <button class="btn paging_btn" :disabled="pageNum >= pageCount - 1" @click="nextPage">다음</button>
     </div>
 
         <!-- 다이어리 상세정보 (모달)-->
@@ -142,12 +148,30 @@ export default {
       return {
         diaryList: [],
         diaryDetail: {},
+        //페이징
+        pageNum: 0,
+        pageSize: 8
       }
   },
   computed: {
     user() {
         return this.$store.state.user;
     },
+    //페이징
+    pageCount() {
+      let listLeng = this.diaryList.length,
+          listSize = this.pageSize,
+          page = Math.floor((listLeng - 1) / listSize) + 1;
+      // if(listLeng % listSize > 0) page +=  1;
+
+      return page;
+    },
+    paginatedData() {
+      const start = this.pageNum * this.pageSize,
+            end = start + this.pageSize;
+
+      return this.diaryList.slice(start, end);
+    }
   },
   created() {
     this.getDiaryList();
@@ -181,7 +205,15 @@ export default {
     },
     modDiary(idx) {
         this.$router.push( {path: '/DiaryWrite', query: {iuser: this.user.iuser, idiary: idx}})
-    }    
+    },
+    //페이징
+    nextPage() {
+      this.pageNum += 1;
+    },
+    prevPage() {
+      this.pageNum -= 1;      
+    },
+    
   }
 }
 </script>
@@ -190,6 +222,12 @@ export default {
 .diary_btn {
   background-color: #2B3F6B;
   color: white;
+}
+.paging_btn{
+    border:2px solid #2B3F6B;
+    border-radius:15px;
+    color:#2B3F6B;
+    margin-left: 0.5rem;
 }
 .v-line {
   border-left : thin solid rgba(0,0,0,.125);
