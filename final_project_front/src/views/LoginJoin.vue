@@ -61,12 +61,12 @@
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
+                        <p>이미 회원이시라면 로그인 해주세요</p>
                         <button class="btn_login" @click="changeLoginBox" ref="loginBtn">LOGIN</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <h1>Hello!</h1>
-                        <p>Enter your personal details and start journey with us</p>
+                        <p>처음 방문 하셨다면 회원가입을 해주세요</p>
                         <button class="btn_join" @click="changeLoginBox">JOIN</button>
                     </div>
                 </div>
