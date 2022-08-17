@@ -2,7 +2,7 @@
 <main class="container mt-5">
   <div>
       <div class="">
-        <h1 class="fl">밥 친구 구하기</h1>
+        <h1 class="fl"><span class="point_title">밥</span> 친구 구하기</h1>
         <div class="plus_btn" v-if="user.iuser !== undefined"><router-link to="/BobfWrite"><img src="../assets/plus.png"></router-link></div>
         <div class="row ">
           <!-- 지역 셀렉트1 -->
@@ -337,6 +337,9 @@ h1 {
   font-weight: bold;
   font-size: 50px;
   letter-spacing: 1px;
+}
+.point_title {
+  color:#F26C38;
 }
 
 /* Lazy Load Styles */

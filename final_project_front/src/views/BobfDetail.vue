@@ -1,5 +1,5 @@
 <template>
-    <div class="container_fix">
+    <div class="container_fix mt-5">
         <div class="content">
             <div class="row">
                 <div :model="getBobfDetail">
