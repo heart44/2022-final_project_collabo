@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5 mb-5">
     <div class="content">
-        <ul class="nav mb-3 mypage_nav">
+        <ul class="nav  mypage_nav">
             <li><router-link to="/Profile"><button class="btn" type="button">프로필 수정</button></router-link></li>
             <li><router-link to="/Diary"><button class="btn diary_btn" type="button">다이어리</button></router-link></li>
         </ul>
