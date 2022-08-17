@@ -50,7 +50,7 @@
 
       <div class="row">
         <div class="card-list col-xl-3" :key="ibobf" v-for="ibobf in paginatedData">
-        <div class="card" style="width: 18rem; cursor:pointer;" @click="goToDetail(ibobf.ibobf)">
+        <div class="card" id="listClick" style="width: 18rem; cursor:pointer;" @click="goToDetail(ibobf.ibobf)">
           <a class="card-image" target="_blank">
             <div>
               <img alt="이미지" class="card-img-top" :src="`/static/img/bobf/${ibobf.img_path}`" style="height: 300px; object-fit: cover" onerror="this.src='https://images.unsplash.com/photo-1556761223-4c4282c73f77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'">
@@ -282,7 +282,6 @@ export default {
     goToDetail(ibobf) {
       const res = ibobf
       this.$router.push( {name: 'BobfDetail', params: { ibobf: res }} );
-      // this.$router.push( {path: '/BobfDetail/ibobf'} );
     },
 
     
