@@ -30,12 +30,12 @@
                 </section> 
                 </div>
 
-                <div class="d-flex justify-content-center mt-5">
+                <div class="d-flex justify-content-center mt-5 mb-4">
                     <button class="btn me-4" @click="updateBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">수정</button>
                     <button class="btn btn-danger" @click="deleteBobfDetail" v-if="this.bobfDetail.iuser === user.iuser">삭제</button>
                 </div>
 
-                <div class="col-md-6 chating mt-5">
+                <div class="col-md-6 chating mt-4 mb-4">
                     <button class="btn btn-danger" @click="goToChat(user.iuser)" v-if="this.bobfDetail.iuser !== user.iuser">채팅하기</button>
                 </div>
             </div>
