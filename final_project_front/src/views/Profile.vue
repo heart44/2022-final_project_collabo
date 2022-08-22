@@ -75,13 +75,13 @@
           <div class="profile-img">
             <div class="image-box">
               <label class="file-button" for="img">업로드</label>
-              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage">
+              <input type="file" ref="profileImg" id="img" class="d-none" accept="image/*" @change="previewImage()">
             </div>
 
             <div v-if="imgSrc !== ''" class="file-preview-content-container">
               <div class="file-preview-container">
                 <div class="file-preview-wrapper">
-                  <div class="file-close-button" @click="delPreview">
+                  <div class="file-close-button" @click="delPreview()">
                     <img src="../assets/close.png" />
                   </div>
                   <img class="preview" :src="imgSrc" />
@@ -159,10 +159,10 @@ export default {
       if(this.$refs.profileImg.files.length !== 0) {
         image = await this.$base64(this.$refs.profileImg.files[0]);
       }
-      if(this.isPw()) {
-        this.$refs.pw.focus();
-        return;
-      }
+      // if(this.isPw()) {
+      //   this.$refs.pw.focus();
+      //   return;
+      // }
       const param = {
         iuser: this.user.iuser,
         pw: this.inputUser.pw,
@@ -201,17 +201,17 @@ export default {
         console.log(this.user);
       }
     },
-    isPw() {
-      const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
-      const check = regExp.test(this.inputUser.pw);
+    // isPw() {
+    //   const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+    //   const check = regExp.test(this.inputUser.pw);
 
-      if(!check && this.inputUser.pw != '') {
-        this.$refs.chkpw.innerHTML = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
-        return true;
-      } else {
-        this.$refs.chkpw.innerHTML = '';
-      }
-    },
+    //   if(!check && this.inputUser.pw != '') {
+    //     this.$refs.chkpw.innerHTML = '비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.';
+    //     return true;
+    //   } else {
+    //     this.$refs.chkpw.innerHTML = '';
+    //   }
+    // },
   }
 }
 </script>

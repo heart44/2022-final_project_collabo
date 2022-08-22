@@ -162,18 +162,21 @@ export default {
   methods: {
     //검색리스트에 뽀려가욘~@--
     askForCoords() {
-      navigator.geolocation.getCurrentPosition(pos => {
-        console.log(pos);
-        this.lat = pos.coords.latitude;
-        this.lon = pos.coords.longitude;
+      // navigator.geolocation.getCurrentPosition(pos => {
+        // console.log(pos);
+         
+        // this.lat = pos.coords.latitude;
+        this.lat = '35.8700317';
+        // this.lon = pos.coords.longitude;
+        this.lon = '128.6005225';
         console.log('로케이션', this.lat, this.lon);
         this.getPlaceWeather(this.lat, this.lon);
         this.weatherOk = true;
-      }, err => {
-        this.$swal.fire('현재 날씨를 가져올 수 없습니다.', '우리가 현재 위치의 날씨 정보를 가져올 수 있도록 <br> 위치 정보 접근을 허용해주세요.', 'warning');
-        console.log(err);
-      }
-      );
+      // }, err => {
+      //   this.$swal.fire('현재 날씨를 가져올 수 없습니다.', '우리가 현재 위치의 날씨 정보를 가져올 수 있도록 <br> 위치 정보 접근을 허용해주세요.', 'warning');
+      //   console.log(err);
+      // }
+      // );
     },
     // openweather api
     async getPlaceWeather(lat, lon) {
